@@ -342,7 +342,8 @@ export default function Hero() {
 
   return (
     <motion.div
-      className="hero-container relative w-full min-h-screen overflow-hidden flex flex-col pt-12 sm:pt-16 md:pt-20"
+      className="hero-container relative w-full overflow-hidden flex flex-col"
+      style={{ minHeight: "100vh", maxHeight: "100vh" }}
       initial="hidden"
       animate={controls}
       variants={containerVariants}
@@ -530,19 +531,19 @@ export default function Hero() {
       </div>
       
       {/* Layer 3: Foreground Content */} 
-      <div className="relative z-20 container mx-auto px-6 flex flex-col items-center h-full">
+      <div className="relative z-20 container mx-auto px-4 sm:px-6 flex flex-col items-center justify-center" style={{ height: "100vh" }}>
         <motion.div 
-          className="content-container relative transform-style-3d text-center max-w-4xl"
+          className="content-container relative transform-style-3d text-center max-w-4xl mt-[-40px] sm:mt-0"
           style={{ 
             transform: `translateZ(50px) rotateX(${mousePosition.y * 1.5}deg) rotateY(${mousePosition.x * -1.5}deg)`,
             transition: "transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)",
             willChange: "transform",
           }}
         >
-          <motion.div className="flex flex-col items-center justify-center space-y-4 w-full mt-4 sm:mt-5 md:mt-6">
+          <motion.div className="flex flex-col items-center justify-center space-y-2 sm:space-y-4 w-full">
             {/* Enhanced heading - digital materialization with simplified approach */}
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white pt-2 sm:pt-4 md:pt-6 mb-2"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-2"
               style={{ 
                 textShadow: '0 0 8px rgba(100,200,255,0.1)',
                 transform: 'translateZ(10px)',
@@ -687,11 +688,11 @@ export default function Hero() {
                   }
                 }
               }}
-              className="h-14 sm:h-16 flex items-center justify-center w-full mt-2 sm:mt-3 mb-2 sm:mb-4"
+              className="h-10 sm:h-12 md:h-14 flex items-center justify-center w-full mt-1 sm:mt-2 mb-1 sm:mb-2 role-text"
               style={{ transform: 'translateZ(10px)' }}
             >
               <motion.div 
-                className="relative text-3xl sm:text-4xl md:text-5xl font-bold overflow-hidden"
+                className="relative text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold overflow-hidden"
                 style={{
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
@@ -758,7 +759,7 @@ export default function Hero() {
                   } 
                 }
               }}
-              className="text-base sm:text-lg md:text-xl text-gray-300 mt-1 sm:mt-2 mb-3 sm:mb-4 max-w-3xl mx-auto relative px-4 sm:px-0"
+              className="text-sm sm:text-base md:text-lg text-gray-300 mt-1 sm:mt-2 mb-2 sm:mb-3 max-w-3xl mx-auto relative px-4 sm:px-0"
               style={{ transform: 'translateZ(5px)' }}
             >
               {/* Digital reveal effect container */}
@@ -814,7 +815,7 @@ export default function Hero() {
                   }
                 }
               }}
-              className="flex flex-wrap justify-center gap-3 sm:gap-4 relative mt-1 sm:mt-2 mb-3 sm:mb-4"
+              className="flex flex-wrap justify-center gap-2 sm:gap-3 relative mt-1 sm:mt-2 mb-2 sm:mb-3 button-container"
               style={{ transform: 'translateZ(20px)' }}
             >
               <motion.a
@@ -1019,7 +1020,7 @@ export default function Hero() {
               </motion.a>
             </motion.div>
             
-            {/* Enhanced social media links */}
+            {/* Social links with holographic effects */}
             <motion.div
               variants={{
                 hidden: { opacity: 0 },
@@ -1027,13 +1028,13 @@ export default function Hero() {
                   opacity: 1, 
                   transition: { 
                     duration: 0.8, 
-                    delay: 0.5, 
+                    delay: 0.6, 
                     ease: "easeOut" 
                   }
                 }
               }}
-              className="mt-1 sm:mt-2 mb-3 sm:mb-4 flex justify-center gap-4 sm:gap-6 relative"
-              style={{ transform: 'translateZ(30px)' }}
+              className="flex justify-center gap-3 mt-2 sm:mt-4"
+              style={{ transform: 'translateZ(15px)' }}
             >
               {[
                 { name: 'GitHub', url: 'https://github.com/Amirhadi9900', icon: 'G' },
@@ -1120,6 +1121,56 @@ export default function Hero() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Scroll indicator with holographic effect */}
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          visible: { 
+            opacity: [0, 1, 0.8], 
+            y: 0,
+            transition: { 
+              opacity: {
+                duration: 2,
+                times: [0, 0.2, 1],
+                repeat: Infinity,
+                repeatType: "reverse"
+              },
+              y: {
+                duration: 0.5,
+                delay: 0.8
+              }
+            } 
+          }
+        }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer hidden sm:block"
+        onClick={() => {
+          window.scrollTo({
+            top: window.innerHeight,
+            behavior: 'smooth'
+          });
+        }}
+        style={{ transform: 'translateZ(25px)' }}
+      >
+        <motion.div
+          className="hologram-scanline absolute inset-0 w-full h-full overflow-hidden"
+        >
+          <motion.div 
+            className="scanline absolute h-[1px] w-full bg-blue-400/50"
+            initial={{ top: "-100%" }}
+            whileHover={{
+              top: ["0%", "100%"],
+              transition: {
+                top: {
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }
+              }
+            }}
+          />
+        </motion.div>
+      </motion.div>
     </motion.div>
   );
 }

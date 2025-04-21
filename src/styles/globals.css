@@ -1264,4 +1264,44 @@
 .gradient-btn:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+}
+
+/* Mobile-specific adjustments */
+@media screen and (max-width: 640px) {
+  .hero-container {
+    /* Prevent unwanted vertical stretching on mobile */
+    height: 100vh !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden;
+  }
+  
+  .hero-container .content-container {
+    /* Adjust content positioning for mobile */
+    margin-top: -30px !important;
+    padding-bottom: 10px;
+  }
+  
+  /* Ensure text is more compact on mobile */
+  .hero-container h1 {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  /* Adjust role text size and spacing for mobile */
+  .hero-container .role-text {
+    height: auto !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  /* Reduce description text spacing on mobile */
+  .hero-container p {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  /* Ensure proper button spacing on mobile */
+  .hero-container .button-container {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
 } 
