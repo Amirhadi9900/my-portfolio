@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
+const ROLES = ['Software Developer', 'Android Developer', 'Web Developer'];
+
 export default function Hero() {
   const [typedText, setTypedText] = useState('');
-  const roles = ['Software Developer', 'Android Developer', 'Web Developer'];
   const [roleIndex, setRoleIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -23,7 +24,7 @@ export default function Hero() {
     if (!isMounted) return;
 
     const handleTyping = () => {
-      const currentRole = roles[roleIndex];
+      const currentRole = ROLES[roleIndex];
       
       if (isDeleting) {
         setTypedText(currentRole.substring(0, charIndex - 1));
@@ -40,14 +41,14 @@ export default function Hero() {
         setTypingSpeed(2000);
       } else if (isDeleting && charIndex === 0) {
         setIsDeleting(false);
-        setRoleIndex((prev) => (prev + 1) % roles.length);
+        setRoleIndex((prev) => (prev + 1) % ROLES.length);
         setTypingSpeed(500);
       }
     };
 
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
-  }, [charIndex, isDeleting, isMounted, roleIndex, roles, typingSpeed]);
+  }, [charIndex, isDeleting, isMounted, roleIndex, typingSpeed]);
 
   // Animation variants
   const fadeInUp = {
@@ -283,22 +284,6 @@ export default function Hero() {
                   brightness(1.03)
                   saturate(1.05)
                 `;
-                
-                // Add pulsing glow effect
-                const glowKeyframes = `
-                  @keyframes pulseGlow {
-                    0%, 100% { box-shadow: 0 0 12px rgba(245, 87, 108, 0.25), 0 0 20px rgba(102, 126, 234, 0.2), 0 25px 50px rgba(0, 0, 0, 0.6); }
-                    50% { box-shadow: 0 0 18px rgba(245, 87, 108, 0.35), 0 0 30px rgba(102, 126, 234, 0.3), 0 25px 50px rgba(0, 0, 0, 0.6); }
-                  }
-                `;
-                
-                if (!document.querySelector('#pulseGlowKeyframes')) {
-                  const style = document.createElement('style');
-                  style.id = 'pulseGlowKeyframes';
-                  style.textContent = glowKeyframes;
-                  document.head.appendChild(style);
-                }
-                
                 e.currentTarget.style.animation = 'pulseGlow 2s ease-in-out infinite';
               }}
               onMouseLeave={(e) => {
@@ -317,7 +302,6 @@ export default function Hero() {
                 e.currentTarget.style.animation = 'gradientShift 4s ease infinite';
               }}
             >
-              {/* Animated Background Overlay */}
               <div 
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{
@@ -326,12 +310,8 @@ export default function Hero() {
                   animation: 'shimmer 3s ease-in-out infinite'
                 }}
               />
-              
-              {/* Premium Text with Enhanced Typography */}
               <span className="relative z-10 flex items-center gap-2 font-black text-base tracking-wide">
                 <span>View My Work</span>
-                
-                {/* Animated Arrow Icon */}
                 <span 
                   className="transform transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
                   style={{
@@ -379,22 +359,6 @@ export default function Hero() {
                   brightness(1.03)
                   saturate(1.05)
                 `;
-                
-                // Add pulsing glow effect
-                const glowKeyframes = `
-                  @keyframes pulseGlow {
-                    0%, 100% { box-shadow: 0 0 12px rgba(245, 87, 108, 0.25), 0 0 20px rgba(102, 126, 234, 0.2), 0 25px 50px rgba(0, 0, 0, 0.6); }
-                    50% { box-shadow: 0 0 18px rgba(245, 87, 108, 0.35), 0 0 30px rgba(102, 126, 234, 0.3), 0 25px 50px rgba(0, 0, 0, 0.6); }
-                  }
-                `;
-                
-                if (!document.querySelector('#pulseGlowKeyframes')) {
-                  const style = document.createElement('style');
-                  style.id = 'pulseGlowKeyframes';
-                  style.textContent = glowKeyframes;
-                  document.head.appendChild(style);
-                }
-                
                 e.currentTarget.style.animation = 'pulseGlow 2s ease-in-out infinite';
               }}
               onMouseLeave={(e) => {

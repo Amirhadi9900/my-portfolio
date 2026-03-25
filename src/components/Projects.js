@@ -4,28 +4,24 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
+const PROJECTS = [
+  {
+    id: 1,
+    title: 'Finlern Web App',
+    description: 'Professional educational and communication website built with Next.js, TypeScript, and Tailwind CSS with server-side rendering and SEO optimization.',
+    category: 'web',
+    image: '/image/finlern.png',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Firestore'],
+    link: 'https://finlern.vercel.app/'
+  }
+];
+
 export default function Projects() {
-  const [activeFilter, setActiveFilter] = useState('all');
   const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  
-  const projects = [
-    {
-      id: 1,
-      title: 'Finlern Web App',
-      description: 'Professional educational and communication website built with Next.js, TypeScript, and Tailwind CSS with server-side rendering and SEO optimization.',
-      category: 'web',
-      image: '/image/finlern.png',
-      technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Firestore'],
-      link: 'https://finlern.vercel.app/'
-    }
-  ];
-  
-  // Removing category filtering as it's no longer needed
-  const filteredProjects = projects;
   
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -52,7 +48,7 @@ export default function Projects() {
           </div>
           
           <div className="flex justify-center">
-            {projects.map((project) => (
+            {PROJECTS.map((project) => (
               <div 
                 key={project.id} 
                 className="bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg"
@@ -132,7 +128,7 @@ export default function Projects() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-          {filteredProjects.map((project) => (
+          {PROJECTS.map((project) => (
             <motion.div 
               key={project.id} 
               className="max-w-3xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50 hover:shadow-[0_30px_60px_rgba(8,112,184,0.18)] dark:hover:shadow-[0_30px_60px_rgba(8,112,184,0.12)] transition-all duration-500 hover:-translate-y-2"

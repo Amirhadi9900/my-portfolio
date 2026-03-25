@@ -2,40 +2,60 @@
 
 import { motion } from 'framer-motion';
 
-export default function Skills() {
-  const skillCategories = [
-    {
-      name: "Android Development",
-      skills: [
-        { name: "Kotlin", level: 80 },
-        { name: "Jetpack Compose", level: 75 },
-        { name: "MVVM Architecture", level: 70 },
-        { name: "Hilt Dependency Injection", level: 75 },
-        { name: "Android Studio", level: 85 },
-      ]
-    },
-    {
-      name: "Web Development",
-      skills: [
-        { name: "Next.js", level: 85 },
-        { name: "TypeScript", level: 85 },
-        { name: "Tailwind CSS", level: 90 },
-        { name: "HTML/CSS", level: 95 },
-        { name: "JavaScript", level: 85 },
-      ]
-    },
-    {
-      name: "Backend & Databases",
-      skills: [
-        { name: "Firebase Firestore", level: 80 },
-        { name: "Firebase Authentication", level: 80 },
-        { name: "Firebase Storage", level: 80 },
-        { name: "Gradle", level: 85 },
-        { name: "REST APIs", level: 80 },
-      ]
-    }
-  ];
+const SKILL_CATEGORIES = [
+  {
+    name: "Mobile Development",
+    skills: [
+      { name: "Kotlin", level: 80 },
+      { name: "Jetpack Compose", level: 75 },
+      { name: "MVVM Architecture", level: 70 },
+      { name: "Hilt Dependency Injection", level: 75 },
+      { name: "Android Studio", level: 85 },
+      { name: "Gradle (KTS)", level: 85 },
+      { name: "Logcat Debugging", level: 80 },
+    ]
+  },
+  {
+    name: "Web Development",
+    skills: [
+      { name: "Next.js", level: 85 },
+      { name: "React", level: 85 },
+      { name: "TypeScript", level: 85 },
+      { name: "Tailwind CSS", level: 90 },
+      { name: "Node.js", level: 80 },
+      { name: "JavaScript", level: 85 },
+      { name: "HTML/CSS", level: 95 },
+    ]
+  },
+  {
+    name: "Backend & Cloud",
+    skills: [
+      { name: "Firebase (Firestore/Auth/Storage)", level: 80 },
+      { name: "Firestore Security Rules", level: 75 },
+      { name: "Nodemailer", level: 80 },
+      { name: "Google Cloud / Gmail API", level: 70 },
+      { name: "OAuth2", level: 70 },
+      { name: "REST APIs", level: 80 },
+    ]
+  }
+];
 
+const ADDITIONAL_SKILLS = [
+  "Vercel",
+  "Git & GitHub",
+  "VS Code",
+  "LLMs (Claude Code, Cursor)",
+  "UI/UX Optimization",
+  "GUI Design",
+  "Animations (AOS, Text Scramble)",
+  "Responsive UI",
+  "Cybersecurity & Nmap",
+  "PowerShell & Terminal",
+  "VMware Setup & Config",
+  "XML & JSON",
+];
+
+export default function Skills() {
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -84,7 +104,7 @@ export default function Skills() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-          {skillCategories.map((category, categoryIndex) => (
+          {SKILL_CATEGORIES.map((category, categoryIndex) => (
             <motion.div 
               key={categoryIndex}
               className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50 p-8 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(8,112,184,0.18)]"
@@ -133,16 +153,7 @@ export default function Skills() {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              "Debugging & Optimization",
-              "Form Handling",
-              "Linux Terminal",
-              "Windows PowerShell",
-              "Bash Scripting",
-              "Component-based Design",
-              "Responsive UI",
-              "Cybersecurity"
-            ].map((skill, index) => (
+            {ADDITIONAL_SKILLS.map((skill, index) => (
               <div 
                 key={index} 
                 className="flex items-center p-4 bg-gray-50/80 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700/30 hover:border-blue-100 dark:hover:border-blue-900/30 hover:shadow-md transition-all duration-300"

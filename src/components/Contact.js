@@ -8,57 +8,112 @@ export default function Contact() {
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
+    website: ''
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const [isMounted, setIsMounted] = useState(false);
   
-  // Use useEffect to handle client-side only state
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  
+
+  function validateName(value) {
+    if (!value.trim()) return 'Name is required.';
+    if (!/^[\p{L}\p{M}\s'.,-]+$/u.test(value)) {
+      return 'Name can only contain letters, spaces, hyphens, and apostrophes.';
+    }
+    if (value.length > 100) return 'Name must be 100 characters or fewer.';
+    return '';
+  }
+
+  function validateEmail(value) {
+    if (!value.trim()) return 'Email is required.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      return 'Please enter a valid email address.';
+    }
+    if (value.length > 254) return 'Email is too long.';
+    return '';
+  }
+
+  function validateSubject(value) {
+    if (!value.trim()) return 'Subject is required.';
+    if (value.length > 200) return 'Subject must be 200 characters or fewer.';
+    return '';
+  }
+
+  function validateMessage(value) {
+    if (!value.trim()) return 'Message is required.';
+    if (value.length > 5000) return 'Message must be 5,000 characters or fewer.';
+    return '';
+  }
+
+  const validators = { name: validateName, email: validateEmail, subject: validateSubject, message: validateMessage };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (fieldErrors[name]) {
+      const error = validators[name]?.(value) || '';
+      setFieldErrors(prev => ({ ...prev, [name]: error }));
+    }
   };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    if (!value.trim()) return;
+    const error = validators[name]?.(value) || '';
+    setFieldErrors(prev => ({ ...prev, [name]: error }));
+  };
+
+  function validateAll() {
+    const errors = {};
+    errors.name = validateName(formData.name);
+    errors.email = validateEmail(formData.email);
+    errors.subject = validateSubject(formData.subject);
+    errors.message = validateMessage(formData.message);
+    const filtered = Object.fromEntries(Object.entries(errors).filter(([, v]) => v));
+    setFieldErrors(filtered);
+    return Object.keys(filtered).length === 0;
+  }
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateAll()) return;
     setIsSubmitting(true);
     setErrorMessage("");
+    setSubmitStatus(null);
     
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       
       const data = await response.json();
       
       if (!response.ok) {
+        if (data.field) {
+          setFieldErrors(prev => ({ ...prev, [data.field]: data.error }));
+          return;
+        }
         throw new Error(data.error || 'Something went wrong. Please try again.');
       }
       
-      // Success
       setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // Reset status after 5 seconds
-      setTimeout(() => setSubmitStatus(null), 5000);
+      setFormData({ name: '', email: '', subject: '', message: '', website: '' });
+      setFieldErrors({});
+      setTimeout(() => setSubmitStatus(null), 6000);
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmitStatus('error');
       setErrorMessage(error.message);
-      
-      // Reset error status after 5 seconds
-      setTimeout(() => setSubmitStatus(null), 5000);
+      setTimeout(() => setSubmitStatus(null), 6000);
     } finally {
       setIsSubmitting(false);
     }
@@ -87,21 +142,7 @@ export default function Contact() {
                 I'm always open to new projects and opportunities.
               </p>
               
-              {/* Contact details placeholder */}
               <div className="space-y-4">
-                {/* Phone placeholder */}
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg mr-4">
-                    <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 dark:text-white">Phone</h4>
-                    <p className="text-gray-700 dark:text-gray-300">+358 44 248 2127</p>
-                  </div>
-                </div>
-                
                 {/* Email placeholder */}
                 <div className="flex items-start">
                   <div className="flex-shrink-0 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg mr-4">
@@ -223,18 +264,6 @@ export default function Contact() {
               <div className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
                 <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-blue-50/80 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 mr-4 shadow-sm">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800 dark:text-white text-lg mb-1">Phone</h4>
-                  <p className="text-gray-600 dark:text-gray-300">+358 44 248 2127</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
-                <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-blue-50/80 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 mr-4 shadow-sm">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -312,6 +341,18 @@ export default function Contact() {
                 </div>
                 
                 <form onSubmit={handleSubmit}>
+                  <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', height: 0, overflow: 'hidden' }}>
+                    <label htmlFor="website">Website</label>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleChange}
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
                   <div className="mb-6">
                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-800 dark:text-white">Your Name</label>
                     <input
@@ -320,10 +361,15 @@ export default function Contact() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       required
-                      className="w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200"
+                      maxLength={100}
+                      className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.name ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="John Doe"
                     />
+                    {fieldErrors.name && (
+                      <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.name}</p>
+                    )}
                   </div>
                   
                   <div className="mb-6">
@@ -334,10 +380,15 @@ export default function Contact() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       required
-                      className="w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200"
+                      maxLength={254}
+                      className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.email ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="john@example.com"
                     />
+                    {fieldErrors.email && (
+                      <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.email}</p>
+                    )}
                   </div>
                   
                   <div className="mb-6">
@@ -348,10 +399,15 @@ export default function Contact() {
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       required
-                      className="w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200"
+                      maxLength={200}
+                      className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.subject ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="Project Inquiry"
                     />
+                    {fieldErrors.subject && (
+                      <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.subject}</p>
+                    )}
                   </div>
                   
                   <div className="mb-6">
@@ -361,11 +417,16 @@ export default function Contact() {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       required
                       rows="5"
-                      className="w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200"
+                      maxLength={5000}
+                      className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.message ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="Hello, I'd like to discuss a project..."
                     ></textarea>
+                    {fieldErrors.message && (
+                      <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.message}</p>
+                    )}
                   </div>
                   
                   <button
@@ -382,10 +443,10 @@ export default function Contact() {
                   
                   {submitStatus === 'success' && (
                     <div className="mt-6 p-4 bg-green-50/80 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg border border-green-100 dark:border-green-900/50 flex items-center">
-                      <svg className="w-5 h-5 mr-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 mr-3 flex-shrink-0 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span>Your message has been sent. I'll get back to you soon!</span>
+                      <span>Your message has been sent to Amirhadi! He will get back to you soon.</span>
                     </div>
                   )}
                   
