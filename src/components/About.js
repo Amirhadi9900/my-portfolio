@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 
 export default function About() {
   const fadeInUp = {
@@ -10,8 +10,6 @@ export default function About() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
   };
 
-  // Add mouse interaction for the profile picture
-  const [isMounted, setIsMounted] = useState(false);
   const profileRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -39,13 +37,9 @@ export default function About() {
     mouseX.set(0);
     mouseY.set(0);
   };
-  
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   return (
-    <section id="about" className="section py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
+    <section id="about" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70"></div>
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl"></div>
@@ -53,20 +47,21 @@ export default function About() {
       
       <div className="container relative z-10">
         <motion.div 
-          className="max-w-3xl mx-auto text-center mb-20"
+          className="max-w-3xl mx-auto text-center mb-12 md:mb-20"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <div className="inline-block mb-3">
-            <div className="flex items-center justify-center gap-2 text-xs uppercase tracking-widest font-semibold text-blue-600 dark:text-blue-400 mb-2">
-              <span className="w-8 h-px bg-gradient-to-r from-transparent to-blue-600/70 dark:to-blue-400/70"></span>
-              <span>Personal Journey</span>
-              <span className="w-8 h-px bg-gradient-to-l from-transparent to-blue-600/70 dark:to-blue-400/70"></span>
-            </div>
+          <div className="inline-flex items-center gap-1.5 font-mono text-xs text-cyan-600 dark:text-cyan-400 mb-3 bg-cyan-600/5 dark:bg-cyan-400/5 px-3 py-1.5 rounded-full border border-cyan-600/10 dark:border-cyan-400/10">
+            <span className="opacity-50">~/</span>
+            <span className="uppercase tracking-widest">Personal Journey</span>
           </div>
-          <h2 className="heading text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 tracking-tight">About Me</h2>
+          <h2 className="heading text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+            <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">About Me</span>
+            <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
+          </h2>
           <p className="subheading text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">My background, experience, and what I do</p>
         </motion.div>
 
@@ -182,7 +177,7 @@ export default function About() {
             
             {/* Experience badges */}
             <motion.div 
-              className="absolute -bottom-6 -left-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-[0_15px_35px_rgba(59,130,246,0.15)] dark:shadow-[0_15px_35px_rgba(59,130,246,0.1)] p-4 flex items-center border border-gray-100/50 dark:border-gray-700/50"
+              className="absolute -bottom-4 -left-2 sm:-bottom-6 sm:-left-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-[0_15px_35px_rgba(59,130,246,0.15)] dark:shadow-[0_15px_35px_rgba(59,130,246,0.1)] p-3 sm:p-4 hidden xs:flex items-center border border-gray-100/50 dark:border-gray-700/50"
               whileHover={{ 
                 scale: 1.05, 
                 boxShadow: "0 20px 35px -5px rgba(59, 130, 246, 0.25)" 
@@ -194,7 +189,7 @@ export default function About() {
             </motion.div>
             
             <motion.div 
-              className="absolute -top-6 -right-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-[0_15px_35px_rgba(59,130,246,0.15)] dark:shadow-[0_15px_35px_rgba(59,130,246,0.1)] p-4 flex items-center border border-gray-100/50 dark:border-gray-700/50"
+              className="absolute -top-4 -right-2 sm:-top-6 sm:-right-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg shadow-[0_15px_35px_rgba(59,130,246,0.15)] dark:shadow-[0_15px_35px_rgba(59,130,246,0.1)] p-3 sm:p-4 hidden xs:flex items-center border border-gray-100/50 dark:border-gray-700/50"
               whileHover={{ 
                 scale: 1.05, 
                 boxShadow: "0 20px 35px -5px rgba(59, 130, 246, 0.25)" 
@@ -211,7 +206,7 @@ export default function About() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={fadeInUp}
-            className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-10 shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50"
+            className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50"
           >
             <div className="relative mb-8">
               <div className="absolute -top-2 left-0 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full"></div>
@@ -239,7 +234,7 @@ export default function About() {
                   </div>
                   <h4 className="font-bold text-xl text-gray-800 dark:text-white">Languages</h4>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 pl-11 leading-relaxed">Persian (Native)<br />English (Fluent)<br />Finnish (Limited)</p>
+                <p className="text-gray-600 dark:text-gray-300 pl-11 leading-relaxed">Persian (Native)<br />English (Fluent)<br />Finnish (Intermediate)</p>
               </div>
               
               <div className="bg-gray-50/80 dark:bg-gray-700/50 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700/30 hover:shadow-md hover:border-blue-100 dark:hover:border-blue-900/30 transition-all duration-300">
@@ -252,7 +247,7 @@ export default function About() {
                   </div>
                   <h4 className="font-bold text-xl text-gray-800 dark:text-white">Location</h4>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 pl-11 leading-relaxed">Finland<br />Available Remotely</p>
+                <p className="text-gray-600 dark:text-gray-300 pl-11 leading-relaxed">Finland<br />Available Remotely (UTC+2)</p> 
               </div>
             </div>
           </motion.div>

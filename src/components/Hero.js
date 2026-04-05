@@ -72,7 +72,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Responsive background images */}
       <div className="absolute inset-0">
         {/* Mobile and tablet background */}
@@ -228,7 +228,7 @@ export default function Hero() {
 
           {/* Description */}
           <motion.p
-            className="text-lg sm:text-xl text-cyan-300 max-w-2xl mx-auto mb-12 leading-relaxed cursor-pointer"
+            className="text-lg sm:text-xl text-cyan-300 max-w-2xl mx-auto mb-12 leading-relaxed"
             style={{
               textShadow: '0 0 8px rgba(0, 0, 0, 0.8), 1px 1px 3px rgba(0, 0, 0, 0.9)',
               background: 'rgba(0, 0, 0, 0.8)',
@@ -236,10 +236,8 @@ export default function Hero() {
               borderRadius: '0.5rem',
               backdropFilter: 'blur(5px)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
-              transformStyle: 'preserve-3d',
-              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
             }}
-
+            variants={fadeInUp}
           >
             Tech enthusiast and developer specializing in Android and web projects, committed to bringing creative visions to life. I develop modern and responsive websites with clean code and user-centric designs.
           </motion.p>
@@ -251,7 +249,7 @@ export default function Hero() {
           >
             <Link 
               href="#projects"
-              className="px-6 py-3 relative group overflow-hidden font-bold rounded-xl text-white transition-all duration-500 ease-out transform hover:scale-105"
+              className="px-8 py-3 min-w-[200px] text-center relative group overflow-hidden font-bold rounded-xl text-white transition-all duration-500 ease-out transform hover:scale-105"
               style={{
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
                 backgroundSize: '200% 200%',
@@ -310,7 +308,7 @@ export default function Hero() {
                   animation: 'shimmer 3s ease-in-out infinite'
                 }}
               />
-              <span className="relative z-10 flex items-center gap-2 font-black text-base tracking-wide">
+              <span className="relative z-10 flex items-center justify-center gap-2 font-black text-base tracking-wide">
                 <span>View My Work</span>
                 <span 
                   className="transform transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
@@ -326,7 +324,7 @@ export default function Hero() {
             </Link>
             <Link 
               href="#contact"
-              className="px-6 py-3 relative group overflow-hidden font-bold rounded-xl text-white transition-all duration-500 ease-out transform hover:scale-105"
+              className="px-8 py-3 min-w-[200px] text-center relative group overflow-hidden font-bold rounded-xl text-white transition-all duration-500 ease-out transform hover:scale-105"
               style={{
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
                 backgroundSize: '200% 200%',
@@ -388,7 +386,7 @@ export default function Hero() {
               />
               
               {/* Premium Text with Enhanced Typography */}
-              <span className="relative z-10 flex items-center gap-2 font-black text-base tracking-wide">
+              <span className="relative z-10 flex items-center justify-center gap-2 font-black text-base tracking-wide">
                 <span>Get In Touch</span>
                 
                 {/* Animated Arrow Icon */}
@@ -408,7 +406,7 @@ export default function Hero() {
 
           {/* Social Links */}
           <motion.div 
-            className="flex justify-center space-x-8 mt-16"
+            className="flex justify-center space-x-4 sm:space-x-8 mt-10 sm:mt-16"
             variants={fadeInUp}
             style={{
               transformStyle: 'preserve-3d'
@@ -419,7 +417,7 @@ export default function Hero() {
               href="https://github.com/Amirhadi9900" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="group relative w-16 h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden"
+              className="group relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden"
               style={{
                 background: 'linear-gradient(145deg, #1a1a1a, #2d2d2d)',
                 boxShadow: `
@@ -465,7 +463,7 @@ export default function Hero() {
               
               {/* GitHub SVG Icon */}
               <svg 
-                className="w-8 h-8 text-white relative z-10 transition-all duration-300 group-hover:scale-110" 
+                className="w-6 h-6 sm:w-8 sm:h-8 text-white relative z-10 transition-all duration-300 group-hover:scale-110" 
                 fill="currentColor" 
                 viewBox="0 0 24 24"
                 style={{
@@ -481,7 +479,7 @@ export default function Hero() {
               href="https://www.linkedin.com/in/amirhadi-borjian-yazdi-5108431a1" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="group relative w-16 h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden"
+              className="group relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden"
               style={{
                 background: 'linear-gradient(145deg, #0a66c2, #004182)',
                 boxShadow: `
@@ -527,7 +525,7 @@ export default function Hero() {
               
               {/* LinkedIn SVG Icon */}
               <svg 
-                className="w-8 h-8 text-white relative z-10 transition-all duration-300 group-hover:scale-110" 
+                className="w-6 h-6 sm:w-8 sm:h-8 text-white relative z-10 transition-all duration-300 group-hover:scale-110" 
                 fill="currentColor" 
                 viewBox="0 0 24 24"
                 style={{
@@ -541,7 +539,7 @@ export default function Hero() {
             {/* Email Icon */}
             <a 
               href="mailto:amirhadib79@gmail.com"
-              className="group relative w-16 h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden"
+              className="group relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden"
               style={{
                 background: 'linear-gradient(145deg, #ea4335, #c23321)',
                 boxShadow: `
@@ -587,7 +585,7 @@ export default function Hero() {
               
               {/* Email SVG Icon */}
               <svg 
-                className="w-8 h-8 text-white relative z-10 transition-all duration-300 group-hover:scale-110" 
+                className="w-6 h-6 sm:w-8 sm:h-8 text-white relative z-10 transition-all duration-300 group-hover:scale-110" 
                 fill="currentColor" 
                 viewBox="0 0 24 24"
                 style={{

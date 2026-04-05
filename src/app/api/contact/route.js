@@ -56,8 +56,36 @@ function hasHeaderInjection(str) {
   return /[\r\n]/.test(str);
 }
 
+const MAX_BODY_SIZE = 10_000;
+
+export async function GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+}
+
+export async function PUT() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+}
+
+export async function DELETE() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+}
+
+export async function PATCH() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+}
+
 export async function POST(request) {
   try {
+    const contentType = request.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      return NextResponse.json({ error: 'Content-Type must be application/json' }, { status: 415 });
+    }
+
+    const contentLength = request.headers.get('content-length');
+    if (contentLength && parseInt(contentLength, 10) > MAX_BODY_SIZE) {
+      return NextResponse.json({ error: 'Request body too large' }, { status: 413 });
+    }
+
     const forwarded = request.headers.get('x-forwarded-for');
     const ip = forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
 
@@ -70,9 +98,19 @@ export async function POST(request) {
 
     let body;
     try {
-      body = await request.json();
+      const rawText = await request.text();
+      if (rawText.length > MAX_BODY_SIZE) {
+        return NextResponse.json({ error: 'Request body too large' }, { status: 413 });
+      }
+      body = JSON.parse(rawText);
     } catch {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    }
+
+    const allowedFields = new Set(['name', 'email', 'subject', 'message', 'website']);
+    const bodyKeys = Object.keys(body);
+    if (bodyKeys.length > allowedFields.size || bodyKeys.some(k => !allowedFields.has(k))) {
+      return NextResponse.json({ error: 'Unexpected fields in request' }, { status: 400 });
     }
 
     const { name, email, subject, message, website } = body;

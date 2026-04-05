@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /*.json$
+
+Sitemap: https://my-portfolio-lime-three-67.vercel.app/sitemap.xml

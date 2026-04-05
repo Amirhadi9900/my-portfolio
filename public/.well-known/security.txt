@@ -1,0 +1,3 @@
+Contact: mailto:amirhadib79@gmail.com
+Preferred-Languages: en, fi
+Canonical: https://my-portfolio-lime-three-67.vercel.app/.well-known/security.txt

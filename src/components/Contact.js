@@ -218,7 +218,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="section py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
+    <section id="contact" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70"></div>
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl"></div>
@@ -226,26 +226,27 @@ export default function Contact() {
       
       <div className="container relative z-10">
         <motion.div 
-          className="max-w-3xl mx-auto text-center mb-20"
+          className="max-w-3xl mx-auto text-center mb-12 md:mb-20"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <div className="inline-block mb-3">
-            <div className="flex items-center justify-center gap-2 text-xs uppercase tracking-widest font-semibold text-blue-600 dark:text-blue-400 mb-2">
-              <span className="w-8 h-px bg-gradient-to-r from-transparent to-blue-600/70 dark:to-blue-400/70"></span>
-              <span>Connect With Me</span>
-              <span className="w-8 h-px bg-gradient-to-l from-transparent to-blue-600/70 dark:to-blue-400/70"></span>
-            </div>
+          <div className="inline-flex items-center gap-1.5 font-mono text-xs text-cyan-600 dark:text-cyan-400 mb-3 bg-cyan-600/5 dark:bg-cyan-400/5 px-3 py-1.5 rounded-full border border-cyan-600/10 dark:border-cyan-400/10">
+            <span className="opacity-50">~/</span>
+            <span className="uppercase tracking-widest">Connect With Me</span>
           </div>
-          <h2 className="heading text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 tracking-tight">Get In Touch</h2>
+          <h2 className="heading text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+            <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">Get In Touch</span>
+            <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
+          </h2>
           <p className="subheading text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Have a project in mind? Let's talk about it.</p>
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
           <motion.div
-            className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-10 shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50"
+            className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
@@ -442,11 +443,15 @@ export default function Contact() {
                   </button>
                   
                   {submitStatus === 'success' && (
-                    <div className="mt-6 p-4 bg-green-50/80 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg border border-green-100 dark:border-green-900/50 flex items-center">
-                      <svg className="w-5 h-5 mr-3 flex-shrink-0 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span>Your message has been sent to Amirhadi! He will get back to you soon.</span>
+                    <div className="mt-6 p-4 bg-[#0d1117] rounded-lg border border-green-500/20 font-mono text-sm">
+                      <div className="flex items-center gap-2 text-green-400">
+                        <span className="text-green-500">&#10003;</span>
+                        <span className="text-gray-500">~/contact $</span>
+                        <span>send --message</span>
+                      </div>
+                      <div className="mt-1 text-green-300/90 pl-5">
+                        Message delivered to Amirhadi. He will get back to you soon.
+                      </div>
                     </div>
                   )}
                   

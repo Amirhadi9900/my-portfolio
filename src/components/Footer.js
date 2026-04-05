@@ -20,7 +20,7 @@ export default function Footer() {
       </div>
       
       {/* Main Footer Content */}
-      <div className="container max-w-6xl mx-auto py-16 relative z-10">
+      <div className="container max-w-6xl mx-auto py-10 md:py-16 relative z-10">
         {/* Footer Header */}
         <motion.div 
           initial={{ opacity: 0 }}
@@ -80,25 +80,17 @@ export default function Footer() {
               <div>
                 <h4 className="text-sm uppercase text-gray-500 mb-3">Services</h4>
                 <ul className="space-y-2">
-                  <li>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center">
-                      <span className="w-0 group-hover:w-2 h-px bg-purple-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Android Dev
-                    </a>
+                  <li className="text-gray-400 flex items-center">
+                    <span className="w-2 h-px bg-purple-400/50 mr-2"></span>Android Dev
                   </li>
-                  <li>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center">
-                      <span className="w-0 group-hover:w-2 h-px bg-purple-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Web Dev
-                    </a>
+                  <li className="text-gray-400 flex items-center">
+                    <span className="w-2 h-px bg-purple-400/50 mr-2"></span>Web Dev
                   </li>
-                  <li>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center">
-                      <span className="w-0 group-hover:w-2 h-px bg-purple-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Firebase
-                    </a>
+                  <li className="text-gray-400 flex items-center">
+                    <span className="w-2 h-px bg-purple-400/50 mr-2"></span>Firebase
                   </li>
-                  <li>
-                    <a href="#" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center">
-                      <span className="w-0 group-hover:w-2 h-px bg-purple-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Responsive
-                    </a>
+                  <li className="text-gray-400 flex items-center">
+                    <span className="w-2 h-px bg-purple-400/50 mr-2"></span>Responsive
                   </li>
                 </ul>
               </div>

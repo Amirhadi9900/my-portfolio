@@ -72,7 +72,7 @@ export default function Skills() {
   };
 
   return (
-    <section id="skills" className="section py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
+    <section id="skills" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70"></div>
       <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl"></div>
@@ -80,20 +80,21 @@ export default function Skills() {
       
       <div className="container relative z-10">
         <motion.div 
-          className="max-w-3xl mx-auto text-center mb-20"
+          className="max-w-3xl mx-auto text-center mb-12 md:mb-20"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <div className="inline-block mb-3">
-            <div className="flex items-center justify-center gap-2 text-xs uppercase tracking-widest font-semibold text-blue-600 dark:text-blue-400 mb-2">
-              <span className="w-8 h-px bg-gradient-to-r from-transparent to-blue-600/70 dark:to-blue-400/70"></span>
-              <span>Technical Expertise</span>
-              <span className="w-8 h-px bg-gradient-to-l from-transparent to-blue-600/70 dark:to-blue-400/70"></span>
-            </div>
+          <div className="inline-flex items-center gap-1.5 font-mono text-xs text-cyan-600 dark:text-cyan-400 mb-3 bg-cyan-600/5 dark:bg-cyan-400/5 px-3 py-1.5 rounded-full border border-cyan-600/10 dark:border-cyan-400/10">
+            <span className="opacity-50">~/</span>
+            <span className="uppercase tracking-widest">Technical Expertise</span>
           </div>
-          <h2 className="heading text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 tracking-tight">My Skills</h2>
+          <h2 className="heading text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+            <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">My Skills</span>
+            <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
+          </h2>
           <p className="subheading text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Technologies I work with</p>
         </motion.div>
 
@@ -107,7 +108,7 @@ export default function Skills() {
           {SKILL_CATEGORIES.map((category, categoryIndex) => (
             <motion.div 
               key={categoryIndex}
-              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50 p-8 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(8,112,184,0.18)]"
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50 p-5 sm:p-6 md:p-8 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(8,112,184,0.18)]"
               variants={fadeInUp}
             >
               <div className="relative mb-8">
@@ -118,8 +119,8 @@ export default function Skills() {
                 {category.skills.map((skill, skillIndex) => (
                   <div key={skillIndex} className="group">
                     <div className="flex justify-between mb-2">
-                      <span className="font-medium text-gray-800 dark:text-white text-lg">{skill.name}</span>
-                      <span className="text-sm text-gray-600 dark:text-gray-300 bg-gray-100/80 dark:bg-gray-700/50 px-2 py-0.5 rounded-full">{skill.level}%</span>
+                      <span className="font-medium text-gray-800 dark:text-white text-sm sm:text-base md:text-lg">{skill.name}</span>
+                      <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400 bg-cyan-600/5 dark:bg-cyan-400/5 px-2 py-0.5 rounded border border-cyan-600/10 dark:border-cyan-400/10">{skill.level}%</span>
                     </div>
                     <div className="w-full bg-gray-200/70 dark:bg-gray-700/50 rounded-full h-2.5 p-0.5 backdrop-blur-sm">
                       <motion.div
@@ -140,7 +141,7 @@ export default function Skills() {
         </motion.div>
 
         <motion.div 
-          className="mt-20 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-10 shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50"
+          className="mt-12 md:mt-20 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
