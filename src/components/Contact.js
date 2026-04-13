@@ -129,8 +129,8 @@ export default function Contact() {
       <section id="contact" className="section">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="heading text-gray-800 dark:text-white text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
-            <p className="subheading text-gray-700 dark:text-gray-300">Have a project in mind? Let's talk about it.</p>
+            <h2 className="text-gray-800 dark:text-white text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
+            <p className="text-gray-700 dark:text-gray-300">Have a project in mind? Let's talk about it.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -236,12 +236,12 @@ export default function Contact() {
             <span className="opacity-50">~/</span>
             <span className="uppercase tracking-widest">Connect With Me</span>
           </div>
-          <h2 className="heading text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
             <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">Get In Touch</span>
             <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
           </h2>
-          <p className="subheading text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Have a project in mind? Let's talk about it.</p>
+          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Have a project in mind? Let's talk about it.</p>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
@@ -295,7 +295,7 @@ export default function Contact() {
                   href="https://github.com/Amirhadi9900" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100/80 dark:bg-gray-700/50 text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-all duration-300 hover:shadow-md hover:scale-110"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100/80 dark:bg-gray-700/50 text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-all duration-300 hover:shadow-md hover:scale-110 no-underline"
                 >
                   <span className="sr-only">GitHub</span>
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -306,7 +306,7 @@ export default function Contact() {
                   href="https://www.linkedin.com/in/amirhadi-borjian-yazdi-5108431a1" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100/80 dark:bg-gray-700/50 text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-all duration-300 hover:shadow-md hover:scale-110"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100/80 dark:bg-gray-700/50 text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-all duration-300 hover:shadow-md hover:scale-110 no-underline"
                 >
                   <span className="sr-only">LinkedIn</span>
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -315,7 +315,7 @@ export default function Contact() {
                 </a>
                 <a 
                   href="mailto:amirhadib79@gmail.com" 
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100/80 dark:bg-gray-700/50 text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-all duration-300 hover:shadow-md hover:scale-110"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100/80 dark:bg-gray-700/50 text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-all duration-300 hover:shadow-md hover:scale-110 no-underline"
                 >
                   <span className="sr-only">Email</span>
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -435,11 +435,7 @@ export default function Contact() {
                     disabled={isSubmitting}
                     className="w-full py-4 px-6 text-white font-medium rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-indigo-500 dark:hover:from-blue-600 dark:hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.25)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.35)] dark:shadow-[0_7px_25px_rgba(59,130,246,0.15)] dark:hover:shadow-[0_7px_35px_rgba(59,130,246,0.25)] disabled:opacity-70"
                   >
-                    {isSubmitting ? (
-                      isMounted ? "Sending..." : "Send Message"
-                    ) : (
-                      "Send Message"
-                    )}
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </button>
                   
                   {submitStatus === 'success' && (

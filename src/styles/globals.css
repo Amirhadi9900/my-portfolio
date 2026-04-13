@@ -13,10 +13,10 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight;
   }
-  
-  a {
-    @apply text-cyan-400 hover:text-cyan-300 transition-colors;
-  }
+}
+
+a, a:link, a:visited, a:hover, a:active {
+  text-decoration: none !important;
 }
 
 @layer components {
@@ -25,15 +25,7 @@
   }
   
   .section {
-    @apply py-16 md:py-24 relative;
-  }
-  
-  .heading {
-    @apply text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent;
-  }
-  
-  .subheading {
-    @apply text-xl text-slate-400 max-w-2xl mx-auto;
+    @apply relative;
   }
 }
 
@@ -117,15 +109,6 @@
   animation: pulse-border 2s infinite;
 }
 
-.nav-slide-down {
-  animation: nav-slide-down 0.3s forwards;
-}
-
-@keyframes nav-slide-down {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
 .logo-gradient {
   background: linear-gradient(90deg, #38bdf8, #818cf8);
   -webkit-background-clip: text;
@@ -155,23 +138,3 @@
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
 }
 
-/* Hero CTA button animations */
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 12px rgba(245, 87, 108, 0.25), 0 0 20px rgba(102, 126, 234, 0.2), 0 25px 50px rgba(0, 0, 0, 0.6);
-  }
-  50% {
-    box-shadow: 0 0 18px rgba(245, 87, 108, 0.35), 0 0 30px rgba(102, 126, 234, 0.3), 0 25px 50px rgba(0, 0, 0, 0.6);
-  }
-}

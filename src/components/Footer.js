@@ -56,22 +56,22 @@ export default function Footer() {
                 <h4 className="text-sm uppercase text-gray-500 mb-3">Quick Links</h4>
                 <ul className="space-y-2">
                   <li>
-                    <Link href="#about" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center">
+                    <Link href="#about" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
                       <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>About
                     </Link>
                   </li>
                   <li>
-                    <Link href="#projects" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center">
+                    <Link href="#projects" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
                       <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Projects
                     </Link>
                   </li>
                   <li>
-                    <Link href="#skills" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center">
+                    <Link href="#skills" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
                       <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Skills
                     </Link>
                   </li>
                   <li>
-                    <Link href="#contact" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center">
+                    <Link href="#contact" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
                       <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Contact
                     </Link>
                   </li>
@@ -135,7 +135,7 @@ export default function Footer() {
             </p>
             <div className="flex space-x-5">
               <a href="https://github.com/Amirhadi9900" target="_blank" rel="noopener noreferrer" 
-                className="group">
+                className="group no-underline">
                 <div className="p-3 rounded-lg bg-gray-800/80 group-hover:bg-gray-800 transition-all duration-300 transform-gpu group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
                   <span className="sr-only">GitHub</span>
                   <svg className="w-6 h-6 text-gray-400 group-hover:text-cyan-400 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -144,7 +144,7 @@ export default function Footer() {
                 </div>
               </a>
               <a href="https://www.linkedin.com/in/amirhadi-borjian-yazdi-5108431a1" target="_blank" rel="noopener noreferrer" 
-                className="group">
+                className="group no-underline">
                 <div className="p-3 rounded-lg bg-gray-800/80 group-hover:bg-gray-800 transition-all duration-300 transform-gpu group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]">
                   <span className="sr-only">LinkedIn</span>
                   <svg className="w-6 h-6 text-gray-400 group-hover:text-purple-400 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -152,7 +152,7 @@ export default function Footer() {
                   </svg>
                 </div>
               </a>
-              <a href="mailto:amirhadib79@gmail.com" className="group">
+              <a href="mailto:amirhadib79@gmail.com" className="group no-underline">
                 <div className="p-3 rounded-lg bg-gray-800/80 group-hover:bg-gray-800 transition-all duration-300 transform-gpu group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
                   <span className="sr-only">Email</span>
                   <svg className="w-6 h-6 text-gray-400 group-hover:text-cyan-400 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

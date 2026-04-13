@@ -92,7 +92,7 @@ export default function Projects() {
       <section id="projects" className="section py-16 md:py-28">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="heading text-gray-800 dark:text-white text-3xl md:text-4xl font-bold mb-4">My Projects</h2>
+            <h2 className="text-gray-800 dark:text-white text-3xl md:text-4xl font-bold mb-4">My Projects</h2>
             <p className="text-gray-600 dark:text-gray-400">Check out my recent work</p>
           </div>
         </div>
@@ -118,12 +118,12 @@ export default function Projects() {
             <span className="opacity-50">~/</span>
             <span className="uppercase tracking-widest">Portfolio Showcase</span>
           </div>
-          <h2 className="heading text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
             <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">My Projects</span>
             <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
           </h2>
-          <p className="subheading text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Check out my recent work</p>
+          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Check out my recent work</p>
         </motion.div>
 
         <div className="flex justify-center">
@@ -191,7 +191,7 @@ export default function Projects() {
                   <div className="flex justify-between items-center">
                     <a
                       href={project.link}
-                      className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-indigo-500 dark:hover:from-blue-600 dark:hover:to-indigo-600 text-white font-medium tracking-wide transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.25)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.35)]"
+                      className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-indigo-500 dark:hover:from-blue-600 dark:hover:to-indigo-600 text-white font-medium tracking-wide transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.25)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.35)] no-underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

@@ -63,7 +63,7 @@ export default function Header() {
       <div className="container flex items-center justify-between">
         <Link 
           href="/" 
-          className="relative group header-glow"
+          className="relative group header-glow no-underline"
         >
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -94,7 +94,7 @@ export default function Header() {
               <motion.div key={link.href} variants={itemVariants}>
                 <Link
                   href={link.href}
-                  className={`relative px-4 py-2 text-sm rounded-md transition-all duration-300 nav-link ${
+                  className={`relative px-4 py-2 text-sm rounded-md transition-all duration-300 nav-link no-underline ${
                     activeLink === link.href
                       ? 'active text-white font-medium' 
                       : 'text-blue-200 hover:text-white'
@@ -118,7 +118,7 @@ export default function Header() {
             <motion.div variants={itemVariants}>
               <Link
                 href="#contact"
-                className="ml-3 px-6 py-2 text-sm font-medium text-white gradient-btn rounded-full shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-0.5 pulse-border"
+                className="ml-3 px-6 py-2 text-sm font-medium text-white gradient-btn rounded-full shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-0.5 pulse-border no-underline"
               >
                 Get in Touch
               </Link>
@@ -158,7 +158,7 @@ export default function Header() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.nav 
-            className="container py-4 md:hidden nav-slide-down"
+            className="container py-4 md:hidden"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -174,7 +174,7 @@ export default function Header() {
                 <motion.div key={link.href} variants={itemVariants}>
                   <Link
                     href={link.href}
-                    className={`block px-4 py-2 rounded-lg transition-colors nav-link ${
+                    className={`block px-4 py-2 rounded-lg transition-colors nav-link no-underline ${
                       activeLink === link.href
                         ? 'active text-white font-medium bg-blue-700/40' 
                         : 'text-blue-200 hover:text-white hover:bg-blue-700/20'
@@ -191,7 +191,7 @@ export default function Header() {
               <motion.div variants={itemVariants}>
                 <Link
                   href="#contact"
-                  className="block px-5 py-3 text-center text-white font-medium gradient-btn rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                  className="block px-5 py-3 text-center text-white font-medium gradient-btn rounded-lg shadow-md hover:shadow-lg transition-all duration-300 no-underline"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Get in Touch

@@ -36,6 +36,9 @@ const SKILL_CATEGORIES = [
       { name: "Google Cloud / Gmail API", level: 70 },
       { name: "OAuth2", level: 70 },
       { name: "REST APIs", level: 80 },
+      { name: "Docker", level: 75 },
+      { name: "MongoDB", level: 75 },
+      { name: "Kubernetes", level: 75 },
     ]
   }
 ];
@@ -90,12 +93,12 @@ export default function Skills() {
             <span className="opacity-50">~/</span>
             <span className="uppercase tracking-widest">Technical Expertise</span>
           </div>
-          <h2 className="heading text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
             <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">My Skills</span>
             <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
           </h2>
-          <p className="subheading text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Technologies I work with</p>
+          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Technologies I work with</p>
         </motion.div>
 
         <motion.div 

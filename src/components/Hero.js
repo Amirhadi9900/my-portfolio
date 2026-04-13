@@ -191,7 +191,7 @@ export default function Hero() {
             }}
           >
             <span 
-              className="text-rose-400 font-bold cursor-pointer inline-block"
+              className="text-blue-400 font-bold cursor-pointer inline-block"
               style={{
                 textShadow: '0 0 10px rgba(59, 130, 246, 0.4), 0 0 15px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)',
                 transformStyle: 'preserve-3d',
@@ -200,8 +200,8 @@ export default function Hero() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateZ(15px) rotateX(-4deg) rotateY(2deg) scale(1.15)';
-                e.currentTarget.style.textShadow = '0 0 20px rgba(244, 63, 94, 0.8), 0 0 25px rgba(0, 0, 0, 1), 2px 2px 6px rgba(0, 0, 0, 1)';
-                e.currentTarget.style.filter = 'drop-shadow(0 0 15px rgba(244, 63, 94, 0.6)) drop-shadow(0 6px 15px rgba(0, 0, 0, 0.7))';
+                e.currentTarget.style.textShadow = '0 0 20px rgba(59, 130, 246, 0.8), 0 0 25px rgba(0, 0, 0, 1), 2px 2px 6px rgba(0, 0, 0, 1)';
+                e.currentTarget.style.filter = 'drop-shadow(0 0 15px rgba(59, 130, 246, 0.6)) drop-shadow(0 6px 15px rgba(0, 0, 0, 0.7))';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateZ(0px) rotateX(0deg) rotateY(0deg) scale(1)';
@@ -249,158 +249,21 @@ export default function Hero() {
           >
             <Link 
               href="#projects"
-              className="px-8 py-3 min-w-[200px] text-center relative group overflow-hidden font-bold rounded-xl text-white transition-all duration-500 ease-out transform hover:scale-105"
-              style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
-                backgroundSize: '200% 200%',
-                animation: 'gradientShift 4s ease infinite',
-                textShadow: '0 0 20px rgba(0, 0, 0, 0.8), 2px 2px 8px rgba(0, 0, 0, 1)',
-                boxShadow: `
-                  0 0 8px rgba(102, 126, 234, 0.2),
-                  0 0 15px rgba(245, 87, 108, 0.15),
-                  0 15px 35px rgba(0, 0, 0, 0.4),
-                  inset 0 2px 0 rgba(255, 255, 255, 0.3),
-                  inset 0 -2px 0 rgba(0, 0, 0, 0.3)
-                `,
-                transformStyle: 'preserve-3d',
-                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                position: 'relative'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateZ(35px) rotateX(-10deg) rotateY(-5deg) scale(1.08)';
-                e.currentTarget.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #0e2954 75%, #1a1a2e 100%)';
-                e.currentTarget.style.backgroundSize = '300% 300%';
-                e.currentTarget.style.textShadow = '0 0 30px rgba(0, 0, 0, 1), 3px 3px 10px rgba(0, 0, 0, 1), 0 0 20px rgba(255, 255, 255, 0.8)';
-                e.currentTarget.style.boxShadow = `
-                  0 0 10px rgba(245, 87, 108, 0.25),
-                  0 0 10px rgba(102, 126, 234, 0.2),
-                  0 15px 35px rgba(0, 0, 0, 0.6)
-                `;
-                e.currentTarget.style.filter = `
-                  drop-shadow(0 20px 40px rgba(245, 87, 108, 0.15))
-                  drop-shadow(0 0 12px rgba(102, 126, 234, 0.2))
-                  brightness(1.03)
-                  saturate(1.05)
-                `;
-                e.currentTarget.style.animation = 'pulseGlow 2s ease-in-out infinite';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateZ(0px) rotateX(0deg) rotateY(0deg) scale(1)';
-                e.currentTarget.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)';
-                e.currentTarget.style.backgroundSize = '200% 200%';
-                e.currentTarget.style.textShadow = '0 0 20px rgba(0, 0, 0, 0.8), 2px 2px 8px rgba(0, 0, 0, 1)';
-                e.currentTarget.style.boxShadow = `
-                  0 0 8px rgba(102, 126, 234, 0.2),
-                  0 0 15px rgba(245, 87, 108, 0.15),
-                  0 15px 35px rgba(0, 0, 0, 0.4),
-                  inset 0 2px 0 rgba(255, 255, 255, 0.3),
-                  inset 0 -2px 0 rgba(0, 0, 0, 0.3)
-                `;
-                e.currentTarget.style.filter = 'none';
-                e.currentTarget.style.animation = 'gradientShift 4s ease infinite';
-              }}
+              className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 min-w-[200px] rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium tracking-wide transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.35)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.5)] hover:scale-105 no-underline"
             >
-              <div 
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  background: 'linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%)',
-                  backgroundSize: '200% 200%',
-                  animation: 'shimmer 3s ease-in-out infinite'
-                }}
-              />
-              <span className="relative z-10 flex items-center justify-center gap-2 font-black text-base tracking-wide">
-                <span>View My Work</span>
-                <span 
-                  className="transform transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
-                  style={{
-                    filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.8))'
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                  </svg>
-                </span>
-              </span>
+              <span>View My Work</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
             </Link>
             <Link 
               href="#contact"
-              className="px-8 py-3 min-w-[200px] text-center relative group overflow-hidden font-bold rounded-xl text-white transition-all duration-500 ease-out transform hover:scale-105"
-              style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
-                backgroundSize: '200% 200%',
-                animation: 'gradientShift 4s ease infinite',
-                textShadow: '0 0 20px rgba(0, 0, 0, 0.8), 2px 2px 8px rgba(0, 0, 0, 1)',
-                boxShadow: `
-                  0 0 8px rgba(102, 126, 234, 0.2),
-                  0 0 15px rgba(245, 87, 108, 0.15),
-                  0 15px 35px rgba(0, 0, 0, 0.4),
-                  inset 0 2px 0 rgba(255, 255, 255, 0.3),
-                  inset 0 -2px 0 rgba(0, 0, 0, 0.3)
-                `,
-                transformStyle: 'preserve-3d',
-                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                position: 'relative'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateZ(35px) rotateX(-10deg) rotateY(-5deg) scale(1.08)';
-                e.currentTarget.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #0e2954 75%, #1a1a2e 100%)';
-                e.currentTarget.style.backgroundSize = '300% 300%';
-                e.currentTarget.style.textShadow = '0 0 30px rgba(0, 0, 0, 1), 3px 3px 10px rgba(0, 0, 0, 1), 0 0 20px rgba(255, 255, 255, 0.8)';
-                e.currentTarget.style.boxShadow = `
-                  0 0 12px rgba(245, 87, 108, 0.25),
-                  0 0 20px rgba(102, 126, 234, 0.2),
-                  0 25px 50px rgba(0, 0, 0, 0.6)
-                `;
-                e.currentTarget.style.filter = `
-                  drop-shadow(0 20px 40px rgba(245, 87, 108, 0.15))
-                  drop-shadow(0 0 12px rgba(102, 126, 234, 0.2))
-                  brightness(1.03)
-                  saturate(1.05)
-                `;
-                e.currentTarget.style.animation = 'pulseGlow 2s ease-in-out infinite';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateZ(0px) rotateX(0deg) rotateY(0deg) scale(1)';
-                e.currentTarget.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)';
-                e.currentTarget.style.backgroundSize = '200% 200%';
-                e.currentTarget.style.textShadow = '0 0 20px rgba(0, 0, 0, 0.8), 2px 2px 8px rgba(0, 0, 0, 1)';
-                e.currentTarget.style.boxShadow = `
-                  0 0 8px rgba(102, 126, 234, 0.2),
-                  0 0 15px rgba(245, 87, 108, 0.15),
-                  0 15px 35px rgba(0, 0, 0, 0.4),
-                  inset 0 2px 0 rgba(255, 255, 255, 0.3),
-                  inset 0 -2px 0 rgba(0, 0, 0, 0.3)
-                `;
-                e.currentTarget.style.filter = 'none';
-                e.currentTarget.style.animation = 'gradientShift 4s ease infinite';
-              }}
+              className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 min-w-[200px] rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium tracking-wide transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.35)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.5)] hover:scale-105 no-underline"
             >
-              {/* Animated Background Overlay */}
-              <div 
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  background: 'linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%)',
-                  backgroundSize: '200% 200%',
-                  animation: 'shimmer 3s ease-in-out infinite'
-                }}
-              />
-              
-              {/* Premium Text with Enhanced Typography */}
-              <span className="relative z-10 flex items-center justify-center gap-2 font-black text-base tracking-wide">
-                <span>Get In Touch</span>
-                
-                {/* Animated Arrow Icon */}
-                <span 
-                  className="transform transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
-                  style={{
-                    filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.8))'
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                  </svg>
-                </span>
-              </span>
+              <span>Get In Touch</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
             </Link>
           </motion.div>
 
@@ -417,7 +280,7 @@ export default function Hero() {
               href="https://github.com/Amirhadi9900" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="group relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden"
+              className="group relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden no-underline"
               style={{
                 background: 'linear-gradient(145deg, #1a1a1a, #2d2d2d)',
                 boxShadow: `
@@ -479,7 +342,7 @@ export default function Hero() {
               href="https://www.linkedin.com/in/amirhadi-borjian-yazdi-5108431a1" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="group relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden"
+              className="group relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden no-underline"
               style={{
                 background: 'linear-gradient(145deg, #0a66c2, #004182)',
                 boxShadow: `
@@ -539,7 +402,7 @@ export default function Hero() {
             {/* Email Icon */}
             <a 
               href="mailto:amirhadib79@gmail.com"
-              className="group relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden"
+              className="group relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl transition-all duration-500 ease-out overflow-hidden no-underline"
               style={{
                 background: 'linear-gradient(145deg, #ea4335, #c23321)',
                 boxShadow: `
