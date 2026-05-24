@@ -1,88 +1,141 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import SkillIcon from './SkillIcon';
+import FlagIcon from './FlagIcon';
 
 const SKILL_CATEGORIES = [
   {
-    name: "Mobile Development",
+    name: 'Mobile Development',
     skills: [
-      { name: "Kotlin", level: 80 },
-      { name: "Jetpack Compose", level: 75 },
-      { name: "MVVM Architecture", level: 70 },
-      { name: "Hilt Dependency Injection", level: 75 },
-      { name: "Android Studio", level: 85 },
-      { name: "Gradle (KTS)", level: 85 },
-      { name: "Logcat Debugging", level: 80 },
-    ]
+      'Kotlin',
+      'Jetpack Compose',
+      'React Native',
+      'Gradle (KTS)',
+      'CI/CD Pipelines',
+    ],
   },
   {
-    name: "Web Development",
+    name: 'Web Development',
     skills: [
-      { name: "Next.js", level: 85 },
-      { name: "React", level: 85 },
-      { name: "TypeScript", level: 85 },
-      { name: "Tailwind CSS", level: 90 },
-      { name: "Node.js", level: 80 },
-      { name: "JavaScript", level: 85 },
-      { name: "HTML/CSS", level: 95 },
-    ]
+      'Next.js',
+      'React Native',
+      'TypeScript',
+      'Tailwind CSS',
+      'Node.js',
+      'JavaScript',
+      'HTML/CSS',
+      'Python',
+      'Git & GitHub',
+      'VS Code',
+    ],
   },
   {
-    name: "Backend & Cloud",
+    name: 'Backend',
     skills: [
-      { name: "Firebase (Firestore/Auth/Storage)", level: 80 },
-      { name: "Firestore Security Rules", level: 75 },
-      { name: "Nodemailer", level: 80 },
-      { name: "Google Cloud / Gmail API", level: 70 },
-      { name: "OAuth2", level: 70 },
-      { name: "REST APIs", level: 80 },
-      { name: "Docker", level: 75 },
-      { name: "MongoDB", level: 75 },
-      { name: "Kubernetes", level: 75 },
-    ]
-  }
+      'OAuth2',
+      'REST APIs',
+      'SQL',
+      'PostgreSQL',
+      'MySQL',
+      'GraphQL',
+    ],
+  },
+  {
+    name: 'Cloud Infrastructure',
+    skills: [
+      'Firebase',
+      'Google Cloud',
+      'Docker',
+      'MongoDB',
+      'Kubernetes',
+      'AWS',
+      'Vercel',
+    ],
+  },
+  {
+    name: 'Network Security',
+    skills: [
+      'Cisco Networking',
+      'Intrusion Detection',
+      'Wireshark',
+      'Web Application Security',
+      'Penetration Testing',
+    ],
+  },
+  {
+    name: 'Languages',
+    skills: [
+      { name: 'Persian (Native)', flagSrc: '/flags/iran-lion-sun.svg' },
+      { name: 'English (Fluent)', flagCode: 'gb' },
+      { name: 'Finnish (Intermediate)', flagCode: 'fi' },
+    ],
+  },
 ];
 
-const ADDITIONAL_SKILLS = [
-  "Vercel",
-  "Git & GitHub",
-  "VS Code",
-  "LLMs (Claude Code, Cursor)",
-  "UI/UX Optimization",
-  "GUI Design",
-  "Animations (AOS, Text Scramble)",
-  "Responsive UI",
-  "Cybersecurity & Nmap",
-  "PowerShell & Terminal",
-  "VMware Setup & Config",
-  "XML & JSON",
-];
+function SkillChip({ skill }) {
+  const isLanguage = typeof skill === 'object';
+
+  return (
+    <div className="skill-chip group">
+      <div className="skill-chip-icon skill-icon-sparkle">
+        {isLanguage ? (
+          <FlagIcon
+            code={skill.flagCode}
+            src={skill.flagSrc}
+            className="w-8 h-6 relative z-[1]"
+          />
+        ) : (
+          <span className="relative z-[1] flex items-center justify-center">
+            <SkillIcon name={skill} />
+          </span>
+        )}
+      </div>
+      <span className="skill-chip-label">{isLanguage ? skill.name : skill}</span>
+    </div>
+  );
+}
+
+function CategoryCard({ category, variants }) {
+  return (
+    <motion.div className="skill-category-card" variants={variants}>
+      <div className="relative mb-6">
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full" />
+        <h3 className="text-xl sm:text-2xl font-bold text-center text-gray-800 dark:text-white tracking-tight pt-2">
+          {category.name}
+        </h3>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {category.skills.map((skill) => (
+          <SkillChip key={typeof skill === 'object' ? skill.name : skill} skill={skill} />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Skills() {
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
+      transition: { staggerChildren: 0.08 },
+    },
   };
 
   return (
     <section id="skills" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70"></div>
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 dark:bg-purple-700/10 rounded-full blur-3xl"></div>
-      
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70" />
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl" />
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 dark:bg-purple-700/10 rounded-full blur-3xl" />
+
       <div className="container relative z-10">
-        <motion.div 
+        <motion.div
           className="max-w-3xl mx-auto text-center mb-12 md:mb-20"
           initial="hidden"
           whileInView="visible"
@@ -98,81 +151,23 @@ export default function Skills() {
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">My Skills</span>
             <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Technologies I work with</p>
+          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">
+            Technologies and tools I work with
+          </p>
         </motion.div>
 
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.05 }}
         >
-          {SKILL_CATEGORIES.map((category, categoryIndex) => (
-            <motion.div 
-              key={categoryIndex}
-              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50 p-5 sm:p-6 md:p-8 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_25px_60px_rgba(8,112,184,0.18)]"
-              variants={fadeInUp}
-            >
-              <div className="relative mb-8">
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full"></div>
-                <h3 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white tracking-tight">{category.name}</h3>
-              </div>
-              <div className="space-y-6">
-                {category.skills.map((skill, skillIndex) => (
-                  <div key={skillIndex} className="group">
-                    <div className="flex justify-between mb-2">
-                      <span className="font-medium text-gray-800 dark:text-white text-sm sm:text-base md:text-lg">{skill.name}</span>
-                      <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400 bg-cyan-600/5 dark:bg-cyan-400/5 px-2 py-0.5 rounded border border-cyan-600/10 dark:border-cyan-400/10">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200/70 dark:bg-gray-700/50 rounded-full h-2.5 p-0.5 backdrop-blur-sm">
-                      <motion.div
-                        className="h-1.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 relative group-hover:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        transition={{ duration: 1, delay: 0.3 }}
-                        viewport={{ once: true }}
-                      >
-                        <span className="absolute -right-1 -top-1 w-3 h-3 rounded-full bg-white dark:bg-gray-800 border-2 border-blue-600 dark:border-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                      </motion.div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+          {SKILL_CATEGORIES.map((category) => (
+            <CategoryCard key={category.name} category={category} variants={fadeInUp} />
           ))}
-        </motion.div>
-
-        <motion.div 
-          className="mt-12 md:mt-20 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeInUp}
-        >
-          <div className="relative mb-10">
-            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-blue-600/70 dark:via-blue-400/70 to-transparent rounded-full"></div>
-            <h3 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white tracking-tight">Additional Skills & Expertise</h3>
-            <div className="w-16 h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent mx-auto"></div>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {ADDITIONAL_SKILLS.map((skill, index) => (
-              <div 
-                key={index} 
-                className="flex items-center p-4 bg-gray-50/80 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700/30 hover:border-blue-100 dark:hover:border-blue-900/30 hover:shadow-md transition-all duration-300"
-              >
-                <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 mr-3">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <span className="text-gray-800 dark:text-gray-200 font-medium">{skill}</span>
-              </div>
-            ))}
-          </div>
         </motion.div>
       </div>
     </section>
   );
-} 
+}

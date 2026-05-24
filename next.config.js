@@ -1,3 +1,5 @@
+const path = require('path');
+
 // Node.js 22+ exposes a broken localStorage global during SSR; provide a
 // working in-memory shim so libraries that feature-detect it don't crash.
 if (typeof window === 'undefined' && typeof globalThis.localStorage !== 'undefined' && typeof globalThis.localStorage.getItem !== 'function') {
@@ -16,11 +18,18 @@ if (typeof window === 'undefined' && typeof globalThis.localStorage !== 'undefin
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
+  turbopack: {
+    root: path.join(__dirname),
+  },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.simpleicons.org',
       },
     ],
   },
@@ -52,8 +61,8 @@ const nextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https://images.unsplash.com",
-              "font-src 'self' data:",
+              "img-src 'self' data: blob: https://images.unsplash.com https://cdn.simpleicons.org https://flagcdn.com",
+              "font-src 'self' data: https://fonts.gstatic.com",
               "connect-src 'self'",
               "frame-ancestors 'none'",
               "base-uri 'self'",

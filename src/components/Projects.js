@@ -55,7 +55,7 @@ function CodeWindow() {
           <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
         </div>
         <span className="ml-3 text-gray-500 text-xs font-mono">page.tsx</span>
-        <span className="ml-auto text-gray-600 text-[10px] font-mono">TypeScript React</span>
+        <span className="ml-auto text-gray-600 text-[10px] font-mono">TypeScript · React Native</span>
       </div>
       <div className="p-4 overflow-auto flex-1">
         <div className="flex text-[13px] leading-[1.75] font-mono">
@@ -191,14 +191,10 @@ export default function Projects() {
                   <div className="flex justify-between items-center">
                     <a
                       href={project.link}
-                      className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-indigo-500 dark:hover:from-blue-600 dark:hover:to-indigo-600 text-white font-medium tracking-wide transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.25)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.35)] no-underline"
+                      className="btn-primary min-w-[200px] group"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                      </span>
                       <span>View Live</span>
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -209,7 +205,7 @@ export default function Projects() {
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
-                      <span>2025</span>
+                      <span>2026</span>
                     </div>
                   </div>
                 </div>

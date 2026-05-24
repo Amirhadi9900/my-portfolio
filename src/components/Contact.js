@@ -166,7 +166,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 dark:text-white">Location</h4>
-                    <p className="text-gray-700 dark:text-gray-300">Finland</p>
+                    <p className="text-gray-700 dark:text-gray-300">Available remotely worldwide and onsite in Finland</p>
                   </div>
                 </div>
               </div>
@@ -283,7 +283,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-800 dark:text-white text-lg mb-1">Location</h4>
-                  <p className="text-gray-600 dark:text-gray-300">Finland</p>
+                  <p className="text-gray-600 dark:text-gray-300">Available remotely worldwide and onsite in Finland</p>
                 </div>
               </div>
             </div>
@@ -433,7 +433,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 px-6 text-white font-medium rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-indigo-500 dark:hover:from-blue-600 dark:hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.25)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.35)] dark:shadow-[0_7px_25px_rgba(59,130,246,0.15)] dark:hover:shadow-[0_7px_35px_rgba(59,130,246,0.25)] disabled:opacity-70"
+                    className="btn-primary-block"
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
                   </button>

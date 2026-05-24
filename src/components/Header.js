@@ -116,10 +116,7 @@ export default function Header() {
             ))}
 
             <motion.div variants={itemVariants}>
-              <Link
-                href="#contact"
-                className="ml-3 px-6 py-2 text-sm font-medium text-white gradient-btn rounded-full shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-0.5 pulse-border no-underline"
-              >
+              <Link href="#contact" className="ml-3 btn-primary-sm pulse-border">
                 Get in Touch
               </Link>
             </motion.div>
@@ -191,7 +188,7 @@ export default function Header() {
               <motion.div variants={itemVariants}>
                 <Link
                   href="#contact"
-                  className="block px-5 py-3 text-center text-white font-medium gradient-btn rounded-lg shadow-md hover:shadow-lg transition-all duration-300 no-underline"
+                  className="block btn-primary-sm w-full text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Get in Touch
