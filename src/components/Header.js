@@ -70,10 +70,10 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <span className="text-2xl font-bold tracking-tight text-white mr-2 transition-all duration-300 group-hover:text-blue-300">
+            <span className="font-heading text-2xl font-bold tracking-tight text-white mr-2 transition-all duration-300 group-hover:text-blue-300">
               Amirhadi
             </span>
-            <span className="text-2xl font-light logo-gradient transition-all duration-300">
+            <span className="font-heading text-2xl font-light logo-gradient transition-all duration-300">
               Borjian
             </span>
           </motion.div>

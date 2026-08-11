@@ -101,7 +101,7 @@ function CategoryCard({ category, variants }) {
     <motion.div className="skill-category-card" variants={variants}>
       <div className="relative mb-6">
         <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full" />
-        <h3 className="text-xl sm:text-2xl font-bold text-center text-gray-800 dark:text-white tracking-tight pt-2">
+        <h3 className="font-subheading text-xl sm:text-2xl font-semibold text-center text-gray-800 dark:text-white tracking-tight pt-2">
           {category.name}
         </h3>
       </div>
@@ -146,10 +146,8 @@ export default function Skills() {
             <span className="opacity-50">~/</span>
             <span className="uppercase tracking-widest">Technical Expertise</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
-            <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">My Skills</span>
-            <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
+          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
+            My Skills
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">
             Technologies and tools I work with

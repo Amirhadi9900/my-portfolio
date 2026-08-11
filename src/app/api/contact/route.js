@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import {
+  CONTACT_LIMITS,
+  escapeHtml,
+  formatMessageForHtmlEmail,
+  parseContactRequest,
+} from '../../../lib/contact-security';
+import { verifyTurnstileToken } from '../../../lib/turnstile';
 
-const MAX_NAME = 100;
-const MAX_EMAIL = 254;
-const MAX_SUBJECT = 200;
-const MAX_MESSAGE = 5000;
 const RATE_WINDOW_MS = 60_000;
 const MAX_REQUESTS = 3;
 
@@ -33,31 +36,6 @@ if (typeof globalThis.__rateLimitCleanup === 'undefined') {
   }, RATE_WINDOW_MS * 2);
 }
 
-function escapeHtml(str) {
-  if (typeof str !== 'string') return '';
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .trim();
-}
-
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= MAX_EMAIL;
-}
-
-function isValidName(name) {
-  return /^[\p{L}\p{M}\s'.,-]+$/u.test(name);
-}
-
-function hasHeaderInjection(str) {
-  return /[\r\n]/.test(str);
-}
-
-const MAX_BODY_SIZE = 10_000;
-
 export async function GET() {
   return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }
@@ -82,7 +60,7 @@ export async function POST(request) {
     }
 
     const contentLength = request.headers.get('content-length');
-    if (contentLength && parseInt(contentLength, 10) > MAX_BODY_SIZE) {
+    if (contentLength && parseInt(contentLength, 10) > CONTACT_LIMITS.body) {
       return NextResponse.json({ error: 'Request body too large' }, { status: 413 });
     }
 
@@ -99,7 +77,7 @@ export async function POST(request) {
     let body;
     try {
       const rawText = await request.text();
-      if (rawText.length > MAX_BODY_SIZE) {
+      if (rawText.length > CONTACT_LIMITS.body) {
         return NextResponse.json({ error: 'Request body too large' }, { status: 413 });
       }
       body = JSON.parse(rawText);
@@ -107,68 +85,37 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    const allowedFields = new Set(['name', 'email', 'subject', 'message', 'website']);
-    const bodyKeys = Object.keys(body);
-    if (bodyKeys.length > allowedFields.size || bodyKeys.some(k => !allowedFields.has(k))) {
-      return NextResponse.json({ error: 'Unexpected fields in request' }, { status: 400 });
-    }
-
-    const { name, email, subject, message, website } = body;
-
-    if (website) {
+    const captcha = await verifyTurnstileToken(body.turnstileToken, ip);
+    if (!captcha.ok) {
       return NextResponse.json(
-        { success: true, message: 'Your message has been sent successfully!' },
-        { status: 200 }
+        { error: captcha.error, code: captcha.code },
+        { status: 403 }
       );
     }
 
-    if (!name || !email || !subject || !message) {
-      return NextResponse.json({ error: 'All fields are required.' }, { status: 400 });
-    }
+    const parsed = parseContactRequest(body);
 
-    if (
-      typeof name !== 'string' ||
-      typeof email !== 'string' ||
-      typeof subject !== 'string' ||
-      typeof message !== 'string'
-    ) {
-      return NextResponse.json({ error: 'Invalid input types' }, { status: 400 });
-    }
+    if (!parsed.ok) {
+      if (parsed.honeypot) {
+        return NextResponse.json(
+          { success: true, message: 'Your message has been sent successfully!' },
+          { status: 200 }
+        );
+      }
 
-    if (
-      name.length > MAX_NAME ||
-      email.length > MAX_EMAIL ||
-      subject.length > MAX_SUBJECT ||
-      message.length > MAX_MESSAGE
-    ) {
       return NextResponse.json(
-        { error: 'Input exceeds maximum allowed length' },
-        { status: 400 }
+        { error: parsed.error, ...(parsed.field ? { field: parsed.field } : {}) },
+        { status: parsed.status }
       );
     }
 
-    if (!isValidName(name)) {
-      return NextResponse.json(
-        { error: 'Name can only contain letters, spaces, hyphens, and apostrophes', field: 'name' },
-        { status: 400 }
-      );
-    }
-
-    if (!isValidEmail(email)) {
-      return NextResponse.json(
-        { error: 'Please enter a valid email address', field: 'email' },
-        { status: 400 }
-      );
-    }
-
-    if (hasHeaderInjection(name) || hasHeaderInjection(email) || hasHeaderInjection(subject)) {
-      return NextResponse.json({ error: 'Invalid characters detected' }, { status: 400 });
-    }
+    const { name, email, subject, message } = parsed.data;
 
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
     const safeSubject = escapeHtml(subject);
-    const safeMessage = escapeHtml(message);
+    const safeMessageHtml = formatMessageForHtmlEmail(message);
+    const safeMessageText = message.replace(/\r\n/g, '\n');
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -182,7 +129,17 @@ export async function POST(request) {
       from: process.env.EMAIL_USER,
       to: 'amirhadib79@gmail.com',
       replyTo: email,
-      subject: `Portfolio Contact: ${safeSubject}`,
+      subject: `Portfolio Contact: ${subject}`,
+      text: [
+        'New message from your portfolio',
+        '',
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `Subject: ${subject}`,
+        '',
+        'Message:',
+        safeMessageText,
+      ].join('\n'),
       html: `
         <h2>New message from your portfolio</h2>
         <p><strong>Name:</strong> ${safeName}</p>
@@ -190,7 +147,7 @@ export async function POST(request) {
         <p><strong>Subject:</strong> ${safeSubject}</p>
         <hr/>
         <h3>Message:</h3>
-        <p>${safeMessage.replace(/\n/g, '<br>')}</p>
+        <p>${safeMessageHtml}</p>
       `,
     };
 

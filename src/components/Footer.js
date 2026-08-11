@@ -29,7 +29,7 @@ export default function Footer() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 inline-block">
+          <h2 className="font-heading text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 inline-block">
             Amirhadi Borjian
           </h2>
           <p className="text-gray-400 mt-2 max-w-xl mx-auto">
@@ -47,7 +47,7 @@ export default function Footer() {
         >
           {/* Quick Links Section */}
           <div className="transform-gpu hover:translate-z-2 transition-all duration-300">
-            <h3 className="text-lg font-semibold mb-5 relative inline-block">
+            <h3 className="font-subheading text-lg font-semibold mb-5 relative inline-block">
               <span className="relative z-10">Navigation</span>
               <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
             </h3>
@@ -99,7 +99,7 @@ export default function Footer() {
           
           {/* Contact Section */}
           <div className="transform-gpu hover:translate-z-2 transition-all duration-300">
-            <h3 className="text-lg font-semibold mb-5 relative inline-block">
+            <h3 className="font-subheading text-lg font-semibold mb-5 relative inline-block">
               <span className="relative z-10">Contact</span>
               <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
             </h3>
@@ -126,7 +126,7 @@ export default function Footer() {
           
           {/* Connect Section */}
           <div className="transform-gpu hover:translate-z-2 transition-all duration-300">
-            <h3 className="text-lg font-semibold mb-5 relative inline-block">
+            <h3 className="font-subheading text-lg font-semibold mb-5 relative inline-block">
               <span className="relative z-10">Connect</span>
               <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
             </h3>

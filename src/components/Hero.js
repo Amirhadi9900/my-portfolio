@@ -107,7 +107,7 @@ export default function Hero() {
         >
           {/* Main Heading */}
           <h1
-            className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6"
+            className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6"
             style={{
               textShadow: '0 0 15px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(0, 0, 0, 0.9)',
               WebkitTextStroke: '1px rgba(0, 0, 0, 0.6)',
@@ -232,17 +232,11 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             variants={fadeInUp}
           >
-            <Link href="#projects" className="btn-primary min-w-[200px] group">
-              <span>View My Work</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
+            <Link href="#projects" className="btn-primary min-w-[200px]">
+              View My Work
             </Link>
-            <Link href="#contact" className="btn-primary min-w-[200px] group">
-              <span>Get In Touch</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
+            <Link href="#contact" className="btn-primary min-w-[200px]">
+              Get In Touch
             </Link>
           </motion.div>
         </motion.div>

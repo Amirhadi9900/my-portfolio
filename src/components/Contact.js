@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { CONTACT_LIMITS, validateContactField } from '../lib/contact-security';
+import TurnstileField from './TurnstileField';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -17,39 +19,33 @@ export default function Contact() {
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const [isMounted, setIsMounted] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState(null);
+  const [turnstileWidgetKey, setTurnstileWidgetKey] = useState(0);
+  const [captchaError, setCaptchaError] = useState('');
   
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  function resetTurnstile() {
+    setTurnstileToken(null);
+    setTurnstileWidgetKey((key) => key + 1);
+  }
+
   function validateName(value) {
-    if (!value.trim()) return 'Name is required.';
-    if (!/^[\p{L}\p{M}\s'.,-]+$/u.test(value)) {
-      return 'Name can only contain letters, spaces, hyphens, and apostrophes.';
-    }
-    if (value.length > 100) return 'Name must be 100 characters or fewer.';
-    return '';
+    return validateContactField('name', value);
   }
 
   function validateEmail(value) {
-    if (!value.trim()) return 'Email is required.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      return 'Please enter a valid email address.';
-    }
-    if (value.length > 254) return 'Email is too long.';
-    return '';
+    return validateContactField('email', value);
   }
 
   function validateSubject(value) {
-    if (!value.trim()) return 'Subject is required.';
-    if (value.length > 200) return 'Subject must be 200 characters or fewer.';
-    return '';
+    return validateContactField('subject', value);
   }
 
   function validateMessage(value) {
-    if (!value.trim()) return 'Message is required.';
-    if (value.length > 5000) return 'Message must be 5,000 characters or fewer.';
-    return '';
+    return validateContactField('message', value);
   }
 
   const validators = { name: validateName, email: validateEmail, subject: validateSubject, message: validateMessage };
@@ -84,22 +80,35 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateAll()) return;
+
+    if (!turnstileToken) {
+      setCaptchaError('Please complete the security check before sending.');
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage("");
     setSubmitStatus(null);
+    setCaptchaError('');
     
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, turnstileToken }),
       });
       
       const data = await response.json();
       
       if (!response.ok) {
+        if (data.code?.startsWith('captcha_')) {
+          setCaptchaError(data.error || 'Security check failed. Please try again.');
+          resetTurnstile();
+          return;
+        }
         if (data.field) {
           setFieldErrors(prev => ({ ...prev, [data.field]: data.error }));
+          resetTurnstile();
           return;
         }
         throw new Error(data.error || 'Something went wrong. Please try again.');
@@ -108,11 +117,13 @@ export default function Contact() {
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '', website: '' });
       setFieldErrors({});
+      resetTurnstile();
       setTimeout(() => setSubmitStatus(null), 6000);
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmitStatus('error');
       setErrorMessage(error.message);
+      resetTurnstile();
       setTimeout(() => setSubmitStatus(null), 6000);
     } finally {
       setIsSubmitting(false);
@@ -129,14 +140,14 @@ export default function Contact() {
       <section id="contact" className="section">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-gray-800 dark:text-white text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
+            <h2 className="font-subheading text-gray-800 dark:text-white text-3xl md:text-4xl font-semibold mb-4">Get In Touch</h2>
             <p className="text-gray-700 dark:text-gray-300">Have a project in mind? Let's talk about it.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Contact Information */}
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-gray-800 dark:text-white">Contact Information</h3>
+              <h3 className="font-subheading text-2xl font-semibold text-gray-800 dark:text-white">Contact Information</h3>
               <p className="text-gray-700 dark:text-gray-300">
                 Feel free to reach out if you have any questions or if you'd like to work together.
                 I'm always open to new projects and opportunities.
@@ -206,7 +217,7 @@ export default function Contact() {
                   <div className="w-full h-32 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800"></div>
                 </div>
                 
-                <div className="w-full py-3 px-4 text-white font-medium rounded-md bg-blue-600 dark:bg-blue-500">
+                <div className="w-full py-3 px-4 text-white font-heading font-semibold rounded-md bg-blue-600 dark:bg-blue-500">
                   Send Message
                 </div>
               </div>
@@ -236,10 +247,8 @@ export default function Contact() {
             <span className="opacity-50">~/</span>
             <span className="uppercase tracking-widest">Connect With Me</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
-            <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">Get In Touch</span>
-            <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
+          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
+            Get In Touch
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Have a project in mind? Let's talk about it.</p>
         </motion.div>
@@ -254,7 +263,7 @@ export default function Contact() {
           >
             <div className="relative mb-8">
               <div className="absolute -top-2 left-0 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full"></div>
-              <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4 tracking-tight">Contact Information</h3>
+              <h3 className="font-subheading text-2xl font-semibold text-gray-800 dark:text-white mb-4 tracking-tight">Contact Information</h3>
               <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
                 Feel free to reach out if you have any questions or if you'd like to work together.
                 I'm always open to new projects and opportunities.
@@ -337,7 +346,7 @@ export default function Contact() {
               <div className="p-8 md:p-10">
                 <div className="relative mb-8">
                   <div className="absolute -top-2 left-0 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full"></div>
-                  <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2 tracking-tight">Send Me a Message</h3>
+                  <h3 className="font-subheading text-2xl font-semibold text-gray-800 dark:text-white mb-2 tracking-tight">Send Me a Message</h3>
                   <p className="text-gray-600 dark:text-gray-300">I'll get back to you as soon as possible.</p>
                 </div>
                 
@@ -364,7 +373,7 @@ export default function Contact() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       required
-                      maxLength={100}
+                      maxLength={CONTACT_LIMITS.name}
                       className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.name ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="John Doe"
                     />
@@ -383,7 +392,7 @@ export default function Contact() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       required
-                      maxLength={254}
+                      maxLength={CONTACT_LIMITS.email}
                       className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.email ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="john@example.com"
                     />
@@ -402,7 +411,7 @@ export default function Contact() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       required
-                      maxLength={200}
+                      maxLength={CONTACT_LIMITS.subject}
                       className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.subject ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="Project Inquiry"
                     />
@@ -421,7 +430,7 @@ export default function Contact() {
                       onBlur={handleBlur}
                       required
                       rows="5"
-                      maxLength={5000}
+                      maxLength={CONTACT_LIMITS.message}
                       className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.message ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="Hello, I'd like to discuss a project..."
                     ></textarea>
@@ -429,10 +438,23 @@ export default function Contact() {
                       <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.message}</p>
                     )}
                   </div>
+
+                  <div className="mb-6">
+                    <TurnstileField
+                      widgetKey={turnstileWidgetKey}
+                      onTokenChange={(token) => {
+                        setTurnstileToken(token);
+                        if (token) setCaptchaError('');
+                      }}
+                    />
+                    {captchaError && (
+                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">{captchaError}</p>
+                    )}
+                  </div>
                   
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !turnstileToken}
                     className="btn-primary-block"
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}

@@ -15,20 +15,12 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
-        display: ['var(--font-display)', 'Space Grotesk', 'sans-serif'],
+        sans: ['var(--font-sans)', 'Fira Sans', 'sans-serif'],
+        heading: ['var(--font-heading)', 'IBM Plex Sans', 'sans-serif'],
+        subheading: ['var(--font-subheading)', 'Source Sans 3', 'sans-serif'],
         mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
-      },
-      animation: {
-        blink: "blink 1s infinite",
-      },
-      keyframes: {
-        blink: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0" },
-        },
       },
     },
   },
   plugins: [],
-} 
+}

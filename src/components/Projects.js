@@ -92,7 +92,7 @@ export default function Projects() {
       <section id="projects" className="section py-16 md:py-28">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-gray-800 dark:text-white text-3xl md:text-4xl font-bold mb-4">My Projects</h2>
+            <h2 className="font-subheading text-gray-800 dark:text-white text-3xl md:text-4xl font-semibold mb-4">My Projects</h2>
             <p className="text-gray-600 dark:text-gray-400">Check out my recent work</p>
           </div>
         </div>
@@ -118,10 +118,8 @@ export default function Projects() {
             <span className="opacity-50">~/</span>
             <span className="uppercase tracking-widest">Portfolio Showcase</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
-            <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">My Projects</span>
-            <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
+          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
+            My Projects
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Check out my recent work</p>
         </motion.div>
@@ -173,7 +171,7 @@ export default function Projects() {
                 <div className="p-6 sm:p-8 md:p-10 relative">
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"></div>
 
-                  <h3 className="text-3xl font-bold text-gray-800 dark:text-white mb-4 tracking-tight">{project.title}</h3>
+                  <h3 className="font-heading text-3xl font-bold text-gray-800 dark:text-white mb-4 tracking-tight">{project.title}</h3>
                   <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg leading-relaxed">{project.description}</p>
 
                   {/* Tech tags with interactive glow */}
@@ -191,14 +189,11 @@ export default function Projects() {
                   <div className="flex justify-between items-center">
                     <a
                       href={project.link}
-                      className="btn-primary min-w-[200px] group"
+                      className="btn-primary min-w-[200px]"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <span>View Live</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
+                      View Live
                     </a>
 
                     <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5 font-mono">

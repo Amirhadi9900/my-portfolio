@@ -30,10 +30,8 @@ export default function About() {
             <span className="opacity-50">~/</span>
             <span className="uppercase tracking-widest">Personal Journey</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
-            <span className="font-mono text-cyan-500/80 dark:text-cyan-400/80 text-lg sm:text-2xl md:text-3xl">&gt; </span>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">About Me</span>
-            <span className="font-mono text-cyan-500/60 dark:text-cyan-400/60 text-lg sm:text-2xl md:text-3xl animate-blink">_</span>
+          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
+            About Me
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">
             Click the card to discover who I am
@@ -68,7 +66,7 @@ export default function About() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-left">
-                      <p className="text-white text-2xl font-bold tracking-tight">Amirhadi Borjian</p>
+                      <p className="font-heading text-white text-2xl font-bold tracking-tight">Amirhadi Borjian</p>
                     </div>
                   </div>
                 </button>
@@ -89,7 +87,7 @@ export default function About() {
                     <span className="font-mono text-[11px] text-cyan-400/90 truncate min-w-0">~/about/developer.md</span>
                     <button
                       type="button"
-                      className="ml-auto shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-[0_4px_14px_rgba(59,130,246,0.4)] border border-blue-400/30 transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                      className="ml-auto shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-[0_4px_14px_rgba(59,130,246,0.4)] border border-blue-400/30 transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
                       onClick={() => setIsFlipped(false)}
                       aria-label="Show profile photo"
                     >
@@ -106,19 +104,19 @@ export default function About() {
                     aria-label="About information"
                   >
                     <div className="rounded-xl bg-white/[0.06] backdrop-blur-sm border border-white/10 p-4 shadow-inner">
-                      <h3 className="font-handwriting font-bold text-2xl sm:text-3xl text-blue-300 mb-2 leading-tight">
+                      <h3 className="font-subheading font-semibold text-2xl sm:text-3xl text-blue-300 mb-2 leading-tight">
                         Who I Am
                       </h3>
-                      <p className="font-handwriting font-normal text-blue-100/95 text-base sm:text-lg leading-relaxed">
+                      <p className="text-blue-100/95 text-base sm:text-lg leading-relaxed">
                         I&apos;m a software developer who loves building cool stuff and solving tricky problems with code. Whether it&apos;s web development, Android development, or debugging, I enjoy every moment of the process—from brainstorming ideas to bringing them to life.
                       </p>
                     </div>
 
                     <div className="rounded-xl bg-white/[0.06] backdrop-blur-sm border border-white/10 p-4 shadow-inner">
-                      <h3 className="font-handwriting font-bold text-2xl sm:text-3xl text-blue-300 mb-2 leading-tight">
+                      <h3 className="font-subheading font-semibold text-2xl sm:text-3xl text-blue-300 mb-2 leading-tight">
                         My Approach
                       </h3>
-                      <p className="font-handwriting font-normal text-blue-100/95 text-base sm:text-lg leading-relaxed">
+                      <p className="text-blue-100/95 text-base sm:text-lg leading-relaxed">
                         I believe in creating clean, efficient code and making things work smoothly and flawlessly. Whether it&apos;s front-end, back-end, or Android development, I love diving into projects that challenge me and make me think outside the box.
                       </p>
                     </div>
@@ -149,7 +147,7 @@ export default function About() {
                   />
                   <path d="M30 14 L24 22 M30 14 L36 22" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" />
                 </svg>
-                <span className="font-handwriting text-4xl sm:text-5xl text-blue-600 dark:text-blue-400 rotate-[-6deg] leading-none">
+                <span className="font-heading text-4xl sm:text-5xl font-bold text-blue-600 dark:text-blue-400 rotate-[-6deg] leading-none">
                   Flip me!
                 </span>
               </motion.div>
