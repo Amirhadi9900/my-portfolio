@@ -1,86 +1,122 @@
-# Professional Portfolio Website
+# Amirhadi Borjian — Portfolio
 
-A modern, professional, and visually appealing portfolio website built with Next.js and Tailwind CSS.
+Personal portfolio website showcasing Android and web development work, skills, and contact information.
+
+**Live site:** [my-portfolio-lime-three-67.vercel.app](https://my-portfolio-lime-three-67.vercel.app)
 
 ## Features
 
-- 🎨 Modern and clean design
-- 📱 Fully responsive for all devices
-- 🌙 Dark mode support
-- ⚡ Fast and optimized performance
-- 🔄 Smooth animations with Framer Motion
-- 📝 Interactive contact form
-- 🖼️ Project showcase with filtering
-- 📊 Skills visualization
+- Single-page layout with Hero, About, Projects, Skills, and Contact sections
+- Responsive design with smooth scroll navigation and Framer Motion animations
+- Custom typography stack (IBM Plex Sans, Source Sans 3, Fira Sans, JetBrains Mono)
+- Interactive About card with flip animation
+- Project showcase with code-preview styling
+- Skills grid with brand icons (Simple Icons) and language flags
+- Contact form with email delivery via Nodemailer
+- Cloudflare Turnstile CAPTCHA with server-side verification
+- Input sanitization, honeypot field, rate limiting, and security headers (CSP, HSTS, and more)
+- Scroll progress timeline and back-to-top button
 
-## Technologies Used
+## Tech Stack
 
-- [Next.js](https://nextjs.org/) - React framework for production
-- [React](https://reactjs.org/) - JavaScript library for building user interfaces
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [Framer Motion](https://www.framer.com/motion/) - Animation library for React
+| Layer | Technologies |
+|-------|--------------|
+| Framework | [Next.js 16](https://nextjs.org/) (App Router), [React 19](https://react.dev/) |
+| Styling | [Tailwind CSS 3](https://tailwindcss.com/) |
+| Animation | [Framer Motion](https://www.framer.com/motion/) |
+| Icons | [Simple Icons](https://simpleicons.org/) |
+| Email | [Nodemailer](https://nodemailer.com/) |
+| CAPTCHA | [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/) |
+| Deployment | [Vercel](https://vercel.com/) |
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or later)
-- npm or yarn
+- Node.js 18.18 or later
+- npm
 
 ### Installation
 
-1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/portfolio.git
-cd portfolio
-```
-
-2. Install dependencies
-```bash
+git clone https://github.com/Amirhadi9900/my-portfolio.git
+cd my-portfolio
 npm install
-# or
-yarn install
 ```
 
-3. Run the development server
+### Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in the values:
+
+```bash
+cp .env.example .env.local
+```
+
+| Variable | Description |
+|----------|-------------|
+| `EMAIL_USER` | Gmail address used to send contact form emails |
+| `EMAIL_PASS` | Gmail [App Password](https://myaccount.google.com/apppasswords) |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key (public) |
+| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key (server only) |
+| `TURNSTILE_EXPECTED_HOSTNAME` | Optional production hostname lock |
+
+For local development, Cloudflare provides [test keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) that always pass verification.
+
+### Development
+
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
+
+### Production Build
+
+```bash
+npm run build
+npm start
+```
 
 ## Project Structure
 
 ```
-├── public/            # Static files
-├── src/               # Source files
-│   ├── app/           # Next.js App Router
-│   ├── components/    # React components
-│   └── styles/        # Global styles
-├── tailwind.config.js # Tailwind CSS configuration
-└── postcss.config.js  # PostCSS configuration
+myportfolio/
+├── public/                 # Static assets (images, icons, flags)
+├── src/
+│   ├── app/
+│   │   ├── api/contact/    # Contact form API route
+│   │   ├── layout.js       # Root layout and font loading
+│   │   └── page.js         # Home page
+│   ├── components/         # UI sections and widgets
+│   ├── lib/
+│   │   ├── contact-security.js  # Input validation and sanitization
+│   │   └── turnstile.js         # Turnstile server verification
+│   └── styles/
+│       └── globals.css     # Global styles and Tailwind layers
+├── .env.example            # Environment variable template
+├── next.config.js          # Next.js config and security headers
+├── tailwind.config.js
+└── package.json
 ```
 
 ## Customization
 
-- Update `src/components/Hero.js` with your name and title
-- Add your projects in `src/components/Projects.js`
-- Update your skills in `src/components/Skills.js`
-- Change contact information in `src/components/Contact.js` and `src/components/Footer.js`
+| What to change | File |
+|----------------|------|
+| Name, hero text, roles | `src/components/Hero.js` |
+| About content | `src/components/About.js` |
+| Projects | `src/components/Projects.js` |
+| Skills | `src/components/Skills.js` |
+| Contact details and form | `src/components/Contact.js` |
+| Footer links | `src/components/Footer.js` |
+| Site metadata | `src/app/layout.js` |
 
 ## Deployment
 
-This portfolio website can be easily deployed on platforms like Vercel, Netlify, or GitHub Pages.
+This project is deployed on Vercel. Connect the GitHub repository and set the environment variables listed above in the Vercel project settings.
 
-For Vercel deployment (recommended for Next.js):
-
-```bash
-npm install -g vercel
-vercel
-```
+After changing `NEXT_PUBLIC_*` variables, redeploy without the build cache so the new values are baked into the client bundle.
 
 ## License
 
-This project is open source and available under the MIT License. 
+ISC
