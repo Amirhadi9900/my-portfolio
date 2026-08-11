@@ -51,13 +51,13 @@ const SKILL_CATEGORIES = [
       'Kubernetes',
       'AWS',
       'Vercel',
+      'Cloudflare',
     ],
   },
   {
     name: 'Network Security',
     skills: [
       'Cisco Networking',
-      'Intrusion Detection',
       'Wireshark',
       'Web Application Security',
       'Penetration Testing',
