@@ -4,6 +4,7 @@ import {
   CONTACT_LIMITS,
   escapeHtml,
   formatMessageForHtmlEmail,
+  isValidEmail,
   parseContactRequest,
 } from '../../../lib/contact-security';
 import { verifyTurnstileToken } from '../../../lib/turnstile';
@@ -12,6 +13,12 @@ const RATE_WINDOW_MS = 60_000;
 const MAX_REQUESTS = 3;
 
 const rateLimitStore = new Map();
+
+function getContactRecipient() {
+  const recipient = (process.env.EMAIL_TO || process.env.EMAIL_USER || '').trim();
+  if (!isValidEmail(recipient)) return null;
+  return recipient;
+}
 
 function checkRateLimit(ip) {
   const now = Date.now();
@@ -111,6 +118,15 @@ export async function POST(request) {
 
     const { name, email, subject, message } = parsed.data;
 
+    const recipient = getContactRecipient();
+    if (!recipient || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.error('Contact mail is not configured.');
+      return NextResponse.json(
+        { error: 'Failed to send message. Please try again later.' },
+        { status: 500 }
+      );
+    }
+
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
     const safeSubject = escapeHtml(subject);
@@ -127,7 +143,7 @@ export async function POST(request) {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: 'amirhadib79@gmail.com',
+      to: recipient,
       replyTo: email,
       subject: `Portfolio Contact: ${subject}`,
       text: [

@@ -110,7 +110,9 @@ export default function Footer() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <span className="group-hover:text-white transition-colors duration-300">amirhadib79@gmail.com</span>
+                <Link href="#contact-form" className="group-hover:text-white transition-colors duration-300">
+                  Send a message
+                </Link>
               </li>
               <li className="flex items-start group">
                 <div className="mr-3 p-1.5 rounded-full bg-gray-800/50 group-hover:bg-cyan-900/30 transition-colors duration-300">
@@ -152,15 +154,15 @@ export default function Footer() {
                   </svg>
                 </div>
               </a>
-              <a href="mailto:amirhadib79@gmail.com" className="group no-underline">
+              <Link href="#contact-form" className="group no-underline">
                 <div className="p-3 rounded-lg bg-gray-800/80 group-hover:bg-gray-800 transition-all duration-300 transform-gpu group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
-                  <span className="sr-only">Email</span>
+                  <span className="sr-only">Send a message</span>
                   <svg className="w-6 h-6 text-gray-400 group-hover:text-cyan-400 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
                     <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
                   </svg>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </motion.div>

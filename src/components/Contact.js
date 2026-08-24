@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CONTACT_LIMITS, validateContactField } from '../lib/contact-security';
 import TurnstileField from './TurnstileField';
@@ -163,7 +164,9 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 dark:text-white">Email</h4>
-                    <p className="text-gray-700 dark:text-gray-300">amirhadib79@gmail.com</p>
+                    <Link href="#contact-form" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                      Send a message
+                    </Link>
                   </div>
                 </div>
                 
@@ -195,7 +198,7 @@ export default function Contact() {
             </div>
             
             {/* Form placeholder */}
-            <div>
+            <div id="contact-form" className="scroll-mt-28">
               <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6">
                 <div className="mb-4">
                   <label className="block mb-2 text-sm font-medium text-gray-800 dark:text-white">Your Name</label>
@@ -279,7 +282,9 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-800 dark:text-white text-lg mb-1">Email</h4>
-                  <p className="text-gray-600 dark:text-gray-300">amirhadib79@gmail.com</p>
+                  <Link href="#contact-form" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                    Send a message
+                  </Link>
                 </div>
               </div>
               
@@ -322,16 +327,16 @@ export default function Contact() {
                     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                   </svg>
                 </a>
-                <a 
-                  href="mailto:amirhadib79@gmail.com" 
+                <Link
+                  href="#contact-form"
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100/80 dark:bg-gray-700/50 text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-all duration-300 hover:shadow-md hover:scale-110 no-underline"
                 >
-                  <span className="sr-only">Email</span>
+                  <span className="sr-only">Send a message</span>
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
                     <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -350,7 +355,7 @@ export default function Contact() {
                   <p className="text-gray-600 dark:text-gray-300">I'll get back to you as soon as possible.</p>
                 </div>
                 
-                <form onSubmit={handleSubmit}>
+                <form id="contact-form" onSubmit={handleSubmit} className="scroll-mt-28">
                   <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', height: 0, overflow: 'hidden' }}>
                     <label htmlFor="website">Website</label>
                     <input

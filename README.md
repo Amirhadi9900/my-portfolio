@@ -56,6 +56,7 @@ cp .env.example .env.local
 |----------|-------------|
 | `EMAIL_USER` | Gmail address used to send contact form emails |
 | `EMAIL_PASS` | Gmail [App Password](https://myaccount.google.com/apppasswords) |
+| `EMAIL_TO` | Inbox that receives submissions (server only). Optional; defaults to `EMAIL_USER` |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key (public) |
 | `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key (server only) |
 | `TURNSTILE_EXPECTED_HOSTNAME` | Optional production hostname lock |
