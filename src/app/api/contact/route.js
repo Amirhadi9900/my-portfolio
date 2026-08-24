@@ -14,6 +14,49 @@ const MAX_REQUESTS = 3;
 
 const rateLimitStore = new Map();
 
+function getAllowedHosts(request) {
+  const hosts = new Set();
+  const requestHost = request.headers.get('host');
+  if (requestHost) hosts.add(requestHost.toLowerCase());
+
+  const extra = process.env.CONTACT_ALLOWED_ORIGINS || '';
+  for (const origin of extra.split(',')) {
+    const trimmed = origin.trim();
+    if (!trimmed) continue;
+    try {
+      hosts.add(new URL(trimmed).host.toLowerCase());
+    } catch {
+      // Ignore malformed allowlist entries.
+    }
+  }
+
+  return hosts;
+}
+
+function isTrustedBrowserOrigin(request) {
+  const allowedHosts = getAllowedHosts(request);
+  const origin = request.headers.get('origin');
+  const referer = request.headers.get('referer');
+
+  for (const value of [origin, referer]) {
+    if (!value) continue;
+    try {
+      if (allowedHosts.has(new URL(value).host.toLowerCase())) return true;
+    } catch {
+      // Ignore malformed headers.
+    }
+  }
+
+  return false;
+}
+
+function methodNotAllowed() {
+  return NextResponse.json(
+    { error: 'Method not allowed' },
+    { status: 405, headers: { Allow: 'POST' } }
+  );
+}
+
 function getContactRecipient() {
   const recipient = (process.env.EMAIL_TO || process.env.EMAIL_USER || '').trim();
   if (!isValidEmail(recipient)) return null;
@@ -44,26 +87,41 @@ if (typeof globalThis.__rateLimitCleanup === 'undefined') {
 }
 
 export async function GET() {
-  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+  return methodNotAllowed();
+}
+
+export async function HEAD() {
+  return methodNotAllowed();
 }
 
 export async function PUT() {
-  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+  return methodNotAllowed();
 }
 
 export async function DELETE() {
-  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+  return methodNotAllowed();
 }
 
 export async function PATCH() {
-  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+  return methodNotAllowed();
+}
+
+export async function OPTIONS() {
+  return methodNotAllowed();
 }
 
 export async function POST(request) {
   try {
-    const contentType = request.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
+    const contentType = request.headers.get('content-type') || '';
+    if (contentType.toLowerCase().includes('multipart/')) {
+      return NextResponse.json({ error: 'File uploads are not allowed' }, { status: 415 });
+    }
+    if (!contentType.toLowerCase().includes('application/json')) {
       return NextResponse.json({ error: 'Content-Type must be application/json' }, { status: 415 });
+    }
+
+    if (!isTrustedBrowserOrigin(request)) {
+      return NextResponse.json({ error: 'Invalid request origin' }, { status: 403 });
     }
 
     const contentLength = request.headers.get('content-length');
@@ -77,7 +135,7 @@ export async function POST(request) {
     if (checkRateLimit(ip)) {
       return NextResponse.json(
         { error: 'Too many requests. Please wait a minute before trying again.' },
-        { status: 429 }
+        { status: 429, headers: { 'Retry-After': '60' } }
       );
     }
 

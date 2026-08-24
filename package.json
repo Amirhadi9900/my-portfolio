@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "audit": "npm audit --omit=dev"
   },
   "overrides": {
     "postcss": "^8.5.15"

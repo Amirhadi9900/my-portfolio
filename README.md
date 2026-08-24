@@ -60,6 +60,7 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key (public) |
 | `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key (server only) |
 | `TURNSTILE_EXPECTED_HOSTNAME` | Optional production hostname lock |
+| `CONTACT_ALLOWED_ORIGINS` | Optional extra origins allowed to POST the contact API |
 
 For local development, Cloudflare provides [test keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) that always pass verification.
 
