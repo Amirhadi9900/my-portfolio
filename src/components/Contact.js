@@ -4,7 +4,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CONTACT_LIMITS, validateContactField } from '../lib/contact-security';
+import { scrollToId } from '../lib/scroll-to-id';
 import TurnstileField from './TurnstileField';
+
+const CONTACT_SECTION_CLASS =
+  'section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden scroll-mt-28';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -27,6 +31,14 @@ export default function Contact() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+    const hash = window.location.hash;
+    if (hash === '#contact' || hash === '#contact-form') {
+      requestAnimationFrame(() => scrollToId('contact'));
+    }
+  }, [isMounted]);
 
   function resetTurnstile() {
     setTurnstileToken(null);
@@ -138,7 +150,7 @@ export default function Contact() {
 
   if (!isMounted) {
     return (
-      <section id="contact" className="section">
+      <section id="contact" className={CONTACT_SECTION_CLASS}>
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="font-subheading text-gray-800 dark:text-white text-3xl md:text-4xl font-semibold mb-4">Get In Touch</h2>
@@ -164,7 +176,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800 dark:text-white">Email</h4>
-                    <Link href="#contact-form" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                    <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
                       Send a message
                     </Link>
                   </div>
@@ -198,7 +210,7 @@ export default function Contact() {
             </div>
             
             {/* Form placeholder */}
-            <div id="contact-form" className="scroll-mt-28">
+            <div>
               <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6">
                 <div className="mb-4">
                   <label className="block mb-2 text-sm font-medium text-gray-800 dark:text-white">Your Name</label>
@@ -232,7 +244,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
+    <section id="contact" className={CONTACT_SECTION_CLASS}>
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70"></div>
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl"></div>
@@ -282,7 +294,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-800 dark:text-white text-lg mb-1">Email</h4>
-                  <Link href="#contact-form" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                  <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
                     Send a message
                   </Link>
                 </div>
@@ -328,7 +340,9 @@ export default function Contact() {
                   </svg>
                 </a>
                 <Link
-                  href="#contact-form"
+                  href="#contact"
+                  scroll={false}
+                  onClick={(event) => scrollToId('contact', event)}
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100/80 dark:bg-gray-700/50 text-gray-700 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-all duration-300 hover:shadow-md hover:scale-110 no-underline"
                 >
                   <span className="sr-only">Send a message</span>
@@ -355,7 +369,7 @@ export default function Contact() {
                   <p className="text-gray-600 dark:text-gray-300">I'll get back to you as soon as possible.</p>
                 </div>
                 
-                <form id="contact-form" onSubmit={handleSubmit} className="scroll-mt-28">
+                <form id="contact-form" noValidate onSubmit={handleSubmit}>
                   <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', height: 0, overflow: 'hidden' }}>
                     <label htmlFor="website">Website</label>
                     <input

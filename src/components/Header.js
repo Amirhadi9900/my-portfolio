@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { scrollToId } from '../lib/scroll-to-id';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -94,12 +95,16 @@ export default function Header() {
               <motion.div key={link.href} variants={itemVariants}>
                 <Link
                   href={link.href}
+                  scroll={false}
                   className={`relative px-4 py-2 text-sm rounded-md transition-all duration-300 nav-link no-underline ${
                     activeLink === link.href
                       ? 'active text-white font-medium' 
                       : 'text-blue-200 hover:text-white'
                   }`}
-                  onClick={() => setActiveLink(link.href)}
+                  onClick={(event) => {
+                    scrollToId(link.href.slice(1), event);
+                    setActiveLink(link.href);
+                  }}
                 >
                   {link.label}
                   
@@ -116,7 +121,15 @@ export default function Header() {
             ))}
 
             <motion.div variants={itemVariants}>
-              <Link href="#contact" className="ml-3 btn-primary-sm pulse-border">
+              <Link
+                href="#contact"
+                scroll={false}
+                onClick={(event) => {
+                  scrollToId('contact', event);
+                  setActiveLink('#contact');
+                }}
+                className="ml-3 btn-primary-sm pulse-border"
+              >
                 Get in Touch
               </Link>
             </motion.div>
@@ -171,12 +184,14 @@ export default function Header() {
                 <motion.div key={link.href} variants={itemVariants}>
                   <Link
                     href={link.href}
+                    scroll={false}
                     className={`block px-4 py-2 rounded-lg transition-colors nav-link no-underline ${
                       activeLink === link.href
                         ? 'active text-white font-medium bg-blue-700/40' 
                         : 'text-blue-200 hover:text-white hover:bg-blue-700/20'
                     }`}
-                    onClick={() => {
+                    onClick={(event) => {
+                      scrollToId(link.href.slice(1), event);
                       setActiveLink(link.href);
                       setIsMenuOpen(false);
                     }}
@@ -188,8 +203,13 @@ export default function Header() {
               <motion.div variants={itemVariants}>
                 <Link
                   href="#contact"
+                  scroll={false}
                   className="block btn-primary-sm w-full text-center"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(event) => {
+                    scrollToId('contact', event);
+                    setActiveLink('#contact');
+                    setIsMenuOpen(false);
+                  }}
                 >
                   Get in Touch
                 </Link>

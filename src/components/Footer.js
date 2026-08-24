@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { scrollToId } from '../lib/scroll-to-id';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -56,22 +57,22 @@ export default function Footer() {
                 <h4 className="text-sm uppercase text-gray-500 mb-3">Quick Links</h4>
                 <ul className="space-y-2">
                   <li>
-                    <Link href="#about" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                    <Link href="#about" scroll={false} onClick={(event) => scrollToId('about', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
                       <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>About
                     </Link>
                   </li>
                   <li>
-                    <Link href="#projects" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                    <Link href="#projects" scroll={false} onClick={(event) => scrollToId('projects', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
                       <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Projects
                     </Link>
                   </li>
                   <li>
-                    <Link href="#skills" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                    <Link href="#skills" scroll={false} onClick={(event) => scrollToId('skills', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
                       <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Skills
                     </Link>
                   </li>
                   <li>
-                    <Link href="#contact" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                    <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
                       <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Contact
                     </Link>
                   </li>
@@ -110,7 +111,7 @@ export default function Footer() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <Link href="#contact-form" className="group-hover:text-white transition-colors duration-300">
+                <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="group-hover:text-white transition-colors duration-300">
                   Send a message
                 </Link>
               </li>
@@ -154,7 +155,7 @@ export default function Footer() {
                   </svg>
                 </div>
               </a>
-              <Link href="#contact-form" className="group no-underline">
+              <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="group no-underline">
                 <div className="p-3 rounded-lg bg-gray-800/80 group-hover:bg-gray-800 transition-all duration-300 transform-gpu group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
                   <span className="sr-only">Send a message</span>
                   <svg className="w-6 h-6 text-gray-400 group-hover:text-cyan-400 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

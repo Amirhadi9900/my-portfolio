@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { scrollToId } from '../lib/scroll-to-id';
 
 const ROLES = ['Software Developer', 'Android Developer', 'Web Developer'];
 
@@ -232,10 +233,10 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             variants={fadeInUp}
           >
-            <Link href="#projects" className="btn-primary min-w-[200px]">
+            <Link href="#projects" scroll={false} onClick={(event) => scrollToId('projects', event)} className="btn-primary min-w-[200px]">
               View My Work
             </Link>
-            <Link href="#contact" className="btn-primary min-w-[200px]">
+            <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="btn-primary min-w-[200px]">
               Get In Touch
             </Link>
           </motion.div>

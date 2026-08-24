@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { scrollToId } from '../lib/scroll-to-id';
 
 const SECTIONS = [
   { id: 'hero', label: 'Home', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4' },
@@ -57,7 +58,7 @@ export default function ScrollTimeline() {
             return (
               <div key={section.id} className="relative">
                 <button
-                  onClick={() => document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => scrollToId(section.id)}
                   aria-label={`Go to ${section.label}`}
                   className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                     isActive
