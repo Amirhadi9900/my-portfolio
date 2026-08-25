@@ -4,10 +4,9 @@
  */
 export function scrollToId(id, event) {
   if (event) {
-    if (event.defaultPrevented) return;
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     if (typeof event.button === 'number' && event.button !== 0) return;
-    event.preventDefault();
+    if (!event.defaultPrevented) event.preventDefault();
   }
 
   const element = document.getElementById(id);

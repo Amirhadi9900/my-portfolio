@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { scrollToId } from '../lib/scroll-to-id';
@@ -9,6 +9,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState('#');
+  const pendingMobileScrollId = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,6 +55,15 @@ export default function Header() {
     hidden: { y: -20, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
+
+  function handleMobileNav(event, id) {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (typeof event.button === 'number' && event.button !== 0) return;
+    event.preventDefault();
+    pendingMobileScrollId.current = id;
+    setActiveLink(`#${id}`);
+    setIsMenuOpen(false);
+  }
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 header-blur ${
@@ -165,7 +175,14 @@ export default function Header() {
       </div>
 
       {/* Mobile Navigation */}
-      <AnimatePresence>
+      <AnimatePresence
+        onExitComplete={() => {
+          const id = pendingMobileScrollId.current;
+          if (!id) return;
+          pendingMobileScrollId.current = null;
+          scrollToId(id);
+        }}
+      >
         {isMenuOpen && (
           <motion.nav 
             className="container py-4 md:hidden"
@@ -190,11 +207,7 @@ export default function Header() {
                         ? 'active text-white font-medium bg-blue-700/40' 
                         : 'text-blue-200 hover:text-white hover:bg-blue-700/20'
                     }`}
-                    onClick={(event) => {
-                      scrollToId(link.href.slice(1), event);
-                      setActiveLink(link.href);
-                      setIsMenuOpen(false);
-                    }}
+                    onClick={(event) => handleMobileNav(event, link.href.slice(1))}
                   >
                     {link.label}
                   </Link>
@@ -205,11 +218,7 @@ export default function Header() {
                   href="#contact"
                   scroll={false}
                   className="block btn-primary-sm w-full text-center"
-                  onClick={(event) => {
-                    scrollToId('contact', event);
-                    setActiveLink('#contact');
-                    setIsMenuOpen(false);
-                  }}
+                  onClick={(event) => handleMobileNav(event, 'contact')}
                 >
                   Get in Touch
                 </Link>
