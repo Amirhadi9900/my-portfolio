@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import { IBM_Plex_Sans, Source_Sans_3, Fira_Sans, JetBrains_Mono } from 'next/font/google';
+import PromptCursor from '../components/PromptCursor';
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${ibmPlexSans.variable} ${sourceSans3.variable} ${firaSans.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
       <body suppressHydrationWarning className="min-h-screen font-sans antialiased">
+        <PromptCursor />
         {children}
       </body>
     </html>

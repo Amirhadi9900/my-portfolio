@@ -116,6 +116,7 @@ export default function Hero() {
             }}
           >
             Hi, I&apos;m <span 
+              data-cursor-hover
               className="text-white cursor-pointer inline-block"
               style={{
                 textShadow: '0 0 15px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 8px rgba(59, 130, 246, 0.6)',
@@ -136,6 +137,7 @@ export default function Hero() {
             >Amirhadi</span>
             <br />
             <span 
+              data-cursor-hover
               className="text-white cursor-pointer inline-block"
               style={{
                 textShadow: '0 0 15px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 8px rgba(59, 130, 246, 0.6)',
@@ -158,6 +160,7 @@ export default function Hero() {
 
           {/* Typing Animation */}
           <motion.div 
+            data-cursor-hover
             className="text-xl sm:text-2xl md:text-3xl font-light text-slate-300 mb-8 cursor-pointer"
             style={{
               textShadow: '0 0 10px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)',
@@ -177,6 +180,7 @@ export default function Hero() {
             }}
           >
             <span 
+              data-cursor-hover
               className="text-blue-400 font-bold cursor-pointer inline-block"
               style={{
                 textShadow: '0 0 10px rgba(59, 130, 246, 0.4), 0 0 15px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)',

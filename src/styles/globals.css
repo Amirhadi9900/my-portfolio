@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --accent-color: #38bdf8;
+    --accent-color-emphasis: #0284c7;
+    --text-secondary-color: #94a3b8;
+    --cursor-ink: #020617;
+    --cursor-paper: #f8fafc;
+    --cursor-accent: #7dd3fc;
+  }
+
   body {
     @apply bg-slate-900 text-slate-100 transition-colors duration-200;
     background: linear-gradient(to bottom, #0f172a, #020617);
@@ -260,6 +269,162 @@ a, a:link, a:visited, a:hover, a:active {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   touch-action: pan-y;
+}
+
+@media (pointer: fine) {
+  body.custom-cursor-active {
+    cursor: none;
+  }
+
+  body.custom-cursor-active a,
+  body.custom-cursor-active button,
+  body.custom-cursor-active [data-cursor-hover] {
+    cursor: none;
+  }
+
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none;
+  }
+
+  html.custom-cursor-active.custom-cursor-text,
+  html.custom-cursor-active.custom-cursor-text input,
+  html.custom-cursor-active.custom-cursor-text textarea,
+  html.custom-cursor-active.custom-cursor-text select,
+  html.custom-cursor-active.custom-cursor-text label,
+  html.custom-cursor-active.custom-cursor-text [contenteditable='true'] {
+    cursor: text;
+  }
+}
+
+.prompt-cursor {
+  --cursor-x: 0px;
+  --cursor-y: 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 16px;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(
+    calc(var(--cursor-x) - 2px),
+    calc(var(--cursor-y) - 8px),
+    0
+  );
+  transform-origin: 2px 8px;
+  transition: opacity 80ms linear, transform 80ms ease-out;
+  will-change: transform;
+}
+
+.prompt-cursor-ripple {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  border: 2px solid var(--cursor-paper, #f8fafc);
+  box-shadow:
+    0 0 0 1px var(--cursor-ink, #020617),
+    inset 0 0 0 1px var(--cursor-ink, #020617);
+  opacity: 0;
+  transform: scale(0.4);
+  z-index: 0;
+}
+
+.prompt-cursor-ripple.is-rippling {
+  animation: prompt-cursor-ripple 560ms ease-out;
+}
+
+.prompt-cursor.is-hover .prompt-cursor-ripple {
+  left: 16px;
+}
+
+@keyframes prompt-cursor-ripple {
+  0% {
+    opacity: 1;
+    transform: scale(0.35);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.35);
+  }
+}
+
+.prompt-cursor-mark {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 18px;
+  height: 16px;
+  overflow: visible;
+  filter:
+    drop-shadow(1px 0 0 var(--cursor-ink, #020617))
+    drop-shadow(-1px 0 0 var(--cursor-ink, #020617))
+    drop-shadow(0 1px 0 var(--cursor-ink, #020617))
+    drop-shadow(0 -1px 0 var(--cursor-ink, #020617));
+}
+
+.prompt-cursor-lead,
+.prompt-cursor-next {
+  stroke: var(--cursor-paper, #f8fafc);
+  stroke-width: 2.35;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  transition: stroke 120ms ease-out, opacity 120ms ease-out;
+}
+
+.prompt-cursor-next {
+  opacity: 0;
+}
+
+.prompt-cursor.is-hover .prompt-cursor-lead,
+.prompt-cursor.is-hover .prompt-cursor-next {
+  stroke: var(--cursor-accent, #7dd3fc);
+}
+
+.prompt-cursor.is-hover .prompt-cursor-next {
+  opacity: 1;
+}
+
+.prompt-cursor.is-active {
+  transform: translate3d(
+    calc(var(--cursor-x) - 1px),
+    calc(var(--cursor-y) - 8px),
+    0
+  ) scale(0.9);
+}
+
+.prompt-cursor.is-hidden,
+.prompt-cursor.is-native-field {
+  opacity: 0;
+}
+
+.prompt-cursor.is-reduced-motion,
+.prompt-cursor.is-reduced-motion .prompt-cursor-lead,
+.prompt-cursor.is-reduced-motion .prompt-cursor-next {
+  transition: none;
+}
+
+.prompt-cursor.is-reduced-motion .prompt-cursor-ripple,
+.prompt-cursor.is-reduced-motion .prompt-cursor-ripple.is-rippling {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prompt-cursor,
+  .prompt-cursor-lead,
+  .prompt-cursor-next {
+    transition: none;
+  }
+
+  .prompt-cursor-ripple,
+  .prompt-cursor-ripple.is-rippling {
+    animation: none;
+  }
 }
 
 @keyframes skill-sparkle-spin {
