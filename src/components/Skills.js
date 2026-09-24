@@ -61,6 +61,9 @@ const SKILL_CATEGORIES = [
       'Wireshark',
       'Web Application Security',
       'Penetration Testing',
+      'Burp Suite',
+      'Metasploit',
+      'Hashcat',
     ],
   },
   {

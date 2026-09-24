@@ -27,6 +27,9 @@ import {
   siWireshark,
   siOwasp,
   siKalilinux,
+  siMetasploit,
+  siBurpsuite,
+  siHashcat,
 } from 'simple-icons';
 
 const SKILL_ICONS = {
@@ -60,11 +63,17 @@ const SKILL_ICONS = {
   'Wireshark': siWireshark,
   'Web Application Security': siOwasp,
   'Penetration Testing': siKalilinux,
+  'Burp Suite': siBurpsuite,
+  'Metasploit': siMetasploit,
+  'Hashcat': siHashcat,
   'VS Code': null,
   'AWS': null,
 };
 
+// simple-icons ships some marks as pure white (Hashcat), which would be invisible on
+// the white chips. This site has no dark theme, so force those to plain black.
 function BrandIcon({ icon, className = 'w-7 h-7' }) {
+  const hex = icon.hex.toLowerCase() === 'ffffff' ? '000000' : icon.hex;
   return (
     <svg
       role="img"
@@ -72,7 +81,7 @@ function BrandIcon({ icon, className = 'w-7 h-7' }) {
       className={className}
       aria-hidden="true"
     >
-      <path fill={`#${icon.hex}`} d={icon.path} />
+      <path fill={`#${hex}`} d={icon.path} />
     </svg>
   );
 }
