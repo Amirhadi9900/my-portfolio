@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CONTACT_LIMITS, validateContactField } from '../lib/contact-security';
+import { isContactSfxMuted, playContactSfx, setContactSfxMuted, unlockContactSfx } from '../lib/sfx';
 import { scrollToId } from '../lib/scroll-to-id';
 import TurnstileField from './TurnstileField';
 
@@ -27,10 +28,18 @@ export default function Contact() {
   const [turnstileToken, setTurnstileToken] = useState(null);
   const [turnstileWidgetKey, setTurnstileWidgetKey] = useState(0);
   const [captchaError, setCaptchaError] = useState('');
-  
+  const [sfxMuted, setSfxMuted] = useState(false);
+
   useEffect(() => {
     setIsMounted(true);
+    setSfxMuted(isContactSfxMuted());
   }, []);
+
+  function toggleSfx() {
+    const next = !sfxMuted;
+    setSfxMuted(next);
+    setContactSfxMuted(next);
+  }
 
   useEffect(() => {
     if (!isMounted) return;
@@ -92,10 +101,17 @@ export default function Contact() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateAll()) return;
+    // Opened here, inside the click, so the cue scheduled after the await still plays.
+    if (!sfxMuted) unlockContactSfx();
+
+    if (!validateAll()) {
+      playContactSfx('error');
+      return;
+    }
 
     if (!turnstileToken) {
       setCaptchaError('Please complete the security check before sending.');
+      playContactSfx('error');
       return;
     }
 
@@ -117,11 +133,13 @@ export default function Contact() {
         if (data.code?.startsWith('captcha_')) {
           setCaptchaError(data.error || 'Security check failed. Please try again.');
           resetTurnstile();
+          playContactSfx('error');
           return;
         }
         if (data.field) {
           setFieldErrors(prev => ({ ...prev, [data.field]: data.error }));
           resetTurnstile();
+          playContactSfx('error');
           return;
         }
         throw new Error(data.error || 'Something went wrong. Please try again.');
@@ -131,12 +149,14 @@ export default function Contact() {
       setFormData({ name: '', email: '', subject: '', message: '', website: '' });
       setFieldErrors({});
       resetTurnstile();
+      playContactSfx('success');
       setTimeout(() => setSubmitStatus(null), 6000);
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmitStatus('error');
       setErrorMessage(error.message);
       resetTurnstile();
+      playContactSfx('error');
       setTimeout(() => setSubmitStatus(null), 6000);
     } finally {
       setIsSubmitting(false);
@@ -365,6 +385,21 @@ export default function Contact() {
               <div className="p-8 md:p-10">
                 <div className="relative mb-8">
                   <div className="absolute -top-2 left-0 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full"></div>
+                  <button
+                    type="button"
+                    onClick={toggleSfx}
+                    aria-pressed={sfxMuted}
+                    aria-label={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
+                    title={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
+                    className="absolute -top-1 right-0 p-2 rounded-lg text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100/80 dark:hover:bg-gray-700/50 transition-colors duration-200"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5.882V19.24a1.76 1.76 0 01-2.94.87L4.5 17.5H2.5A1.5 1.5 0 011 16V8a1.5 1.5 0 011.5-1.5h2l3.56-3.487A1.76 1.76 0 0111 5.882z" />
+                      {sfxMuted
+                        ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9l6 6M23 9l-6 6" />
+                        : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.5 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" />}
+                    </svg>
+                  </button>
                   <h3 className="font-subheading text-2xl font-semibold text-gray-800 dark:text-white mb-2 tracking-tight">Send Me a Message</h3>
                   <p className="text-gray-600 dark:text-gray-300">I'll get back to you as soon as possible.</p>
                 </div>
