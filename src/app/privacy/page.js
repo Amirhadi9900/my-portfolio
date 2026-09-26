@@ -9,7 +9,7 @@ const sections = [
     heading: 'The short version',
     body: [
       'I am Amirhadi Borjian, I run this site myself, and I am the one deciding what happens to anything you send through it.',
-      'The form emails me. That is all it does. This site has no database, no analytics, no advertising and sets no cookies of its own, so your message is not stored anywhere on the site and is not used to profile or track you.',
+      'The form emails me. That is all it does. This site has no database, no analytics and no advertising, and it sets no cookies of its own, so your message is not stored anywhere on the site and is not used to profile you or make any automated decision about you. The one thing on the page that is not mine is the CAPTCHA, which Cloudflare serves from its own domain and may set its own cookies there.',
     ],
   },
   {
@@ -17,20 +17,22 @@ const sections = [
     body: [
       'The four things you type in: your name, your email address, a subject and the message itself. None of that leaves your browser until you press Send. The one exception is the CAPTCHA widget, which loads from Cloudflare while the form is on screen, so Cloudflare sees that request the way any server would.',
       'Your email address is used to reply to you, and for nothing else. Your name is used to address the reply.',
+      'Giving me any of it is entirely voluntary. There is no contract and no legal rule that makes you fill in this form. You can send me a first name, a nickname, or a disposable address if you would rather not attach your real one, and the message still reaches me. The only consequence of leaving it blank is that I have no way to answer you.',
     ],
   },
   {
     heading: 'Where the message goes',
     body: [
       'Your browser posts the form to this site, the site verifies that you are not a bot, and then hands the message to Gmail, which delivers it to my personal inbox. Once it is delivered, it simply lives in that inbox as an email.',
-      'Three services take part in that trip and so process some of your data: Cloudflare, which runs the CAPTCHA check; Google, which delivers and stores the email; and Vercel, which hosts this site. Vercel keeps platform-level logs about requests as part of running the infrastructure, which is their processing rather than mine.',
+      'Three services take part in that trip and so process some of your data: Cloudflare, which runs the CAPTCHA check; Google, which delivers and stores the email; and Vercel, which hosts this site. Vercel records each request it serves, which is their infrastructure logging rather than my processing, and it is the reason the wording about storing nothing below says "on this site" rather than "anywhere".',
     ],
   },
   {
     heading: 'Your IP address',
     body: [
       'Your IP address is used for two narrow, technical purposes: it is passed to Cloudflare as part of verifying the CAPTCHA, and it is used to rate-limit how many messages one address can send in a minute.',
-      'For rate limiting it is held only in the memory of one running server instance and is discarded within about a minute. It is never written to disk by this site, it is not attached to the email I receive, and it is not combined with anything else about you.',
+      'For rate limiting it is held only in the memory of one running server instance, and is thrown out once the window closes and the next cleanup pass runs, which works out at a couple of minutes at the very most. It is not written to disk by this site, not attached to the email I receive, and not combined with anything else about you.',
+      'The one place your IP can outlive that is Vercel, the hosting platform, which records it against the request like almost any web server would. That is their infrastructure logging, not a database I keep, and it is the honest reason the sentence above says "by this site".',
     ],
   },
   {
@@ -43,6 +45,7 @@ const sections = [
     heading: 'Legal basis',
     body: [
       'Under the GDPR I rely on your consent, because you choose to send the message. Where your message is an enquiry about working together, I also rely on taking steps at your request before entering into a contract.',
+      'I do not rely on legitimate interests for anything here, so there is no balancing test of my rights against yours to read through.',
     ],
   },
   {
@@ -66,8 +69,8 @@ const sections = [
   {
     heading: 'Your rights, and how to use them here',
     body: [
-      'You can ask to access what I hold about you, to have it corrected, to have it deleted, to restrict or object to how it is processed, and to receive a copy of it. If you consented, you can withdraw that consent at any time, which does not affect anything that already happened.',
-      'To do any of this, send me a message through the form on this site and say what you want. One honest caveat: because there is no database, a deletion request means I search my inbox for messages from your address and delete them, rather than clearing a row out of a table.',
+      'You can ask to access what I hold about you, to have it corrected, to have it deleted, to restrict or object to how it is processed, and to receive a copy of it. You can withdraw your consent at any time; because the only processing here is your message sitting in an inbox, asking me to delete it is what withdrawal looks like in practice. Withdrawing does not affect anything that already happened.',
+      'To do any of this, send me a message through the form on this site and say what you want. That is deliberately the only contact channel I publish: I am one person with no staff and no data protection officer, and I would rather not put a bare email address on a public page for scrapers to find. One honest caveat: because there is no database, a deletion request means I search my inbox for messages from your address and delete them, rather than clearing a row out of a table.',
       'If you are not satisfied with how I handle your data you can complain to your data protection authority. If you are in Finland, that is the Office of the Data Protection Ombudsman (tietosuojavaltuutetun toimisto).',
     ],
   },
@@ -80,7 +83,7 @@ const sections = [
   {
     heading: 'Changes to this page',
     body: [
-      'If what I do with submissions changes, this page changes with it and the date below moves. The form itself links here, so the notice stays next to the thing it describes.',
+      'If what I do with submissions changes, this page changes with it and the date at the top moves. The notice also sits directly above the Send button, so you read it at the moment it matters rather than only if you go looking for it.',
     ],
   },
 ];

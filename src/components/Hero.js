@@ -215,7 +215,7 @@ export default function Hero() {
               <span className="cursor-blink" aria-hidden="true">_</span>
             </span>
             <span className="block mt-[1.625em]">
-              I develop modern, secure, and responsive webapps with clean code and user-centric designs
+              I develop modern, secure, and responsive web apps with clean code and user-centric designs
               <span className="cursor-blink" aria-hidden="true">_</span>
             </span>
           </motion.p>

@@ -62,7 +62,7 @@ export default function TurnstileField({ widgetKey = 0, onTokenChange }) {
         </p>
       )}
       <p className="text-xs text-gray-500 dark:text-gray-400">
-        Protected by Cloudflare Turnstile. Most visitors pass automatically.
+        Protected by Cloudflare Turnstile.
       </p>
     </div>
   );

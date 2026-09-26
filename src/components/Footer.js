@@ -75,6 +75,13 @@ export default function Footer() {
                     <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Contact
                   </Link>
                 </li>
+                {/* The only entry here that is a route rather than a section, so it
+                    must not take the scrollToId handler the four above share. */}
+                <li>
+                  <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Privacy
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -162,14 +169,6 @@ export default function Footer() {
           {/* The route is prerendered, so this text node can disagree with the
               client for a few hours after the year rolls over, until the next deploy. */}
           <p suppressHydrationWarning>© {currentYear} Amirhadi Borjian. All rights reserved.</p>
-          <p className="mt-2 text-sm">
-            <Link
-              href="/privacy"
-              className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-            >
-              Privacy
-            </Link>
-          </p>
           <p className="mt-2 text-sm group relative inline-block">
             Designed and developed with 
             <span className="relative inline-block mx-2">
