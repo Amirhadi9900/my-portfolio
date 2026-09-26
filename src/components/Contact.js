@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CONTACT_LIMITS, validateContactField } from '../lib/contact-security';
@@ -24,15 +24,19 @@ export default function Contact() {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
-  const [isMounted, setIsMounted] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState(null);
   const [turnstileWidgetKey, setTurnstileWidgetKey] = useState(0);
   const [captchaError, setCaptchaError] = useState('');
   const [sfxMuted, setSfxMuted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
     setSfxMuted(isContactSfxMuted());
+    // Landed on from an in-page anchor: the element exists now, so re-center it
+    // once the sections below have had a chance to hydrate.
+    const hash = window.location.hash;
+    if (hash === '#contact' || hash === '#contact-form') {
+      requestAnimationFrame(() => scrollToId('contact'));
+    }
   }, []);
 
   function toggleSfx() {
@@ -41,13 +45,16 @@ export default function Contact() {
     setContactSfxMuted(next);
   }
 
-  useEffect(() => {
-    if (!isMounted) return;
-    const hash = window.location.hash;
-    if (hash === '#contact' || hash === '#contact-form') {
-      requestAnimationFrame(() => scrollToId('contact'));
-    }
-  }, [isMounted]);
+  const statusTimer = useRef(null);
+
+  function scheduleStatusClear() {
+    if (statusTimer.current) clearTimeout(statusTimer.current);
+    statusTimer.current = setTimeout(() => setSubmitStatus(null), 6000);
+  }
+
+  useEffect(() => () => {
+    if (statusTimer.current) clearTimeout(statusTimer.current);
+  }, []);
 
   function resetTurnstile() {
     setTurnstileToken(null);
@@ -96,15 +103,25 @@ export default function Contact() {
     errors.message = validateMessage(formData.message);
     const filtered = Object.fromEntries(Object.entries(errors).filter(([, v]) => v));
     setFieldErrors(filtered);
-    return Object.keys(filtered).length === 0;
+    return filtered;
   }
-  
+
+  // Field errors appear next to inputs the user can't see from the Send button,
+  // and nothing else announces them, so move focus to the first offender.
+  function focusField(form, name) {
+    if (!name) return;
+    form.querySelector(`[name="${name}"]`)?.focus();
+  }
+
   const handleSubmit = async (e) => {
+    const form = e.currentTarget;
     e.preventDefault();
     // Opened here, inside the click, so the cue scheduled after the await still plays.
     if (!sfxMuted) unlockContactSfx();
 
-    if (!validateAll()) {
+    const errors = validateAll();
+    if (Object.keys(errors).length) {
+      focusField(form, Object.keys(errors)[0]);
       playContactSfx('error');
       return;
     }
@@ -138,6 +155,7 @@ export default function Contact() {
         }
         if (data.field) {
           setFieldErrors(prev => ({ ...prev, [data.field]: data.error }));
+          focusField(form, data.field);
           resetTurnstile();
           playContactSfx('error');
           return;
@@ -150,14 +168,14 @@ export default function Contact() {
       setFieldErrors({});
       resetTurnstile();
       playContactSfx('success');
-      setTimeout(() => setSubmitStatus(null), 6000);
+      scheduleStatusClear();
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmitStatus('error');
       setErrorMessage(error.message);
       resetTurnstile();
       playContactSfx('error');
-      setTimeout(() => setSubmitStatus(null), 6000);
+      scheduleStatusClear();
     } finally {
       setIsSubmitting(false);
     }
@@ -168,105 +186,10 @@ export default function Contact() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
   };
 
-  if (!isMounted) {
-    return (
-      <section id="contact" className={CONTACT_SECTION_CLASS}>
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="font-subheading text-gray-800 dark:text-white text-3xl md:text-4xl font-semibold mb-4">Get In Touch</h2>
-            <p className="text-gray-700 dark:text-gray-300 subtitle-blink">Have a project in mind? Let's talk about it :)</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <div className="space-y-6">
-              <h3 className="font-subheading text-2xl font-semibold text-gray-800 dark:text-white">Contact Information</h3>
-              <p className="text-gray-700 dark:text-gray-300">
-                Feel free to reach out if you have any questions or if you'd like to work together.
-                I'm always open to new projects and opportunities.
-              </p>
-              
-              <div className="space-y-4">
-                {/* Email placeholder */}
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg mr-4">
-                    <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 dark:text-white">Email</h4>
-                    <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
-                      Send a message
-                    </Link>
-                  </div>
-                </div>
-                
-                {/* Location placeholder */}
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg mr-4">
-                    <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 dark:text-white">Location</h4>
-                    <p className="text-gray-700 dark:text-gray-300">Available remotely worldwide and onsite in Finland</p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Social links placeholder */}
-              <div className="mt-8">
-                <h4 className="font-semibold mb-3 text-gray-800 dark:text-white">Follow Me</h4>
-                <div className="flex space-x-4">
-                  {/* Social icons placeholders */}
-                  <span className="w-6 h-6 text-gray-700 dark:text-gray-300"></span>
-                  <span className="w-6 h-6 text-gray-700 dark:text-gray-300"></span>
-                  <span className="w-6 h-6 text-gray-700 dark:text-gray-300"></span>
-                </div>
-              </div>
-            </div>
-            
-            {/* Form placeholder */}
-            <div>
-              <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6">
-                <div className="mb-4">
-                  <label className="block mb-2 text-sm font-medium text-gray-800 dark:text-white">Your Name</label>
-                  <div className="w-full h-10 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800"></div>
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block mb-2 text-sm font-medium text-gray-800 dark:text-white">Your Email</label>
-                  <div className="w-full h-10 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800"></div>
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block mb-2 text-sm font-medium text-gray-800 dark:text-white">Subject</label>
-                  <div className="w-full h-10 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800"></div>
-                </div>
-                
-                <div className="mb-6">
-                  <label className="block mb-2 text-sm font-medium text-gray-800 dark:text-white">Your Message</label>
-                  <div className="w-full h-32 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-800"></div>
-                </div>
-                
-                <div className="w-full py-3 px-4 text-white font-heading font-semibold rounded-md bg-blue-600 dark:bg-blue-500">
-                  Send Message
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section id="contact" className={CONTACT_SECTION_CLASS}>
       {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70"></div>
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70"></div>
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl"></div>
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/10 dark:bg-purple-700/10 rounded-full blur-3xl"></div>
       
@@ -426,9 +349,11 @@ export default function Contact() {
                       maxLength={CONTACT_LIMITS.name}
                       className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.name ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="John Doe"
+                      aria-invalid={!!fieldErrors.name}
+                      aria-describedby={fieldErrors.name ? 'name-error' : undefined}
                     />
                     {fieldErrors.name && (
-                      <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.name}</p>
+                      <p id="name-error" className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.name}</p>
                     )}
                   </div>
                   
@@ -445,9 +370,11 @@ export default function Contact() {
                       maxLength={CONTACT_LIMITS.email}
                       className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.email ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="john@example.com"
+                      aria-invalid={!!fieldErrors.email}
+                      aria-describedby={fieldErrors.email ? 'email-error' : undefined}
                     />
                     {fieldErrors.email && (
-                      <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.email}</p>
+                      <p id="email-error" className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.email}</p>
                     )}
                   </div>
                   
@@ -464,9 +391,11 @@ export default function Contact() {
                       maxLength={CONTACT_LIMITS.subject}
                       className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.subject ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="Project Inquiry"
+                      aria-invalid={!!fieldErrors.subject}
+                      aria-describedby={fieldErrors.subject ? 'subject-error' : undefined}
                     />
                     {fieldErrors.subject && (
-                      <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.subject}</p>
+                      <p id="subject-error" className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.subject}</p>
                     )}
                   </div>
                   
@@ -483,9 +412,11 @@ export default function Contact() {
                       maxLength={CONTACT_LIMITS.message}
                       className={`w-full px-5 py-3 bg-gray-50/50 dark:bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 dark:text-white transition-colors duration-200 ${fieldErrors.message ? 'border-red-400 dark:border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       placeholder="Hello, I'd like to discuss a project..."
+                      aria-invalid={!!fieldErrors.message}
+                      aria-describedby={fieldErrors.message ? 'message-error' : undefined}
                     ></textarea>
                     {fieldErrors.message && (
-                      <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.message}</p>
+                      <p id="message-error" className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.message}</p>
                     )}
                   </div>
 
@@ -498,20 +429,20 @@ export default function Contact() {
                       }}
                     />
                     {captchaError && (
-                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">{captchaError}</p>
+                      <p role="alert" className="mt-2 text-sm text-red-600 dark:text-red-400">{captchaError}</p>
                     )}
                   </div>
                   
                   <button
                     type="submit"
-                    disabled={isSubmitting || !turnstileToken}
+                    disabled={isSubmitting}
                     className="btn-primary-block"
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
                   </button>
                   
                   {submitStatus === 'success' && (
-                    <div className="mt-6 p-4 bg-[#0d1117] rounded-lg border border-green-500/20 font-mono text-sm">
+                    <div role="status" className="mt-6 p-4 bg-[#0d1117] rounded-lg border border-green-500/20 font-mono text-sm">
                       <div className="flex items-center gap-2 text-green-400">
                         <span className="text-green-500">&#10003;</span>
                         <span className="text-gray-500">~/contact $</span>
@@ -524,7 +455,7 @@ export default function Contact() {
                   )}
                   
                   {submitStatus === 'error' && (
-                    <div className="mt-6 p-4 bg-red-50/80 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg border border-red-100 dark:border-red-900/50 flex items-center">
+                    <div role="alert" className="mt-6 p-4 bg-red-50/80 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg border border-red-100 dark:border-red-900/50 flex items-center">
                       <svg className="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>

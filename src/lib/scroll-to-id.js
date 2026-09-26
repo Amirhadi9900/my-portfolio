@@ -12,7 +12,10 @@ export function scrollToId(id, event) {
   const element = document.getElementById(id);
   if (!element) return;
 
-  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // 'auto' defers to the CSS `scroll-behavior` on <html>, which globals.css
+  // switches off under prefers-reduced-motion. Hardcoding 'smooth' here would
+  // override that and keep animating for users who asked us not to.
+  element.scrollIntoView({ behavior: 'auto', block: 'start' });
 
   const nextHash = `#${id}`;
   if (window.location.hash !== nextHash) {

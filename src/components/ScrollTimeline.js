@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { scrollToId } from '../lib/scroll-to-id';
 
 const SECTIONS = [
@@ -15,6 +15,7 @@ const SECTIONS = [
 export default function ScrollTimeline() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => {
@@ -44,53 +45,55 @@ export default function ScrollTimeline() {
       aria-label="Page sections"
     >
       <div className="relative bg-white/70 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-200/80 dark:border-gray-700/60 shadow-[0_8px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] p-2.5">
-        {/* Progress track behind buttons */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-5 bottom-14 w-[2px] rounded-full bg-gray-200 dark:bg-gray-700/50" />
-        <div
-          className="absolute left-1/2 -translate-x-1/2 top-5 w-[2px] rounded-full bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500 transition-all duration-500 ease-out"
-          style={{ height: `calc(${scrollProgress * 100}% - 56px)`, maxHeight: 'calc(100% - 56px)' }}
-        />
+        {/* Progress track behind buttons. The fill is nested so its percentage
+            resolves against the track rather than the whole card. */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-5 bottom-14 w-[2px] rounded-full bg-gray-200 dark:bg-gray-700/50">
+          <div
+            className="absolute left-0 top-0 w-full rounded-full bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500 transition-all duration-500 ease-out"
+            style={{ height: `${Math.round(scrollProgress * 100)}%` }}
+          />
+        </div>
 
         <div className="relative flex flex-col gap-3">
           {SECTIONS.map((section, index) => {
             const isActive = index === activeIndex;
             const isPast = index < activeIndex;
             return (
-              <div key={section.id} className="relative">
-                <button
-                  onClick={() => scrollToId(section.id)}
-                  aria-label={`Go to ${section.label}`}
-                  className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                    isActive
-                      ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-[0_4px_15px_rgba(59,130,246,0.4)]'
-                      : isPast
-                        ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50'
-                        : 'bg-gray-100 dark:bg-gray-800/60 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700/60 hover:text-gray-700 dark:hover:text-gray-300'
-                  }`}
+              <button
+                key={section.id}
+                type="button"
+                onClick={() => scrollToId(section.id)}
+                aria-label={`Go to ${section.label}`}
+                aria-current={isActive ? 'true' : undefined}
+                className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                  isActive
+                    ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-[0_4px_15px_rgba(59,130,246,0.4)]'
+                    : isPast
+                      ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50'
+                      : 'bg-gray-100 dark:bg-gray-800/60 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700/60 hover:text-gray-700 dark:hover:text-gray-300'
+                }`}
+              >
+                <svg
+                  className="w-[18px] h-[18px]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={isActive ? 2.2 : 1.8}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <svg
-                    className="w-[18px] h-[18px]"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={isActive ? 2.2 : 1.8}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d={section.icon} />
-                  </svg>
+                  <path d={section.icon} />
+                </svg>
 
-                  {isActive && (
-                    <motion.span
-                      className="absolute inset-0 rounded-xl border-2 border-blue-400/50"
-                      initial={{ scale: 1, opacity: 0.6 }}
-                      animate={{ scale: 1.25, opacity: 0 }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    />
-                  )}
-                </button>
-
-              </div>
+                {isActive && !reduceMotion && (
+                  <motion.span
+                    className="absolute inset-0 rounded-xl border-2 border-blue-400/50"
+                    initial={{ scale: 1, opacity: 0.6 }}
+                    animate={{ scale: 1.25, opacity: 0 }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
+                )}
+              </button>
             );
           })}
         </div>

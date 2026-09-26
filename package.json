@@ -16,7 +16,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "description": "Personal portfolio and penetration-testing showcase for Amirhadi Borjian Yazdi",
   "dependencies": {
     "@marsidev/react-turnstile": "^1.6.0",
     "autoprefixer": "^10.4.16",

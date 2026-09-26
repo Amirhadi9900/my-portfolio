@@ -14,23 +14,28 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
-      
-      // Set active link based on scroll position
-      const sections = document.querySelectorAll('section[id]');
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = '#' + section.getAttribute('id');
-        
-        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-          setActiveLink(sectionId);
-        }
-      });
+
+      // Resolve the section under the header, and clear the highlight when none
+      // matches — previously a stale section stayed active after scrolling away.
+      const probe = window.scrollY + 100;
+      const current = [...document.querySelectorAll('section[id]')].find(
+        (section) => probe >= section.offsetTop && probe < section.offsetTop + section.offsetHeight
+      );
+      setActiveLink(current ? `#${current.getAttribute('id')}` : '#');
     };
-    
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!isMenuOpen) return undefined;
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setIsMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isMenuOpen]);
 
   const navLinks = [
     { href: '#about', label: 'About' },
@@ -149,8 +154,15 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <motion.button
           className="p-2 rounded-full bg-blue-800/50 border border-blue-700/30 text-white md:hidden hover:bg-blue-700/70 transition-colors"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => {
+            // Re-opening mid-exit cancels onExitComplete, so a queued link tap would
+            // otherwise survive and fire on some later, unrelated close.
+            pendingMobileScrollId.current = null;
+            setIsMenuOpen(!isMenuOpen);
+          }}
           aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-nav"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           whileTap={{ scale: 0.9 }}
@@ -185,6 +197,7 @@ export default function Header() {
       >
         {isMenuOpen && (
           <motion.nav 
+            id="mobile-nav"
             className="container py-4 md:hidden"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}

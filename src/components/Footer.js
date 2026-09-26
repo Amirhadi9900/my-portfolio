@@ -47,7 +47,7 @@ export default function Footer() {
           className="grid grid-cols-1 md:grid-cols-3 gap-10 pt-8 border-t border-gray-800"
         >
           {/* Quick Links Section */}
-          <div className="transform-gpu hover:translate-z-2 transition-all duration-300">
+          <div className="transform-gpu hover:-translate-y-0.5 transition-all duration-300">
             <h3 className="font-subheading text-lg font-semibold mb-5 relative inline-block">
               <span className="relative z-10">Navigation</span>
               <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
@@ -80,7 +80,7 @@ export default function Footer() {
           </div>
           
           {/* Contact Section */}
-          <div className="transform-gpu hover:translate-z-2 transition-all duration-300">
+          <div className="transform-gpu hover:-translate-y-0.5 transition-all duration-300">
             <h3 className="font-subheading text-lg font-semibold mb-5 relative inline-block">
               <span className="relative z-10">Contact</span>
               <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
@@ -109,7 +109,7 @@ export default function Footer() {
           </div>
           
           {/* Connect Section */}
-          <div className="transform-gpu hover:translate-z-2 transition-all duration-300">
+          <div className="transform-gpu hover:-translate-y-0.5 transition-all duration-300">
             <h3 className="font-subheading text-lg font-semibold mb-5 relative inline-block">
               <span className="relative z-10">Connect</span>
               <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
@@ -159,7 +159,9 @@ export default function Footer() {
           viewport={{ once: true }}
           className="container max-w-6xl mx-auto text-center text-gray-400"
         >
-          <p>© {currentYear} Amirhadi Borjian. All rights reserved.</p>
+          {/* The route is prerendered, so this text node can disagree with the
+              client for a few hours after the year rolls over, until the next deploy. */}
+          <p suppressHydrationWarning>© {currentYear} Amirhadi Borjian. All rights reserved.</p>
           <p className="mt-2 text-sm group relative inline-block">
             Designed and developed with 
             <span className="relative inline-block mx-2">

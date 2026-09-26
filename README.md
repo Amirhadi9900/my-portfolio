@@ -33,7 +33,7 @@ Personal portfolio website showcasing Android and web development work, skills, 
 
 ### Prerequisites
 
-- Node.js 18.18 or later
+- Node.js 20.9 or later (CI runs on 24)
 - npm
 
 ### Installation
@@ -83,23 +83,40 @@ npm start
 
 ```
 myportfolio/
-├── public/                 # Static assets (images, icons, flags)
+├── public/                     # Static assets (images, flags)
+├── scripts/
+│   └── verify-rate-limit.mjs   # Live regression test for the contact API guards
 ├── src/
 │   ├── app/
-│   │   ├── api/contact/    # Contact form API route
-│   │   ├── layout.js       # Root layout and font loading
-│   │   └── page.js         # Home page
-│   ├── components/         # UI sections and widgets
+│   │   ├── api/contact/        # Contact form API route
+│   │   ├── icon.svg            # Favicon
+│   │   ├── layout.js           # Root layout, fonts and site metadata
+│   │   └── page.js             # Home page
+│   ├── components/             # UI sections and widgets
 │   ├── lib/
-│   │   ├── contact-security.js  # Input validation and sanitization
-│   │   └── turnstile.js         # Turnstile server verification
-│   └── styles/
-│       └── globals.css     # Global styles and Tailwind layers
-├── .env.example            # Environment variable template
-├── next.config.js          # Next.js config and security headers
+│   │   ├── contact-security.js # Input validation and sanitization
+│   │   ├── scroll-to-id.js     # Hash-free smooth scrolling shared by nav widgets
+│   │   ├── sfx.js              # Web Audio contact-form cues
+│   │   └── turnstile.js        # Turnstile server verification
+│   ├── styles/
+│   │   └── globals.css         # Global styles and Tailwind layers
+│   └── instrumentation.js      # Startup env checks
+├── .env.example                # Environment variable template
+├── .github/workflows/ci.yml    # Build, audit and security regression job
+├── next.config.js              # Next.js config and security headers
 ├── tailwind.config.js
 └── package.json
 ```
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start the dev server on port 3000 |
+| `npm run build` | Production build |
+| `npm start` | Serve the production build |
+| `npm run audit` | `npm audit` for production dependencies only |
+| `npm run test:security` | Hit a **running** server and assert the rate limit cannot be bypassed by rotating `X-Forwarded-For`, and that a request with no `Origin` is refused. Requires `npm start` (or `npm run dev`) first |
 
 ## Customization
 

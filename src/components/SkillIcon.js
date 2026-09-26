@@ -32,13 +32,14 @@ import {
   siHashcat,
   siPostman,
   siGnubash,
+  siReact,
 } from 'simple-icons';
 
 const SKILL_ICONS = {
   'Kotlin': siKotlin,
   'Jetpack Compose': siJetpackcompose,
-  'React Native': null,
   'Gradle (KTS)': siGradle,
+  'React Native': siReact,
   'CI/CD Pipelines': siGithubactions,
   'Next.js': siNextdotjs,
   'TypeScript': siTypescript,
@@ -70,8 +71,6 @@ const SKILL_ICONS = {
   'Hashcat': siHashcat,
   'Postman': siPostman,
   'Bash Scripting': siGnubash,
-  'VS Code': null,
-  'AWS': null,
 };
 
 // simple-icons ships some marks as pure white (Hashcat), which would be invisible on
@@ -80,7 +79,6 @@ function BrandIcon({ icon, className = 'w-7 h-7' }) {
   const hex = icon.hex.toLowerCase() === 'ffffff' ? '000000' : icon.hex;
   return (
     <svg
-      role="img"
       viewBox="0 0 24 24"
       className={className}
       aria-hidden="true"
@@ -90,19 +88,8 @@ function BrandIcon({ icon, className = 'w-7 h-7' }) {
   );
 }
 
-function ReactNativeIcon({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="12" r="2.05" fill="#61DAFB" />
-      <g stroke="#61DAFB" strokeWidth="1.1" fill="none">
-        <ellipse cx="12" cy="12" rx="10" ry="3.8" />
-        <ellipse cx="12" cy="12" rx="10" ry="3.8" transform="rotate(60 12 12)" />
-        <ellipse cx="12" cy="12" rx="10" ry="3.8" transform="rotate(120 12 12)" />
-      </g>
-    </svg>
-  );
-}
-
+// simple-icons dropped the Visual Studio Code and Amazon Web Services marks, so
+// their official path data is vendored here rather than approximated.
 function VSCodeIcon({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="#007ACC" aria-hidden="true">
@@ -120,7 +107,6 @@ function AWSIcon({ className }) {
 }
 
 const CUSTOM_ICONS = {
-  'React Native': ReactNativeIcon,
   'VS Code': VSCodeIcon,
   'AWS': AWSIcon,
 };
@@ -133,6 +119,11 @@ export default function SkillIcon({ name, className = 'w-7 h-7' }) {
 
   const icon = SKILL_ICONS[name];
   if (!icon) {
+    // An unmapped name used to render a blank chip in silence, which is how a
+    // typo hides itself in a grid you have looked at a hundred times.
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(`SkillIcon: no icon mapped for "${name}"`);
+    }
     return null;
   }
 
