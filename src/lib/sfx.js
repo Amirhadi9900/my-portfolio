@@ -1,5 +1,5 @@
 const MUTE_KEY = 'portfolio:contact-sfx-muted';
-const MASTER_GAIN = 0.25;
+const MASTER_GAIN = 0.5;
 
 let audioCtx = null;
 let masterGain = null;
