@@ -162,6 +162,14 @@ export default function Footer() {
           {/* The route is prerendered, so this text node can disagree with the
               client for a few hours after the year rolls over, until the next deploy. */}
           <p suppressHydrationWarning>© {currentYear} Amirhadi Borjian. All rights reserved.</p>
+          <p className="mt-2 text-sm">
+            <Link
+              href="/privacy"
+              className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
+            >
+              Privacy
+            </Link>
+          </p>
           <p className="mt-2 text-sm group relative inline-block">
             Designed and developed with 
             <span className="relative inline-block mx-2">

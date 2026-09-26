@@ -26,10 +26,10 @@
 }
 
 /* Tailwind's preflight makes links inherit their underline; nothing here wants
-   one. `!important` is what beats the `underline` utility, so the old
-   `a:link`/`:hover`/`:active` twins of this rule were pure duplication. */
+   one. No !important, so a deliberate `underline` utility on a single link can
+   still win — the old !important made that impossible site-wide. */
 a {
-  text-decoration: none !important;
+  text-decoration: none;
 }
 
 @layer components {

@@ -1,0 +1,144 @@
+export const metadata = {
+  title: 'Privacy and how I handle your message - Amirhadi Borjian Yazdi',
+  description:
+    'What the contact form on this site collects, where the message actually goes, how long it is kept, and how to ask for it to be deleted.',
+};
+
+const sections = [
+  {
+    heading: 'The short version',
+    body: [
+      'I am Amirhadi Borjian, I run this site myself, and I am the one deciding what happens to anything you send through it.',
+      'The form emails me. That is all it does. This site has no database, no analytics, no advertising and sets no cookies of its own, so your message is not stored anywhere on the site and is not used to profile or track you.',
+    ],
+  },
+  {
+    heading: 'What I collect when you submit the form',
+    body: [
+      'The four things you type in: your name, your email address, a subject and the message itself. None of that leaves your browser until you press Send. The one exception is the CAPTCHA widget, which loads from Cloudflare while the form is on screen, so Cloudflare sees that request the way any server would.',
+      'Your email address is used to reply to you, and for nothing else. Your name is used to address the reply.',
+    ],
+  },
+  {
+    heading: 'Where the message goes',
+    body: [
+      'Your browser posts the form to this site, the site verifies that you are not a bot, and then hands the message to Gmail, which delivers it to my personal inbox. Once it is delivered, it simply lives in that inbox as an email.',
+      'Three services take part in that trip and so process some of your data: Cloudflare, which runs the CAPTCHA check; Google, which delivers and stores the email; and Vercel, which hosts this site. Vercel keeps platform-level logs about requests as part of running the infrastructure, which is their processing rather than mine.',
+    ],
+  },
+  {
+    heading: 'Your IP address',
+    body: [
+      'Your IP address is used for two narrow, technical purposes: it is passed to Cloudflare as part of verifying the CAPTCHA, and it is used to rate-limit how many messages one address can send in a minute.',
+      'For rate limiting it is held only in the memory of one running server instance and is discarded within about a minute. It is never written to disk by this site, it is not attached to the email I receive, and it is not combined with anything else about you.',
+    ],
+  },
+  {
+    heading: 'One field you will not see',
+    body: [
+      'The form carries a hidden field that a real person never fills in. If something does fill it in, I treat that submission as a bot: no email is sent to me and nothing is kept. It is there to catch automation, not to collect anything from you.',
+    ],
+  },
+  {
+    heading: 'Legal basis',
+    body: [
+      'Under the GDPR I rely on your consent, because you choose to send the message. Where your message is an enquiry about working together, I also rely on taking steps at your request before entering into a contract.',
+    ],
+  },
+  {
+    heading: 'How long I keep it',
+    body: [
+      'Only as long as it takes to reply to you and to follow up on whatever we discuss. A message that has gone nowhere gets deleted rather than filed. There is no automatic purge timer I can point you at, because the messages sit in a normal email inbox that I curate by hand, so if you would like yours gone, ask and it goes.',
+    ],
+  },
+  {
+    heading: 'Sending anything sensitive',
+    body: [
+      'The connection between you and this site, and between this site and Gmail, is encrypted. Email itself is not end-to-end encrypted, though, so please do not send me anything you would not want sitting in an inbox: passwords, card or bank details, national ID numbers, or health information.',
+    ],
+  },
+  {
+    heading: 'Transfers outside the EU',
+    body: [
+      'Google, Cloudflare and Vercel may process data outside the European Union, including in the United States. Each of them relies on the EU-US Data Privacy Framework or on standard contractual clauses for those transfers.',
+    ],
+  },
+  {
+    heading: 'Your rights, and how to use them here',
+    body: [
+      'You can ask to access what I hold about you, to have it corrected, to have it deleted, to restrict or object to how it is processed, and to receive a copy of it. If you consented, you can withdraw that consent at any time, which does not affect anything that already happened.',
+      'To do any of this, send me a message through the form on this site and say what you want. One honest caveat: because there is no database, a deletion request means I search my inbox for messages from your address and delete them, rather than clearing a row out of a table.',
+      'If you are not satisfied with how I handle your data you can complain to your data protection authority. If you are in Finland, that is the Office of the Data Protection Ombudsman (tietosuojavaltuutetun toimisto).',
+    ],
+  },
+  {
+    heading: 'Local storage on your device',
+    body: [
+      'The only thing kept on your side is one preference: whether the sound effects on the contact form are muted. It is stored in your browser\u2019s local storage, contains nothing about you, and disappears if you clear your site data.',
+    ],
+  },
+  {
+    heading: 'Changes to this page',
+    body: [
+      'If what I do with submissions changes, this page changes with it and the date below moves. The form itself links here, so the notice stays next to the thing it describes.',
+    ],
+  },
+];
+
+export default function PrivacyPage() {
+  return (
+    <div className="min-h-screen">
+      {/* Plain anchors, not next/link: this page is a server component with no client
+          JS at all, and a real document load is what makes the #contact anchor
+          actually scroll on arrival. */}
+      <header className="border-b border-white/10 bg-gradient-to-r from-blue-900/70 via-blue-800/70 to-blue-900/70 backdrop-blur-md">
+        <div className="container flex items-center justify-between py-5">
+          <a href="/" className="font-heading text-xl font-semibold text-white no-underline">
+            <span className="mr-2">Amirhadi</span>
+            <span className="font-light logo-gradient">Borjian</span>
+          </a>
+          <a
+            href="/#contact"
+            className="font-mono text-sm text-blue-200 hover:text-white transition-colors no-underline"
+          >
+            &larr; Back to the site
+          </a>
+        </div>
+      </header>
+
+      <main id="main" className="container max-w-3xl py-12 md:py-16">
+        <h1 className="font-subheading text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
+          Privacy
+        </h1>
+        <p className="mt-3 font-mono text-sm text-gray-400">
+          How the contact form handles what you send me.
+        </p>
+        <p className="mt-1 font-mono text-xs text-gray-400">Last updated 27 September 2026</p>
+
+        <div className="mt-10 space-y-10">
+          {sections.map((section) => (
+            <section key={section.heading}>
+              <h2 className="font-subheading text-xl md:text-2xl font-semibold text-white">
+                {section.heading}
+              </h2>
+              {section.body.map((paragraph) => (
+                <p
+                  key={paragraph}
+                  className="mt-3 text-gray-300 leading-relaxed font-light"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </section>
+          ))}
+        </div>
+
+        <p className="mt-12 pt-6 border-t border-white/10 text-sm text-gray-400">
+          This is a plain-language notice written to match what the code on this site actually
+          does, not a generated policy. If anything here is unclear, the form is a good way to
+          ask about it.
+        </p>
+      </main>
+    </div>
+  );
+}

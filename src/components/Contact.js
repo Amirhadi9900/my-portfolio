@@ -433,6 +433,18 @@ export default function Contact() {
                     )}
                   </div>
                   
+                  <p className="-mt-2 mb-5 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+                    Sending this emails me directly. There is no database here, so your message is
+                    not stored on the site or used to track you.{' '}
+                    <Link
+                      href="/privacy"
+                      className="underline decoration-gray-400/50 underline-offset-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    >
+                      How I handle it
+                    </Link>
+                    .
+                  </p>
+
                   <button
                     type="submit"
                     disabled={isSubmitting}
