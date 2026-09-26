@@ -15,16 +15,8 @@ if (typeof window === 'undefined' && typeof globalThis.localStorage !== 'undefin
 }
 
 /** @type {import('next').NextConfig} */
-// Turbopack's dev overlay needs eval; a production bundle does not, so drop it there.
-// 'unsafe-inline' stays because Next injects an inline bootstrap script and the
-// Hero section relies on inline style attributes.
-const scriptSrc = [
-  "'self'",
-  "'unsafe-inline'",
-  'https://challenges.cloudflare.com',
-  ...(process.env.NODE_ENV === 'production' ? [] : ["'unsafe-eval'"]),
-].join(' ');
-
+// The Content-Security-Policy header is set per request in src/proxy.js so it can
+// carry a nonce. Everything static lives here.
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
@@ -64,26 +56,6 @@ const nextConfig = {
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
           { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
           { key: 'X-Permitted-Cross-Domain-Policies', value: 'none' },
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              `script-src ${scriptSrc}`,
-              "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https://images.unsplash.com https://cdn.simpleicons.org https://flagcdn.com",
-              "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://challenges.cloudflare.com",
-              "frame-src 'self' https://challenges.cloudflare.com",
-              "frame-ancestors 'none'",
-              "base-uri 'self'",
-              "form-action 'self'",
-              "object-src 'none'",
-              "worker-src 'self'",
-              "manifest-src 'self'",
-              "media-src 'self'",
-              "upgrade-insecure-requests",
-            ].join('; '),
-          },
         ],
       },
       {
