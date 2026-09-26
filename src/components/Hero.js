@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { scrollToId } from '../lib/scroll-to-id';
 
-const ROLES = ['Software Developer', 'Android Developer', 'Web Developer'];
+const ROLES = ['Pentester', 'Android Developer', 'Web Developer'];
 
 export default function Hero() {
   const [typedText, setTypedText] = useState('');
@@ -14,6 +14,7 @@ export default function Hero() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
   const [isMounted, setIsMounted] = useState(false);
+  const [typingPaused, setTypingPaused] = useState(false);
 
   // Client-side mounting
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function Hero() {
 
   // Typing animation
   useEffect(() => {
-    if (!isMounted) return;
+    if (!isMounted || typingPaused) return;
 
     const handleTyping = () => {
       const currentRole = ROLES[roleIndex];
@@ -49,7 +50,7 @@ export default function Hero() {
 
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
-  }, [charIndex, isDeleting, isMounted, roleIndex, typingSpeed]);
+  }, [charIndex, isDeleting, isMounted, roleIndex, typingPaused, typingSpeed]);
 
   // Animation variants
   const fadeInUp = {
@@ -158,25 +159,24 @@ export default function Hero() {
             >Borjian</span>
           </h1>
 
-          {/* Typing Animation */}
-          <motion.div 
+          {/* Typing Animation — click to pause and resume */}
+          <div
             data-cursor-hover
-            className="text-xl sm:text-2xl md:text-3xl font-light text-slate-300 mb-8 cursor-pointer"
+            role="button"
+            tabIndex={0}
+            aria-pressed={typingPaused}
+            aria-label={typingPaused ? 'Resume the rotating role text' : 'Pause the rotating role text'}
+            title={typingPaused ? 'Click to resume' : 'Click to pause'}
+            onClick={() => setTypingPaused(prev => !prev)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setTypingPaused(prev => !prev);
+              }
+            }}
+            className="text-xl sm:text-2xl md:text-3xl font-light text-slate-300 mb-8 cursor-pointer select-none"
             style={{
-              textShadow: '0 0 10px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)',
-              transformStyle: 'preserve-3d',
-              transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)'
-            }}
-            variants={fadeInUp}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateZ(20px) rotateX(-6deg) rotateY(4deg) scale(1.08)';
-              e.currentTarget.style.textShadow = '0 0 20px rgba(0, 0, 0, 0.9), 2px 2px 8px rgba(0, 0, 0, 1)';
-              e.currentTarget.style.filter = 'drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6))';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateZ(0px) rotateX(0deg) rotateY(0deg) scale(1)';
-              e.currentTarget.style.textShadow = '0 0 10px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)';
-              e.currentTarget.style.filter = 'none';
+              textShadow: '0 0 10px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)'
             }}
           >
             <span 
@@ -184,19 +184,7 @@ export default function Hero() {
               className="text-blue-400 font-bold cursor-pointer inline-block"
               style={{
                 textShadow: '0 0 10px rgba(59, 130, 246, 0.4), 0 0 15px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)',
-                transformStyle: 'preserve-3d',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 marginRight: '0.75rem'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateZ(15px) rotateX(-4deg) rotateY(2deg) scale(1.15)';
-                e.currentTarget.style.textShadow = '0 0 20px rgba(59, 130, 246, 0.8), 0 0 25px rgba(0, 0, 0, 1), 2px 2px 6px rgba(0, 0, 0, 1)';
-                e.currentTarget.style.filter = 'drop-shadow(0 0 15px rgba(59, 130, 246, 0.6)) drop-shadow(0 6px 15px rgba(0, 0, 0, 0.7))';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateZ(0px) rotateX(0deg) rotateY(0deg) scale(1)';
-                e.currentTarget.style.textShadow = '0 0 10px rgba(59, 130, 246, 0.4), 0 0 15px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)';
-                e.currentTarget.style.filter = 'none';
               }}
             >I'm a</span>
             <span 
@@ -208,17 +196,16 @@ export default function Hero() {
             >
               {typedText}
               <span 
-                className="animate-pulse"
                 style={{
                   textShadow: '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(59, 130, 246, 0.6)'
                 }}
               >|</span>
             </span>
-          </motion.div>
+          </div>
 
           {/* Description */}
           <motion.p
-            className="text-lg sm:text-xl text-cyan-300 max-w-2xl mx-auto mb-12 leading-relaxed"
+            className="text-lg sm:text-xl text-cyan-300 mx-auto mb-12 leading-relaxed max-w-xl sm:max-w-2xl lg:max-w-5xl"
             style={{
               textShadow: '0 0 8px rgba(0, 0, 0, 0.8), 1px 1px 3px rgba(0, 0, 0, 0.9)',
               background: 'rgba(0, 0, 0, 0.8)',
@@ -229,7 +216,14 @@ export default function Hero() {
             }}
             variants={fadeInUp}
           >
-            Tech enthusiast and developer specializing in Android and web projects, committed to bringing creative visions to life. I develop modern and responsive websites with clean code and user-centric designs.
+            <span className="block">
+              Tech enthusiast and developer specializing in Android and web projects
+              <span className="cursor-blink" aria-hidden="true">_</span>
+            </span>
+            <span className="block mt-[1.625em]">
+              I develop modern, secure, and responsive webapps with clean code and user-centric designs
+              <span className="cursor-blink" aria-hidden="true">_</span>
+            </span>
           </motion.p>
 
           {/* CTA Buttons */}
