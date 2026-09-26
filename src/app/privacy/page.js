@@ -1,3 +1,6 @@
+import BackToTop from '../../components/BackToTop';
+import MotionProvider from '../../components/MotionProvider';
+
 export const metadata = {
   title: 'Privacy and how I handle your message - Amirhadi Borjian Yazdi',
   description:
@@ -91,9 +94,10 @@ const sections = [
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen">
-      {/* Plain anchors, not next/link: this page is a server component with no client
-          JS at all, and a real document load is what makes the #contact anchor
-          actually scroll on arrival. */}
+      {/* Plain anchors, not next/link: the nav here is deliberately free of client
+          JS, and a real document load is what makes the #contact anchor actually
+          scroll on arrival. The only client components on the page are the back-to-top
+          button and the MotionProvider that makes it honour reduced motion. */}
       <header className="border-b border-white/10 bg-gradient-to-r from-blue-900/70 via-blue-800/70 to-blue-900/70 backdrop-blur-md">
         <div className="container flex items-center justify-between py-5">
           <a href="/" className="font-heading text-xl font-semibold text-white no-underline">
@@ -142,6 +146,10 @@ export default function PrivacyPage() {
           ask about it.
         </p>
       </main>
+
+      <MotionProvider>
+        <BackToTop />
+      </MotionProvider>
     </div>
   );
 }
