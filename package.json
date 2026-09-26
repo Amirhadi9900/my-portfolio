@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": ">=20.9.0"
+    "node": "24.x"
   },
   "description": "Personal portfolio and penetration-testing showcase for Amirhadi Borjian Yazdi",
   "dependencies": {

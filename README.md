@@ -33,7 +33,7 @@ Personal portfolio website showcasing Android and web development work, skills, 
 
 ### Prerequisites
 
-- Node.js 20.9 or later (CI runs on 24)
+- Node.js 24 — `package.json` pins `engines` to `24.x`, which is what CI tests and what Vercel builds with. Next.js itself only requires 20.9 or later, so other versions generally work, but 24 is the supported one.
 - npm
 
 ### Installation
