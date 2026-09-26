@@ -14,22 +14,34 @@ const MAX_REQUESTS = 3;
 
 const rateLimitStore = new Map();
 
-function getAllowedHosts(request) {
+function buildConfiguredOrigins() {
   const hosts = new Set();
-  const requestHost = request.headers.get('host');
-  if (requestHost) hosts.add(requestHost.toLowerCase());
-
-  const extra = process.env.CONTACT_ALLOWED_ORIGINS || '';
-  for (const origin of extra.split(',')) {
-    const trimmed = origin.trim();
+  for (const entry of (process.env.CONTACT_ALLOWED_ORIGINS || '').split(',')) {
+    const trimmed = entry.trim();
     if (!trimmed) continue;
     try {
       hosts.add(new URL(trimmed).host.toLowerCase());
     } catch {
-      // Ignore malformed allowlist entries.
+      console.warn('Ignoring malformed CONTACT_ALLOWED_ORIGINS entry:', trimmed);
     }
   }
+  return hosts;
+}
 
+const CONFIGURED_ORIGINS = buildConfiguredOrigins();
+
+/**
+ * When an allowlist is configured it becomes the only trust anchor. Seeding it from
+ * the request's own Host header made the check self-referential, since both headers
+ * are attacker-supplied in a raw request. With nothing configured we still fall back
+ * to Host so local development works.
+ */
+function getAllowedHosts(request) {
+  if (CONFIGURED_ORIGINS.size) return CONFIGURED_ORIGINS;
+
+  const hosts = new Set();
+  const requestHost = request.headers.get('host');
+  if (requestHost) hosts.add(requestHost.toLowerCase());
   return hosts;
 }
 
@@ -55,6 +67,24 @@ function methodNotAllowed() {
     { error: 'Method not allowed' },
     { status: 405, headers: { Allow: 'POST' } }
   );
+}
+
+/**
+ * The leftmost X-Forwarded-For entry is written by the client, so reading it first
+ * lets an attacker rotate the header and dodge the limiter. Our edge always appends
+ * the true peer address as the last hop, so take that one instead.
+ */
+function getClientIp(request) {
+  const chain = request.headers.get('x-forwarded-for');
+  if (chain) {
+    const hops = chain.split(',').map((hop) => hop.trim()).filter(Boolean);
+    if (hops.length) return hops[hops.length - 1].slice(0, 64);
+  }
+
+  const realIp = request.headers.get('x-real-ip');
+  if (realIp && realIp.trim()) return realIp.trim().slice(0, 64);
+
+  return 'unknown';
 }
 
 function getContactRecipient() {
@@ -129,8 +159,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Request body too large' }, { status: 413 });
     }
 
-    const forwarded = request.headers.get('x-forwarded-for');
-    const ip = forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
+    const ip = getClientIp(request);
 
     if (checkRateLimit(ip)) {
       return NextResponse.json(

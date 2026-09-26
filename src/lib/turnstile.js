@@ -90,7 +90,9 @@ export async function verifyTurnstileToken(token, remoteIp) {
   }
 
   const expectedHost = process.env.TURNSTILE_EXPECTED_HOSTNAME;
-  if (expectedHost && result.hostname && result.hostname !== expectedHost) {
+  // Comparing directly also rejects an absent hostname, which previously
+  // short-circuited the check and let any site's token through.
+  if (expectedHost && result.hostname !== expectedHost) {
     return {
       ok: false,
       error: 'Security verification failed for this site.',

@@ -15,6 +15,16 @@ if (typeof window === 'undefined' && typeof globalThis.localStorage !== 'undefin
 }
 
 /** @type {import('next').NextConfig} */
+// Turbopack's dev overlay needs eval; a production bundle does not, so drop it there.
+// 'unsafe-inline' stays because Next injects an inline bootstrap script and the
+// Hero section relies on inline style attributes.
+const scriptSrc = [
+  "'self'",
+  "'unsafe-inline'",
+  'https://challenges.cloudflare.com',
+  ...(process.env.NODE_ENV === 'production' ? [] : ["'unsafe-eval'"]),
+].join(' ');
+
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
@@ -46,7 +56,6 @@ const nextConfig = {
           },
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           {
             key: 'Permissions-Policy',
@@ -59,7 +68,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
+              `script-src ${scriptSrc}`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https://images.unsplash.com https://cdn.simpleicons.org https://flagcdn.com",
               "font-src 'self' data: https://fonts.gstatic.com",
