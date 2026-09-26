@@ -30,6 +30,8 @@ import {
   siMetasploit,
   siBurpsuite,
   siHashcat,
+  siPostman,
+  siGnubash,
 } from 'simple-icons';
 
 const SKILL_ICONS = {
@@ -66,6 +68,8 @@ const SKILL_ICONS = {
   'Burp Suite': siBurpsuite,
   'Metasploit': siMetasploit,
   'Hashcat': siHashcat,
+  'Postman': siPostman,
+  'Bash Scripting': siGnubash,
   'VS Code': null,
   'AWS': null,
 };

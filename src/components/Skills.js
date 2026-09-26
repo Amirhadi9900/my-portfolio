@@ -19,13 +19,13 @@ const SKILL_CATEGORIES = [
     name: 'Web Development',
     skills: [
       'Next.js',
-      'React Native',
       'TypeScript',
       'Tailwind CSS',
       'Node.js',
       'JavaScript',
       'HTML/CSS',
       'Python',
+      'Bash Scripting',
       'Git & GitHub',
       'VS Code',
     ],
@@ -39,6 +39,7 @@ const SKILL_CATEGORIES = [
       'PostgreSQL',
       'MySQL',
       'GraphQL',
+      'Postman',
     ],
   },
   {
