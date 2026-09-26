@@ -12,6 +12,12 @@ import { verifyTurnstileToken } from '../../../lib/turnstile';
 const RATE_WINDOW_MS = 60_000;
 const MAX_REQUESTS = 3;
 
+/**
+ * Per-instance only: on serverless each cold region gets its own Map, so an
+ * attacker spread across enough concurrent invocations multiplies the budget.
+ * Turnstile, the origin check and the 3-per-minute cap still make bulk sending
+ * impractical; a shared store (Upstash) is the fix if abuse ever appears.
+ */
 const rateLimitStore = new Map();
 
 function buildConfiguredOrigins() {
@@ -73,18 +79,16 @@ function methodNotAllowed() {
  * The leftmost X-Forwarded-For entry is written by the client, so reading it first
  * lets an attacker rotate the header and dodge the limiter. Our edge always appends
  * the true peer address as the last hop, so take that one instead.
+ *
+ * X-Real-IP is deliberately not consulted: with no reverse proxy in front of the
+ * process it is 100% client-supplied, so honouring it would reintroduce the same
+ * bypass. Collapsing unidentified clients onto one shared bucket is the safe
+ * direction to fail — Vercel always sets X-Forwarded-For, so it never happens here.
  */
 function getClientIp(request) {
   const chain = request.headers.get('x-forwarded-for');
-  if (chain) {
-    const hops = chain.split(',').map((hop) => hop.trim()).filter(Boolean);
-    if (hops.length) return hops[hops.length - 1].slice(0, 64);
-  }
-
-  const realIp = request.headers.get('x-real-ip');
-  if (realIp && realIp.trim()) return realIp.trim().slice(0, 64);
-
-  return 'unknown';
+  const hops = chain ? chain.split(',').map((hop) => hop.trim()).filter(Boolean) : [];
+  return (hops.at(-1) || 'unknown').slice(0, 64);
 }
 
 function getContactRecipient() {

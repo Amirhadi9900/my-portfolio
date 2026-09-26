@@ -1,23 +1,8 @@
 const path = require('path');
 
-// Node.js 22+ exposes a broken localStorage global during SSR; provide a
-// working in-memory shim so libraries that feature-detect it don't crash.
-if (typeof window === 'undefined' && typeof globalThis.localStorage !== 'undefined' && typeof globalThis.localStorage.getItem !== 'function') {
-  const store = new Map();
-  globalThis.localStorage = {
-    getItem: (key) => store.get(key) ?? null,
-    setItem: (key, value) => store.set(key, String(value)),
-    removeItem: (key) => store.delete(key),
-    clear: () => store.clear(),
-    get length() { return store.size; },
-    key: (index) => [...store.keys()][index] ?? null,
-  };
-}
-
 /** @type {import('next').NextConfig} */
 // Turbopack's dev overlay needs eval; a production bundle does not, so drop it there.
-// 'unsafe-inline' stays because Next injects an inline bootstrap script and the
-// Hero section relies on inline style attributes.
+// script-src keeps 'unsafe-inline' because Next injects an inline bootstrap script.
 const scriptSrc = [
   "'self'",
   "'unsafe-inline'",
@@ -30,18 +15,6 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   turbopack: {
     root: path.join(__dirname),
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.simpleicons.org',
-      },
-    ],
   },
   poweredByHeader: false,
   async headers() {
@@ -59,7 +32,9 @@ const nextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()',
+            // interest-cohort was dropped with FLOC, so listing it only revokes a
+            // permission no browser still recognises.
+            value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()',
           },
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
           { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
@@ -70,8 +45,10 @@ const nextConfig = {
               "default-src 'self'",
               `script-src ${scriptSrc}`,
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https://images.unsplash.com https://cdn.simpleicons.org https://flagcdn.com",
-              "font-src 'self' data: https://fonts.gstatic.com",
+              // blob:/data: were dropped once nothing in the tree produced one; a CSP
+              // violation in the browser console is the signal to add them back.
+              "img-src 'self' https://flagcdn.com",
+              "font-src 'self' data:",
               "connect-src 'self' https://challenges.cloudflare.com",
               "frame-src 'self' https://challenges.cloudflare.com",
               "frame-ancestors 'none'",
