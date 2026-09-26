@@ -4,9 +4,6 @@
 
 @layer base {
   :root {
-    --accent-color: #38bdf8;
-    --accent-color-emphasis: #0284c7;
-    --text-secondary-color: #94a3b8;
     --cursor-ink: #020617;
     --cursor-paper: #f8fafc;
     --cursor-accent: #7dd3fc;
@@ -28,7 +25,10 @@
   }
 }
 
-a, a:link, a:visited, a:hover, a:active {
+/* Tailwind's preflight makes links inherit their underline; nothing here wants
+   one. `!important` is what beats the `underline` utility, so the old
+   `a:link`/`:hover`/`:active` twins of this rule were pure duplication. */
+a {
   text-decoration: none !important;
 }
 
@@ -132,6 +132,20 @@ a, a:link, a:visited, a:hover, a:active {
   }
 }
 
+/* Hero backgrounds. CSS-declared so they stay behind the overlay without an
+   extra stacking context. The plain url comes first as the fallback: a browser
+   that supports image-set() takes the WebP (a third of the bytes), one that
+   treats the second declaration as invalid keeps the JPEG above it. */
+.hero-bg-mobile {
+  background-image: url('/image/mobile.jpg');
+  background-image: image-set(url('/image/mobile.webp') type('image/webp'));
+}
+
+.hero-bg-desktop {
+  background-image: url('/image/desktop.jpg');
+  background-image: image-set(url('/image/desktop.webp') type('image/webp'));
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
@@ -148,6 +162,16 @@ a, a:link, a:visited, a:hover, a:active {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(79, 70, 229, 0.7);
+}
+
+/* Firefox ignores the -webkit- pseudo-elements above. Guarded so Chromium and
+   Safari keep their native rendering — they also honour `scrollbar-color`, which
+   would otherwise override the webkit rules above and drop the hover state. */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(79, 70, 229, 0.5) rgba(15, 23, 42, 0.7);
+  }
 }
 
 /* Header styles */
@@ -227,9 +251,6 @@ a, a:link, a:visited, a:hover, a:active {
 /* Flip card */
 .flip-card {
   perspective: 1200px;
-  background: transparent;
-  border: none;
-  padding: 0;
   min-height: 0;
 }
 
@@ -479,8 +500,13 @@ a, a:link, a:visited, a:hover, a:active {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .subtitle-blink,
-  .cursor-blink {
+  .cursor-blink,
+  .pulse-border {
     animation: none;
   }
 }

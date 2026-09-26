@@ -26,16 +26,39 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400'],
 });
 
+const SITE_URL = 'https://my-portfolio-lime-three-67.vercel.app';
+
 export const metadata = {
-  title: 'Amirhadi Borjian Yazdi - Software Developer',
-  description: 'A showcase of Android and web development projects and skills by Amirhadi Borjian Yazdi',
-  keywords: ['portfolio', 'developer', 'android development', 'kotlin', 'web development', 'next.js', 'firebase', 'software developer'],
+  metadataBase: new URL(SITE_URL),
+  title: 'Amirhadi Borjian Yazdi - Software Developer & Security Enthusiast',
+  description: 'Android, web and security work by Amirhadi Borjian Yazdi — modern, responsive applications built with clean code.',
+  keywords: ['portfolio', 'developer', 'android development', 'kotlin', 'web development', 'next.js', 'firebase', 'penetration testing', 'network security'],
+  openGraph: {
+    title: 'Amirhadi Borjian Yazdi - Software Developer & Security Enthusiast',
+    description: 'Android, web and security work by Amirhadi Borjian Yazdi.',
+    url: SITE_URL,
+    siteName: 'Amirhadi Borjian Yazdi',
+    images: [{ url: '/image/borjian.jpg', width: 1200, height: 1200, alt: 'Amirhadi Borjian Yazdi' }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Amirhadi Borjian Yazdi - Software Developer & Security Enthusiast',
+    description: 'Android, web and security work by Amirhadi Borjian Yazdi.',
+    images: ['/image/borjian.jpg'],
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${ibmPlexSans.variable} ${sourceSans3.variable} ${firaSans.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
-      <body suppressHydrationWarning className="min-h-screen font-sans antialiased">
+    <html lang="en" className={`${ibmPlexSans.variable} ${sourceSans3.variable} ${firaSans.variable} ${jetbrainsMono.variable} scroll-smooth`}>
+      <body className="min-h-screen font-sans antialiased">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-white focus:text-slate-900 focus:font-medium"
+        >
+          Skip to content
+        </a>
         <PromptCursor />
         {children}
       </body>

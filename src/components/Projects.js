@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
@@ -10,7 +9,7 @@ const PROJECTS = [
     title: 'Finlern Web App',
     description: 'Professional educational and communication website built with Next.js, TypeScript, and Tailwind CSS with server-side rendering and SEO optimization.',
     category: 'web',
-    image: '/image/finlern.png',
+    image: '/image/finlern.jpg',
     technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Firestore'],
     link: 'https://finlern.vercel.app/'
   }
@@ -55,7 +54,7 @@ function CodeWindow() {
           <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
         </div>
         <span className="ml-3 text-gray-500 text-xs font-mono">page.tsx</span>
-        <span className="ml-auto text-gray-600 text-[10px] font-mono">TypeScript · React Native</span>
+        <span className="ml-auto text-gray-600 text-[10px] font-mono">TypeScript · Next.js</span>
       </div>
       <div className="p-4 overflow-auto flex-1">
         <div className="flex text-[13px] leading-[1.75] font-mono">
@@ -76,33 +75,14 @@ function CodeWindow() {
 }
 
 export default function Projects() {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
   };
 
-  if (!isMounted) {
-    return (
-      <section id="projects" className="section py-16 md:py-28">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="font-subheading text-gray-800 dark:text-white text-3xl md:text-4xl font-semibold mb-4">My Projects</h2>
-            <p className="text-gray-600 dark:text-gray-400 subtitle-blink">Check out my recent work</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section id="projects" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden scroll-mt-28">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70"></div>
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70"></div>
       <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl"></div>
       <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 dark:bg-purple-700/10 rounded-full blur-3xl"></div>
 
@@ -149,7 +129,7 @@ export default function Projects() {
                       className="object-contain transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 1024px) 100vw, 50vw"
                     />
-                    <div className="absolute bottom-0 left-0 right-0 p-6 z-20 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                    <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
                       <span className="inline-block px-4 py-2 rounded-full text-xs font-medium text-cyan-300 bg-gray-900/80 backdrop-blur-md border border-cyan-500/20">
                         <span className="mr-1.5 inline-block w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
                         {project.category}

@@ -84,11 +84,7 @@ function SkillChip({ skill }) {
     <div className="skill-chip group">
       <div className="skill-chip-icon skill-icon-sparkle">
         {isLanguage ? (
-          <FlagIcon
-            code={skill.flagCode}
-            src={skill.flagSrc}
-            className="w-8 h-6 relative z-[1]"
-          />
+          <FlagIcon code={skill.flagCode} src={skill.flagSrc} />
         ) : (
           <span className="relative z-[1] flex items-center justify-center">
             <SkillIcon name={skill} />
@@ -134,7 +130,7 @@ export default function Skills() {
 
   return (
     <section id="skills" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden scroll-mt-28">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70" />
       <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl" />
       <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 dark:bg-purple-700/10 rounded-full blur-3xl" />
 

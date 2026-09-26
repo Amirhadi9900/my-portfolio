@@ -78,18 +78,12 @@ export default function Hero() {
       {/* Responsive background images */}
       <div className="absolute inset-0">
         {/* Mobile and tablet background */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat lg:hidden"
-          style={{
-            backgroundImage: 'url("/image/mobile.png")'
-          }}
+        <div
+          className="hero-bg-mobile absolute inset-0 bg-cover bg-center bg-no-repeat lg:hidden"
         />
         {/* Desktop background */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden lg:block"
-          style={{
-            backgroundImage: 'url("/image/desktop.png")'
-          }}
+        <div
+          className="hero-bg-desktop absolute inset-0 bg-cover bg-center bg-no-repeat hidden lg:block"
         />
         {/* Optional overlay for better text readability */}
         <div className="absolute inset-0 bg-black/20" />

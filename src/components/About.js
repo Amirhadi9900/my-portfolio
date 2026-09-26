@@ -14,7 +14,7 @@ export default function About() {
 
   return (
     <section id="about" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden scroll-mt-28">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-70" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70" />
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/10 dark:bg-purple-700/10 rounded-full blur-3xl" />
 
@@ -50,10 +50,12 @@ export default function About() {
                   className="flip-card-face flip-card-front bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.15)] border border-gray-100/50 dark:border-gray-700/50 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   onClick={() => setIsFlipped(true)}
                   aria-label="Show about information"
+                  aria-hidden={isFlipped}
+                  inert={isFlipped}
                 >
                   <div className="relative w-full h-full">
                     <Image
-                      src="/image/borjian.png"
+                      src="/image/borjian.jpg"
                       alt="Amirhadi Borjian Yazdi"
                       fill
                       className="object-cover"
@@ -68,7 +70,7 @@ export default function About() {
                 </button>
 
                 {/* Back — Info */}
-                <div className="flip-card-face flip-card-back relative flex flex-col min-h-0 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.2)] border border-indigo-500/20 text-left">
+                <div className="flip-card-face flip-card-back relative flex flex-col min-h-0 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.2)] border border-indigo-500/20 text-left" aria-hidden={!isFlipped} inert={!isFlipped}>
                   <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 pointer-events-none" />
                   <div className="absolute -top-16 -right-16 w-40 h-40 bg-blue-500/25 rounded-full blur-3xl pointer-events-none" />
                   <div className="absolute -bottom-20 -left-16 w-44 h-44 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
