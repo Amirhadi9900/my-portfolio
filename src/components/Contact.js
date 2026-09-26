@@ -174,7 +174,7 @@ export default function Contact() {
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="font-subheading text-gray-800 dark:text-white text-3xl md:text-4xl font-semibold mb-4">Get In Touch</h2>
-            <p className="text-gray-700 dark:text-gray-300">Have a project in mind? Let's talk about it.</p>
+            <p className="text-gray-700 dark:text-gray-300 subtitle-blink">Have a project in mind? Let's talk about it :)</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -278,14 +278,10 @@ export default function Contact() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <div className="inline-flex items-center gap-1.5 font-mono text-xs text-cyan-600 dark:text-cyan-400 mb-3 bg-cyan-600/5 dark:bg-cyan-400/5 px-3 py-1.5 rounded-full border border-cyan-600/10 dark:border-cyan-400/10">
-            <span className="opacity-50">~/</span>
-            <span className="uppercase tracking-widest">Connect With Me</span>
-          </div>
           <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
             Get In Touch
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Have a project in mind? Let's talk about it.</p>
+          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">Have a project in mind? Let's talk about it :)</p>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">

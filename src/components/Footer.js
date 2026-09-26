@@ -33,8 +33,8 @@ export default function Footer() {
           <h2 className="font-heading text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 inline-block">
             Amirhadi Borjian
           </h2>
-          <p className="text-gray-400 mt-2 max-w-xl mx-auto">
-            Creating elegant, responsive websites with modern technologies.
+          <p className="text-gray-400 mt-2">
+            Creating functional, secure, and fully responsive websites in the blink of an eye!
           </p>
         </motion.div>
         
@@ -52,49 +52,30 @@ export default function Footer() {
               <span className="relative z-10">Navigation</span>
               <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
             </h3>
-            <div className="grid grid-cols-2 gap-y-2 gap-x-4">
-              <div>
-                <h4 className="text-sm uppercase text-gray-500 mb-3">Quick Links</h4>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href="#about" scroll={false} onClick={(event) => scrollToId('about', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                      <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>About
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#projects" scroll={false} onClick={(event) => scrollToId('projects', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                      <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Projects
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#skills" scroll={false} onClick={(event) => scrollToId('skills', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                      <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Skills
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                      <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Contact
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-sm uppercase text-gray-500 mb-3">Services</h4>
-                <ul className="space-y-2">
-                  <li className="text-gray-400 flex items-center">
-                    <span className="w-2 h-px bg-purple-400/50 mr-2"></span>Android Dev
-                  </li>
-                  <li className="text-gray-400 flex items-center">
-                    <span className="w-2 h-px bg-purple-400/50 mr-2"></span>Web Dev
-                  </li>
-                  <li className="text-gray-400 flex items-center">
-                    <span className="w-2 h-px bg-purple-400/50 mr-2"></span>Firebase
-                  </li>
-                  <li className="text-gray-400 flex items-center">
-                    <span className="w-2 h-px bg-purple-400/50 mr-2"></span>Responsive
-                  </li>
-                </ul>
-              </div>
+            <div>
+              <h4 className="text-sm uppercase text-gray-500 mb-3">Quick Links</h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="#about" scroll={false} onClick={(event) => scrollToId('about', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>About
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#projects" scroll={false} onClick={(event) => scrollToId('projects', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Projects
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#skills" scroll={false} onClick={(event) => scrollToId('skills', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Skills
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Contact
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
           

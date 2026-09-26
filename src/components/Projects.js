@@ -93,7 +93,7 @@ export default function Projects() {
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="font-subheading text-gray-800 dark:text-white text-3xl md:text-4xl font-semibold mb-4">My Projects</h2>
-            <p className="text-gray-600 dark:text-gray-400">Check out my recent work</p>
+            <p className="text-gray-600 dark:text-gray-400 subtitle-blink">Check out my recent work</p>
           </div>
         </div>
       </section>
@@ -114,14 +114,10 @@ export default function Projects() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <div className="inline-flex items-center gap-1.5 font-mono text-xs text-cyan-600 dark:text-cyan-400 mb-3 bg-cyan-600/5 dark:bg-cyan-400/5 px-3 py-1.5 rounded-full border border-cyan-600/10 dark:border-cyan-400/10">
-            <span className="opacity-50">~/</span>
-            <span className="uppercase tracking-widest">Portfolio Showcase</span>
-          </div>
           <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
             My Projects
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed">Check out my recent work</p>
+          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">Check out my recent work</p>
         </motion.div>
 
         <div className="flex justify-center">
@@ -154,7 +150,7 @@ export default function Projects() {
                       sizes="(max-width: 1024px) 100vw, 50vw"
                     />
                     <div className="absolute bottom-0 left-0 right-0 p-6 z-20 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                      <span className="inline-block px-4 py-2 rounded-full text-xs font-mono font-medium text-cyan-300 bg-gray-900/80 backdrop-blur-md border border-cyan-500/20">
+                      <span className="inline-block px-4 py-2 rounded-full text-xs font-medium text-cyan-300 bg-gray-900/80 backdrop-blur-md border border-cyan-500/20">
                         <span className="mr-1.5 inline-block w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
                         {project.category}
                       </span>
@@ -179,7 +175,7 @@ export default function Projects() {
                     {project.technologies.map((tech, index) => (
                       <span
                         key={index}
-                        className="text-sm px-4 py-2 rounded-full bg-cyan-50/70 dark:bg-cyan-900/10 text-cyan-700 dark:text-cyan-300 font-mono font-medium border border-cyan-200/50 dark:border-cyan-800/30 hover:border-cyan-400/60 dark:hover:border-cyan-500/40 hover:shadow-[0_0_12px_rgba(34,211,238,0.15)] transition-all duration-300 cursor-default"
+                        className="text-sm px-4 py-2 rounded-full bg-cyan-50/70 dark:bg-cyan-900/10 text-cyan-700 dark:text-cyan-300 font-medium border border-cyan-200/50 dark:border-cyan-800/30 hover:border-cyan-400/60 dark:hover:border-cyan-500/40 hover:shadow-[0_0_12px_rgba(34,211,238,0.15)] transition-all duration-300 cursor-default"
                       >
                         {tech}
                       </span>
@@ -196,7 +192,7 @@ export default function Projects() {
                       View Live
                     </a>
 
-                    <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5 font-mono">
+                    <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
