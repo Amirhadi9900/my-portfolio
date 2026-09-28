@@ -54,13 +54,17 @@ export default function About() {
                   inert={isFlipped}
                 >
                   <div className="relative w-full h-full">
+                    {/* No `priority`: the hero is min-h-screen, so this photo always
+                        starts below the fold. Preloading it competed with the hero
+                        background for first-paint bandwidth and warned in the console
+                        that the preloaded candidate went unused. `sizes` mirrors the
+                        real box: the card is max-w-md (448px) inside a px-4 parent. */}
                     <Image
                       src="/image/borjian.jpg"
                       alt="Amirhadi Borjian Yazdi"
                       fill
                       className="object-cover"
-                      sizes="(max-width: 640px) 90vw, 512px"
-                      priority
+                      sizes="(max-width: 480px) calc(100vw - 32px), 448px"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-left">
