@@ -99,16 +99,10 @@ export default function PrivacyPage() {
           scroll on arrival. The only client components on the page are the back-to-top
           button and the MotionProvider that makes it honour reduced motion. */}
       <header className="border-b border-white/10 bg-gradient-to-r from-blue-900/70 via-blue-800/70 to-blue-900/70 backdrop-blur-md">
-        <div className="container flex items-center justify-between py-5">
+        <div className="container flex justify-center py-5">
           <a href="/" className="font-heading text-xl font-semibold text-white no-underline">
             <span className="mr-2">Amirhadi</span>
             <span className="font-light logo-gradient">Borjian</span>
-          </a>
-          <a
-            href="/#contact"
-            className="font-mono text-sm text-blue-200 hover:text-white transition-colors no-underline"
-          >
-            &larr; Back to the site
           </a>
         </div>
       </header>
@@ -145,6 +139,12 @@ export default function PrivacyPage() {
           does, not a generated policy. If anything here is unclear, the form is a good way to
           ask about it.
         </p>
+
+        <div className="mt-12 flex justify-center">
+          <a href="/#contact" className="btn-primary">
+            Back to the site
+          </a>
+        </div>
       </main>
 
       <MotionProvider>
