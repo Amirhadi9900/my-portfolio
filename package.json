@@ -22,6 +22,7 @@
   "description": "Personal portfolio and penetration-testing showcase for Amirhadi Borjian Yazdi",
   "dependencies": {
     "@marsidev/react-turnstile": "^1.6.0",
+    "@vercel/analytics": "^2.0.1",
     "autoprefixer": "^10.4.16",
     "framer-motion": "^12.7.4",
     "next": "^16.3.6",
