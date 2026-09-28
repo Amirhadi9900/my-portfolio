@@ -7,6 +7,8 @@ const scriptSrc = [
   "'self'",
   "'unsafe-inline'",
   'https://challenges.cloudflare.com',
+  'https://vercel-insights.com',
+  'https://*.vercel-insights.com',
   ...(process.env.NODE_ENV === 'production' ? [] : ["'unsafe-eval'"]),
 ].join(' ');
 
@@ -49,7 +51,7 @@ const nextConfig = {
               // violation in the browser console is the signal to add them back.
               "img-src 'self' https://flagcdn.com",
               "font-src 'self' data:",
-              "connect-src 'self' https://challenges.cloudflare.com",
+              "connect-src 'self' https://challenges.cloudflare.com https://vercel-insights.com https://*.vercel-insights.com",
               "frame-src 'self' https://challenges.cloudflare.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",

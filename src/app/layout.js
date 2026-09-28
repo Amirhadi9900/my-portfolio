@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import { IBM_Plex_Sans, Source_Sans_3, Fira_Sans, JetBrains_Mono } from 'next/font/google';
 import PromptCursor from '../components/PromptCursor';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
@@ -61,6 +62,7 @@ export default function RootLayout({ children }) {
         </a>
         <PromptCursor />
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
