@@ -73,6 +73,11 @@ export default function Hero() {
     }
   };
 
+  // roleIndex only advances once the previous word is fully deleted, so it always
+  // names the word on screen. The article has to follow it: the prefix used to be a
+  // hardcoded "a", which read as "I'm a Android Developer" for a third of the loop.
+  const article = /^[aeiou]/i.test(ROLES[roleIndex]) ? 'an' : 'a';
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pb-20 sm:pb-24 md:pb-28">
       {/* Responsive background images */}
@@ -180,7 +185,7 @@ export default function Hero() {
                 textShadow: '0 0 10px rgba(59, 130, 246, 0.4), 0 0 15px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)',
                 marginRight: '0.75rem'
               }}
-            >I'm a</span>
+            >I'm {article}</span>
             <span 
               className="text-white font-medium"
               style={{
@@ -225,8 +230,8 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             variants={fadeInUp}
           >
-            <Link href="#projects" scroll={false} onClick={(event) => scrollToId('projects', event)} className="btn-primary min-w-[200px]">
-              View My Work
+            <Link href="#services" scroll={false} onClick={(event) => scrollToId('services', event)} className="btn-primary min-w-[200px]">
+              View My Services
             </Link>
             <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="btn-primary min-w-[200px]">
               Get In Touch

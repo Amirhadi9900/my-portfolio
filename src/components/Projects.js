@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 const PROJECTS = [
   {
     id: 1,
-    title: 'Finlern Web App',
+    title: 'FinLern Web App',
     description: 'Professional educational and communication website built with Next.js, TypeScript, and Tailwind CSS with server-side rendering and SEO optimization.',
     category: 'web',
     image: '/image/finlern.jpg',
@@ -95,9 +95,9 @@ export default function Projects() {
           variants={fadeInUp}
         >
           <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
-            My Projects
+            Projects
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">Check out my recent work</p>
+          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">Check out my recent project</p>
         </motion.div>
 
         <div className="flex justify-center">

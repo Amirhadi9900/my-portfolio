@@ -4,7 +4,7 @@ import MotionProvider from '../../components/MotionProvider';
 export const metadata = {
   title: 'Privacy and how I handle your message - Amirhadi Borjian Yazdi',
   description:
-    'What the contact form on this site collects, where the message actually goes, how long it is kept, and how to ask for it to be deleted.',
+    'What the contact form collects, what happens to your data during a penetration test, where it all goes, how long it is kept, and how to ask for it to be deleted.',
 };
 
 const sections = [
@@ -52,9 +52,21 @@ const sections = [
     ],
   },
   {
+    heading: 'If we work together',
+    body: [
+      'The form is how we start talking. If you engage me for a test, a second set of information appears: you as the person instructing me, the scope documents we agree, and whatever credentials, hostnames, findings and evidence the work itself produces.',
+      'I do not run a single test without written permission. Before anything is touched I need an explicit, official permission letter from the company or client who owns the target or is authorised to approve testing of it, together with an agreed Rules of Engagement document. Without that letter there is no testing, and no scanning or probing either.',
+      'I work only inside the scope you asked for and agreed. If a step looks like it reaches past that boundary, I stop and come back to you for written approval instead of helping myself to the extra ground.',
+      'If at any point I judge that what has been asked for would be unethical or unlawful, I stop immediately and tell you why. Being asked is not authorisation, and I will not carry that part out even if you want me to.',
+      'Findings and evidence stay between us, with one exception: where the law obliges me to report something I have come across, I have to, and I will say so up front when it could apply.',
+      'You can end an engagement at any moment. Everything below about your rights covers the material from an engagement as well as the form.',
+    ],
+  },
+  {
     heading: 'How long I keep it',
     body: [
       'Only as long as it takes to reply to you and to follow up on whatever we discuss. A message that has gone nowhere gets deleted rather than filed. There is no automatic purge timer I can point you at, because the messages sit in a normal email inbox that I curate by hand, so if you would like yours gone, ask and it goes.',
+      'Engagement material follows the same rule for the same reason: the report and its evidence are kept while the work and any agreed retest are live, and after that they are deleted on request.',
     ],
   },
   {
@@ -101,7 +113,7 @@ export default function PrivacyPage() {
       <header className="border-b border-white/10 bg-gradient-to-r from-blue-900/70 via-blue-800/70 to-blue-900/70 backdrop-blur-md">
         <div className="container flex justify-center py-5">
           <a href="/" className="font-heading text-xl font-semibold text-white no-underline">
-            <span className="mr-2">Amirhadi</span>
+            <span>Amirhadi</span>{' '}
             <span className="font-light logo-gradient">Borjian</span>
           </a>
         </div>
@@ -112,9 +124,9 @@ export default function PrivacyPage() {
           Privacy
         </h1>
         <p className="mt-3 font-mono text-sm text-gray-400">
-          How the contact form handles what you send me.
+          How the contact form, and any engagement that follows it, handles your data.
         </p>
-        <p className="mt-1 font-mono text-xs text-gray-400">Last updated 27 September 2026</p>
+        <p className="mt-1 font-mono text-xs text-gray-400">Last updated 28 September 2026</p>
 
         <div className="mt-10 space-y-10">
           {sections.map((section) => (

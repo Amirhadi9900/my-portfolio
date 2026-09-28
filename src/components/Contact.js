@@ -310,7 +310,7 @@ export default function Contact() {
                     aria-pressed={sfxMuted}
                     aria-label={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
                     title={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
-                    className="absolute -top-1 right-0 p-2 rounded-lg text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100/80 dark:hover:bg-gray-700/50 transition-colors duration-200"
+                    className="absolute -top-1 right-0 p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100/80 dark:hover:bg-gray-700/50 transition-colors duration-200"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5.882V19.24a1.76 1.76 0 01-2.94.87L4.5 17.5H2.5A1.5 1.5 0 011 16V8a1.5 1.5 0 011.5-1.5h2l3.56-3.487A1.76 1.76 0 0111 5.882z" />
@@ -433,7 +433,7 @@ export default function Contact() {
                     )}
                   </div>
                   
-                  <p className="-mt-2 mb-5 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+                  <p className="-mt-2 mb-5 text-xs leading-relaxed text-gray-600 dark:text-gray-400">
                     Sending this emails me directly. Nothing you send is stored on the site, and it
                     is used to reply to you and for nothing else.{' '}
                     <Link

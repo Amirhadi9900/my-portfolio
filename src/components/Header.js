@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { scrollToId } from '../lib/scroll-to-id';
 
+// Must stay greater than the 7rem (112px) `scroll-mt-28` that sections land at.
+const NAV_PROBE_PX = 140;
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,12 +18,16 @@ export default function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
 
-      // Resolve the section under the header, and clear the highlight when none
-      // matches — previously a stale section stayed active after scrolling away.
-      const probe = window.scrollY + 100;
-      const current = [...document.querySelectorAll('section[id]')].find(
-        (section) => probe >= section.offsetTop && probe < section.offsetTop + section.offsetHeight
-      );
+      // scrollToId lands a section 112px below the viewport top (its `scroll-mt-28`),
+      // so the probe line must sit below that or every nav click reports the previous
+      // section. Taking the last section that has crossed the line also closes the old
+      // upper-bound gap, where a position between two sections matched nothing and left
+      // a stale highlight.
+      const probe = window.scrollY + NAV_PROBE_PX;
+      let current = null;
+      for (const section of document.querySelectorAll('section[id]')) {
+        if (section.offsetTop <= probe) current = section;
+      }
       setActiveLink(current ? `#${current.getAttribute('id')}` : '#');
     };
 
@@ -37,11 +44,15 @@ export default function Header() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isMenuOpen]);
 
+  // Contact is deliberately absent: the "Get In Touch" CTA below already points
+  // there, and two nav entries landing on the same section reads as a mistake.
+  // Four links plus the CTA measure ~610px against the 736px left of the logo at
+  // md (768px), so the desktop links still keep the px-3 until lg.
   const navLinks = [
     { href: '#about', label: 'About' },
     { href: '#projects', label: 'Projects' },
     { href: '#skills', label: 'Skills' },
-    { href: '#contact', label: 'Contact' },
+    { href: '#services', label: 'Services' },
   ];
 
   // Adding a slight delay to each menu item for a staggered effect
@@ -86,9 +97,9 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <span className="font-heading text-2xl font-bold tracking-tight text-white mr-2 transition-all duration-300 group-hover:text-blue-300">
+            <span className="font-heading text-2xl font-bold tracking-tight text-white transition-all duration-300 group-hover:text-blue-300">
               Amirhadi
-            </span>
+            </span>{' '}
             <span className="font-heading text-2xl font-light logo-gradient transition-all duration-300">
               Borjian
             </span>
@@ -111,7 +122,8 @@ export default function Header() {
                 <Link
                   href={link.href}
                   scroll={false}
-                  className={`relative px-4 py-2 text-sm rounded-md transition-all duration-300 nav-link no-underline ${
+                  aria-current={activeLink === link.href ? 'true' : undefined}
+                  className={`relative px-3 lg:px-4 py-2 text-sm rounded-md transition-all duration-300 nav-link no-underline ${
                     activeLink === link.href
                       ? 'active text-white font-medium' 
                       : 'text-blue-200 hover:text-white'
@@ -143,9 +155,11 @@ export default function Header() {
                   scrollToId('contact', event);
                   setActiveLink('#contact');
                 }}
-                className="ml-3 btn-primary-sm pulse-border"
+                className={`ml-3 btn-primary-sm pulse-border transition-shadow ${
+                  activeLink === '#contact' ? 'ring-2 ring-cyan-300/80 ring-offset-2 ring-offset-blue-900' : ''
+                }`}
               >
-                Get in Touch
+                Get In Touch
               </Link>
             </motion.div>
           </motion.div>
@@ -233,7 +247,7 @@ export default function Header() {
                   className="block btn-primary-sm w-full text-center"
                   onClick={(event) => handleMobileNav(event, 'contact')}
                 >
-                  Get in Touch
+                  Get In Touch
                 </Link>
               </motion.div>
             </motion.div>

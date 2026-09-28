@@ -42,15 +42,55 @@ a {
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-heading font-semibold tracking-wide transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.35)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.5)] hover:scale-105 no-underline disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 text-white font-heading font-semibold tracking-wide transition-all duration-300 hover:scale-105 no-underline disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed;
   }
 
   .btn-primary-sm {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-2 text-sm rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-heading font-semibold tracking-wide transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.35)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.5)] no-underline disabled:opacity-70 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-2 text-sm text-white font-heading font-semibold tracking-wide transition-all duration-300 no-underline disabled:opacity-70 disabled:cursor-not-allowed;
   }
 
   .btn-primary-block {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 w-full rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-heading font-semibold tracking-wide transition-all duration-300 shadow-[0_7px_25px_rgba(59,130,246,0.35)] hover:shadow-[0_7px_35px_rgba(59,130,246,0.5)] hover:scale-[1.02] no-underline disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 w-full text-white font-heading font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] no-underline disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed;
+  }
+
+  /* CTA shape. The colour, radius and shadow live on a layer behind the label
+     rather than on the button itself, so the shape can shear into a
+     parallelogram on hover while the text stays upright and unmoved.
+     `isolation` keeps that -1 layer inside the button instead of letting it
+     fall behind the section. All eight CTAs inherit this from the three
+     classes above; nothing at the call sites changed. */
+  .btn-primary,
+  .btn-primary-sm,
+  .btn-primary-block {
+    position: relative;
+    isolation: isolate;
+    border-radius: 0;
+  }
+
+  .btn-primary::before,
+  .btn-primary-sm::before,
+  .btn-primary-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: linear-gradient(to right, #2563eb, #4f46e5);
+    box-shadow: 0 7px 25px rgba(59, 130, 246, 0.35);
+    transition: transform 300ms ease, box-shadow 300ms ease, background-image 300ms ease;
+  }
+
+  /* Focus gets the same treatment as hover so keyboard users are not left with a
+     plain rectangle, and disabled buttons are excluded so a submit mid-flight
+     does not shear. */
+  .btn-primary:not(:disabled):hover::before,
+  .btn-primary-sm:not(:disabled):hover::before,
+  .btn-primary-block:not(:disabled):hover::before,
+  .btn-primary:focus-visible::before,
+  .btn-primary-sm:focus-visible::before,
+  .btn-primary-block:focus-visible::before {
+    background-image: linear-gradient(to right, #1d4ed8, #4338ca);
+    box-shadow: 0 7px 35px rgba(59, 130, 246, 0.5);
+    transform: skewX(-10deg);
   }
 
   .skill-category-card {
@@ -468,6 +508,52 @@ a {
   }
 }
 
+/* Service cards. The sweep is a one-shot glare across the surface on hover or
+   keyboard focus, which only reads on the dark card faces. */
+.service-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.34) 45%,
+    rgba(186, 230, 253, 0.22) 55%,
+    transparent 80%
+  );
+  transform: skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.service-card:hover::after,
+.service-card:focus-within::after {
+  opacity: 1;
+  animation: service-flash-sweep 0.9s ease-in-out;
+}
+
+@keyframes service-flash-sweep {
+  0% {
+    left: -120%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    left: 180%;
+    opacity: 0;
+  }
+}
+
 /* Section subtitles breathe gently in and out. Kept shallow so it reads as a soft
    pulse rather than a blinking light. */
 @keyframes subtitle-blink {
@@ -508,5 +594,18 @@ a {
   .cursor-blink,
   .pulse-border {
     animation: none;
+  }
+
+  /* display, not animation: none, so the band does not sit frozen across the card */
+  .service-card::after {
+    display: none;
+  }
+
+  /* The shear stays — it is the hover affordance, not decoration — but it snaps
+     into place instead of morphing. */
+  .btn-primary::before,
+  .btn-primary-sm::before,
+  .btn-primary-block::before {
+    transition: none;
   }
 }

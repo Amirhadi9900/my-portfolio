@@ -34,7 +34,7 @@ export default function Footer() {
             Amirhadi Borjian
           </h2>
           <p className="text-gray-400 mt-2">
-            Creating functional, secure, and fully responsive websites in the blink of an eye!
+            Web and Android applications that hold up — and penetration tests you can act on.
           </p>
         </motion.div>
         
@@ -52,38 +52,40 @@ export default function Footer() {
               <span className="relative z-10">Navigation</span>
               <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
             </h3>
-            <div>
-              <h4 className="text-sm uppercase text-gray-500 mb-3">Quick Links</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="#about" scroll={false} onClick={(event) => scrollToId('about', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>About
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#projects" scroll={false} onClick={(event) => scrollToId('projects', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Projects
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#skills" scroll={false} onClick={(event) => scrollToId('skills', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Skills
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Contact
-                  </Link>
-                </li>
-                {/* The only entry here that is a route rather than a section, so it
-                    must not take the scrollToId handler the four above share. */}
-                <li>
-                  <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                    <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Privacy
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            <ul className="space-y-2">
+              <li>
+                <Link href="#about" scroll={false} onClick={(event) => scrollToId('about', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>About
+                </Link>
+              </li>
+              <li>
+                <Link href="#projects" scroll={false} onClick={(event) => scrollToId('projects', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Projects
+                </Link>
+              </li>
+              <li>
+                <Link href="#skills" scroll={false} onClick={(event) => scrollToId('skills', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Skills
+                </Link>
+              </li>
+              <li>
+                <Link href="#services" scroll={false} onClick={(event) => scrollToId('services', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Services
+                </Link>
+              </li>
+              <li>
+                <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Contact
+                </Link>
+              </li>
+              {/* The only entry here that is a route rather than a section, so it
+                  must not take the scrollToId handler the section links share. */}
+              <li>
+                <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Privacy
+                </Link>
+              </li>
+            </ul>
           </div>
           
           {/* Contact Section */}

@@ -1,20 +1,22 @@
 # Amirhadi Borjian — Portfolio
 
-Personal portfolio website showcasing Android and web development work, skills, and contact information.
+Personal portfolio showcasing Android and web development work and an ethical pentesting service.
 
 **Live site:** [my-portfolio-lime-three-67.vercel.app](https://my-portfolio-lime-three-67.vercel.app)
 
 ## Features
 
-- Single-page layout with Hero, About, Projects, Skills, and Contact sections
+- Single-page layout with Hero, About, Projects, Skills, Services, and Contact sections
 - Responsive design with smooth scroll navigation and Framer Motion animations
 - Custom typography stack (IBM Plex Sans, Source Sans 3, Fira Sans, JetBrains Mono)
 - Interactive About card with flip animation
 - Project showcase with code-preview styling
 - Skills grid with brand icons (Simple Icons) and language flags
+- Services section: full-stack development and ethical pentesting under an agreed Rules of Engagement
 - Contact form with email delivery via Nodemailer
 - Cloudflare Turnstile CAPTCHA with server-side verification
 - Input sanitization, honeypot field, rate limiting, and security headers (CSP, HSTS, and more)
+- `/privacy` notice describing how form and engagement data are handled, written against what the code actually does
 - Scroll progress timeline and back-to-top button
 
 ## Tech Stack
@@ -91,7 +93,8 @@ myportfolio/
 │   │   ├── api/contact/        # Contact form API route
 │   │   ├── icon.svg            # Favicon
 │   │   ├── layout.js           # Root layout, fonts and site metadata
-│   │   └── page.js             # Home page
+│   │   ├── page.js             # Home page
+│   │   └── privacy/            # Privacy notice (/privacy)
 │   ├── components/             # UI sections and widgets
 │   ├── lib/
 │   │   ├── contact-security.js # Input validation and sanitization
@@ -126,6 +129,7 @@ myportfolio/
 | About content | `src/components/About.js` |
 | Projects | `src/components/Projects.js` |
 | Skills | `src/components/Skills.js` |
+| Services offered | `src/components/Services.js` |
 | Contact details and form | `src/components/Contact.js` |
 | Footer links | `src/components/Footer.js` |
 | Site metadata | `src/app/layout.js` |
