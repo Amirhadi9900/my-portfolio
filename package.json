@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "audit": "npm audit --omit=dev",
-    "test:security": "node scripts/verify-rate-limit.mjs"
+    "test:security": "node scripts/verify-xss.mjs && node scripts/verify-captcha.mjs && node scripts/verify-rate-limit.mjs && node scripts/verify-csp.mjs"
   },
   "overrides": {
     "postcss": "^8.5.15",

@@ -34,10 +34,21 @@ jobs:
       - name: Audit dependencies
         run: npm audit --audit-level=high
 
+      # Needs no server and no browser: it drives the validator and lifts the email
+      # template straight out of route.js, so the escaping invariant is checked
+      # before anything is built or booted.
+      - name: XSS and input-validation checks
+        run: node scripts/verify-xss.mjs
+
+      # Stubbed siteverify, so every fail-closed branch of the CAPTCHA check runs
+      # without a network call.
+      - name: Turnstile contract checks
+        run: node scripts/verify-captcha.mjs
+
       - name: Production build
         run: npm run build
 
-      - name: Rate limit and origin regression checks
+      - name: Rate limit, origin and CSP regression checks
         run: |
           npm run start &
           SERVER_PID=$!
@@ -47,3 +58,4 @@ jobs:
             sleep 2
           done
           node scripts/verify-rate-limit.mjs http://127.0.0.1:3000
+          node scripts/verify-csp.mjs http://127.0.0.1:3000
