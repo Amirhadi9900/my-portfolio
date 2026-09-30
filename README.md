@@ -17,6 +17,7 @@ Personal portfolio showcasing Android and web development work and an ethical pe
 - Cloudflare Turnstile CAPTCHA with server-side verification
 - Input sanitization, honeypot field, rate limiting, and security headers (CSP, HSTS, and more)
 - `/privacy` notice describing how form and engagement data are handled, written against what the code actually does
+- Cookieless visit and page-speed measurement via Vercel, disclosed on `/privacy`
 - Scroll progress timeline and back-to-top button
 
 ## Tech Stack
@@ -29,6 +30,7 @@ Personal portfolio showcasing Android and web development work and an ethical pe
 | Icons | [Simple Icons](https://simpleicons.org/) |
 | Email | [Nodemailer](https://nodemailer.com/) |
 | CAPTCHA | [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/) |
+| Observability | [Vercel Web Analytics](https://vercel.com/docs/analytics) and [Speed Insights](https://vercel.com/docs/speed-insights), both cookieless |
 | Deployment | [Vercel](https://vercel.com/) |
 
 ## Getting Started

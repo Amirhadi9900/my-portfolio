@@ -1,5 +1,7 @@
 import '../styles/globals.css';
 import { IBM_Plex_Sans, Source_Sans_3, Fira_Sans, JetBrains_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import PromptCursor from '../components/PromptCursor';
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -61,6 +63,11 @@ export default function RootLayout({ children }) {
         </a>
         <PromptCursor />
         {children}
+        {/* Neither SDK sets a cookie or writes to storage unless `enableCookie` or
+            `identify()` is called, and this site calls neither. Disclosed on
+            /privacy; the CSP in next.config.js allowlists their host. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

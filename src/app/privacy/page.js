@@ -4,7 +4,7 @@ import MotionProvider from '../../components/MotionProvider';
 export const metadata = {
   title: 'Privacy and how I handle your message - Amirhadi Borjian Yazdi',
   description:
-    'What the contact form collects, what happens to your data during a penetration test, where it all goes, how long it is kept, and how to ask for it to be deleted.',
+    'What the contact form collects, what happens to your data during a penetration test, how this site measures visits and performance, where it all goes, how long it is kept, and how to ask for it to be deleted.',
 };
 
 const sections = [
@@ -12,7 +12,7 @@ const sections = [
     heading: 'The short version',
     body: [
       'I am Amirhadi Borjian, I run this site myself, and I am the one deciding what happens to anything you send through it.',
-      'The form emails me. That is all it does. This site has no database, no analytics and no advertising, and it sets no cookies of its own, so your message is not stored anywhere on the site and is not used to profile you or make any automated decision about you. The one thing on the page that is not mine is the CAPTCHA, which Cloudflare serves from its own domain and may set its own cookies there.',
+      'The form emails me, and that is all it does. Nothing you type is stored anywhere on this site, and it is not used to profile you or make any automated decision about you. Separately, I count page visits and measure how quickly pages load: that looks at your browser, not at what you type, and it does not use cookies unless I deliberately turn that on. Three services sit behind those two things. Cloudflare serves the CAPTCHA from its own domain and may set cookies there. Vercel hosts the site and does the counting and the timing. Google delivers the email.',
     ],
   },
   {
@@ -45,10 +45,19 @@ const sections = [
     ],
   },
   {
+    heading: 'Measuring visits and performance',
+    body: [
+      'Two small measurements run on this site. One counts page visits and records which page people came from. The other reports how long pages actually take to load on real devices. Both are provided by Vercel, the hosting platform, and both exist to answer two questions: is anyone reading this, and is it slow.',
+      'Neither measurement uses cookies unless I deliberately turn that on, and nothing in this site\u2019s code does. I checked the script rather than taking the vendor\u2019s word for it: it only begins to persist data when a site explicitly asks it to identify a returning user, and this site never makes that request. That is why there is no consent banner here. If I ever do turn that on, this page changes before the site does.',
+      'What does leave your browser when a page loads is the address of that page, the page you arrived from, ordinary details of your browser and device, and your IP address, which reaches Vercel the same way it reaches any web server. I do not receive your IP address, and I cannot look it up in the numbers I am shown: the reports are counts and timings, not a list of people.',
+      'The legal basis for this is my legitimate interest in understanding and maintaining the site, under Article 6(1)(f). Because it rests on that rather than on consent, your right to object has real weight here: ask me and I will switch the measurements off, since for this site they are a convenience to me and not a benefit to you.',
+    ],
+  },
+  {
     heading: 'Legal basis',
     body: [
       'Under the GDPR I rely on your consent, because you choose to send the message. Where your message is an enquiry about working together, I also rely on taking steps at your request before entering into a contract.',
-      'I do not rely on legitimate interests for anything here, so there is no balancing test of my rights against yours to read through.',
+      'The only thing on this site that relies on legitimate interests is the visit and performance measurement described above. Everything to do with your message runs on consent or on the two grounds just mentioned, so there is no quiet balancing test hiding behind the form.',
     ],
   },
   {
@@ -84,7 +93,8 @@ const sections = [
   {
     heading: 'Your rights, and how to use them here',
     body: [
-      'You can ask to access what I hold about you, to have it corrected, to have it deleted, to restrict or object to how it is processed, and to receive a copy of it. You can withdraw your consent at any time; because the only processing here is your message sitting in an inbox, asking me to delete it is what withdrawal looks like in practice. Withdrawing does not affect anything that already happened.',
+      'You can ask to access what I hold about you, to have it corrected, to have it deleted, to restrict or object to how it is processed, and to receive a copy of it. You can also withdraw your consent at any time, which does not affect anything that already happened.',
+      'For your message, withdrawal and deletion look like the same thing: ask me and it goes. For the visit and performance measurement, the right that actually bites is objection rather than withdrawal, and that is described where I explain the measurements.',
       'To do any of this, send me a message through the form on this site and say what you want. That is deliberately the only contact channel I publish: I am one person with no staff and no data protection officer, and I would rather not put a bare email address on a public page for scrapers to find. One honest caveat: because there is no database, a deletion request means I search my inbox for messages from your address and delete them, rather than clearing a row out of a table.',
       'If you are not satisfied with how I handle your data you can complain to your data protection authority. If you are in Finland, that is the Office of the Data Protection Ombudsman (tietosuojavaltuutetun toimisto).',
     ],
@@ -93,12 +103,13 @@ const sections = [
     heading: 'Local storage on your device',
     body: [
       'The only thing kept on your side is one preference: whether the sound effects on the contact form are muted. It is stored in your browser\u2019s local storage, contains nothing about you, and disappears if you clear your site data.',
+      'The measurements above add nothing to that list as this site is configured today, and neither does the CAPTCHA, which keeps whatever it needs on Cloudflare\u2019s own domain rather than on this one.',
     ],
   },
   {
     heading: 'Changes to this page',
     body: [
-      'If what I do with submissions changes, this page changes with it and the date at the top moves. The notice also sits directly above the Send button, so you read it at the moment it matters rather than only if you go looking for it.',
+      'If anything about how this site handles data changes, this page changes with it and the date at the top moves. The notice for the form sits directly above the Send button, so you read it at the moment it matters rather than only if you go looking for it.',
     ],
   },
 ];
@@ -124,9 +135,10 @@ export default function PrivacyPage() {
           Privacy
         </h1>
         <p className="mt-3 font-mono text-sm text-gray-400">
-          How the contact form, and any engagement that follows it, handles your data.
+          How this site handles your data: the form, any engagement that follows it, and the
+          measurements it runs.
         </p>
-        <p className="mt-1 font-mono text-xs text-gray-400">Last updated 28 September 2026</p>
+        <p className="mt-1 font-mono text-xs text-gray-400">Last updated 30 September 2026</p>
 
         <div className="mt-10 space-y-10">
           {sections.map((section) => (

@@ -46,7 +46,7 @@ const SERVICES = [
         'REST · GraphQL · OAuth2',
       ],
       closing:
-        'This site is the working example: the form is validated and verified on the server, and nothing on it loads analytics or trackers.',
+        'This site is the working example: the form is validated and verified on the server, and the only third-party code it loads is the CAPTCHA and a page-visit counter.',
     },
     commitments: [
       'You see the plan before the work starts, so what you pay for is what you asked for.',
