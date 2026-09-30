@@ -84,9 +84,30 @@ const CUES = {
   error: bubbleDeflate,
 };
 
+// Storage access does not merely return null when a browser blocks site storage
+// (Firefox with "block all cookies", some hardened Safari) - reading it throws a
+// SecurityError. isContactSfxMuted() runs inside a Contact useEffect, so an
+// unguarded read takes the whole section down over a sound preference. Falling back
+// to the in-memory value is correct: the choice simply resets next visit.
+function readStoredMuted() {
+  try {
+    return window.localStorage.getItem(MUTE_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function writeStoredMuted(next) {
+  try {
+    window.localStorage.setItem(MUTE_KEY, next ? '1' : '0');
+  } catch {
+    // mutedCache already holds the value for this session.
+  }
+}
+
 export function isContactSfxMuted() {
   if (mutedCache === null && typeof window !== 'undefined') {
-    mutedCache = window.localStorage.getItem(MUTE_KEY) === '1';
+    mutedCache = readStoredMuted();
   }
   return mutedCache === true;
 }
@@ -94,7 +115,7 @@ export function isContactSfxMuted() {
 export function setContactSfxMuted(next) {
   mutedCache = next;
   if (typeof window !== 'undefined') {
-    window.localStorage.setItem(MUTE_KEY, next ? '1' : '0');
+    writeStoredMuted(next);
   }
 }
 

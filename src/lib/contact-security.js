@@ -66,9 +66,14 @@ export function stripControlCharacters(value, { allowNewlines = false } = {}) {
 }
 
 export function containsSuspiciousContent(value) {
+  // A denylist: it catches obvious attempts, and `&#60;script&#62;` walks straight
+  // through it. It exists to reject noise early, not to make anything safe — the
+  // escaping in escapeHtml() is what a sink has to rely on.
   return SUSPICIOUS_PATTERNS.some((pattern) => pattern.test(value));
 }
 
+// Escaping order is load-bearing: '&' must be replaced first, or the entities this
+// function emits get re-escaped on a second pass and render as literal '&amp;lt;'.
 export function escapeHtml(value) {
   if (typeof value !== 'string') return '';
 
@@ -83,6 +88,8 @@ export function escapeHtml(value) {
     .replace(/`/g, '&#x60;');
 }
 
+// Order matters: escape first, then insert our own line breaks. Reversed, a
+// payload's own '<' would land inside the markup being generated.
 export function formatMessageForHtmlEmail(message) {
   return escapeHtml(message).replace(/\r\n|\r|\n/g, '<br>');
 }
@@ -115,6 +122,12 @@ export function isValidSubject(value) {
   return SUBJECT_REGEX.test(normalized);
 }
 
+// Zero-width and format characters (ZWSP, word joiner, soft hyphen, BOM) survive
+// trim() and are not control characters, so a message built only from them passed the
+// emptiness test and arrived as an email with an invisible body. Name and subject are
+// safe without this: their allowlists never matched these code points anyway.
+const INVISIBLE_CHARACTERS = /[\p{White_Space}\p{Cf}\u00AD\u200B\u2060\uFEFF]/gu;
+
 export function isValidMessage(value) {
   const normalized = normalizeUnicode(value).trim();
   if (!normalized) return false;
@@ -122,7 +135,7 @@ export function isValidMessage(value) {
   if (containsSuspiciousContent(normalized)) return false;
 
   const cleaned = stripControlCharacters(normalized, { allowNewlines: true });
-  return cleaned.trim().length > 0;
+  return cleaned.replace(INVISIBLE_CHARACTERS, '').length > 0;
 }
 
 export function validateContactField(field, value) {
@@ -162,7 +175,11 @@ export function validateContactField(field, value) {
 
 /**
  * Parse and validate an incoming contact payload.
- * Returns sanitized strings safe for HTML email rendering and SMTP headers.
+ *
+ * The returned strings are length-checked and free of the control characters that
+ * would break an SMTP header, but they are NOT HTML-escaped: a message may
+ * legitimately contain '<', and validation lets that through on purpose. Every
+ * sink must run them through escapeHtml() itself.
  */
 export function parseContactRequest(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {

@@ -118,7 +118,10 @@ export default function Contact() {
   // Field errors appear next to inputs the user can't see from the Send button,
   // and nothing else announces them, so move focus to the first offender.
   function focusField(form, name) {
-    if (!name) return;
+    // `name` can come back on the response as data.field, and it is interpolated
+    // into a selector below. The validators double as the field allowlist, so an
+    // unexpected key stops here rather than reaching querySelector as syntax.
+    if (!Object.hasOwn(validators, name)) return;
     form.querySelector(`[name="${name}"]`)?.focus();
   }
 

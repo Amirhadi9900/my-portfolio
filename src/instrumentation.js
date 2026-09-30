@@ -1,8 +1,6 @@
 // Runs once when the server boots. A missing variable here currently only surfaces as
 // a generic 500 on a real submission, which is the worst time to discover it.
 export function register() {
-  if (process.env.NODE_ENV === 'test') return;
-
   const required = [
     'EMAIL_USER',
     'EMAIL_PASS',

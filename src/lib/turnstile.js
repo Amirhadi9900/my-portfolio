@@ -1,6 +1,11 @@
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const MAX_TOKEN_LENGTH = 2048;
 const EXPECTED_ACTION = 'contact_submit';
+// Cloudflare's public always-pass test secret. Its canned siteverify response
+// carries no `action`, so holding it to the action contract below would lock local
+// development out of the form entirely. Named here because it is the only case in
+// which the contract loosens, and it is a published constant, not a real credential.
+const CLOUDFLARE_TEST_SECRET = '1x0000000000000000000000000000000AA';
 
 /**
  * Verify a Cloudflare Turnstile token server-side.
@@ -81,12 +86,23 @@ export async function verifyTurnstileToken(token, remoteIp) {
     };
   }
 
-  if (result.action && result.action !== EXPECTED_ACTION) {
-    return {
-      ok: false,
-      error: 'Security verification mismatch. Please refresh and try again.',
-      code: 'captcha_action_mismatch',
-    };
+  // Fail closed. A widget rendered without an action produces a perfectly valid
+  // token whose siteverify result simply omits the field, so `result.action &&`
+  // would treat that absence as a match and let any Turnstile widget on this site
+  // key authorise a contact submission. The widget in TurnstileField always sets
+  // this action; if Cloudflare ever stops echoing it, the form fails loudly and
+  // this check is the first thing to revisit.
+  if (result.action !== EXPECTED_ACTION) {
+    if (secret !== CLOUDFLARE_TEST_SECRET) {
+      console.warn('Turnstile action mismatch:', result.action);
+      return {
+        ok: false,
+        error: 'Security verification mismatch. Please refresh and try again.',
+        code: 'captcha_action_mismatch',
+      };
+    }
+    // Only the published test pair loosens this, and it says so on every request.
+    console.warn('Turnstile action check skipped because the Cloudflare test secret is in use.');
   }
 
   const expectedHost = process.env.TURNSTILE_EXPECTED_HOSTNAME;
