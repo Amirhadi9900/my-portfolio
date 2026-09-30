@@ -61,6 +61,12 @@ jobs:
       - name: Contact response contract checks
         run: node scripts/verify-contact-response.mjs
 
+      # Reads the notice and the code it describes in one run. Nothing else here can
+      # see this class of defect: a wrong sentence in a published privacy notice
+      # leaves every other step green.
+      - name: Privacy notice claim checks
+        run: node scripts/verify-privacy-claims.mjs
+
       - name: Production build
         run: npm run build
 
