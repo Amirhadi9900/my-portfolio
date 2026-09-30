@@ -155,9 +155,26 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, turnstileToken }),
       });
-      
-      const data = await response.json();
-      
+
+      // Read as text, then parse by hand. Vercel's firewall answers a request it
+      // distrusts with an HTML challenge page at 429, and response.json() on that
+      // threw a SyntaxError whose message - "Unexpected token '<'..." - was then
+      // rendered to the visitor as the error text. Our own 429 is JSON, so a genuine
+      // rate limit still takes the normal path and keeps its real message.
+      let data = null;
+      try {
+        const parsed = JSON.parse(await response.text());
+        if (parsed && typeof parsed === 'object') data = parsed;
+      } catch {
+        // Left empty on purpose; the absence of a usable body is handled below.
+      }
+
+      if (!data) {
+        throw new Error(response.status === 429
+          ? 'A security check interrupted the send. Please try again in a minute.'
+          : 'The server sent an unexpected response. Please try again.');
+      }
+
       if (!response.ok) {
         if (data.code?.startsWith('captcha_')) {
           setCaptchaError(data.error || 'Security check failed. Please try again.');
@@ -184,7 +201,12 @@ export default function Contact() {
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmitStatus('error');
-      setErrorMessage(error.message);
+      // fetch() rejects with TypeError when the request never completed at all —
+      // offline, DNS, aborted. Its message is "Failed to fetch", which is a log line,
+      // not something to show a visitor who just typed a message to me.
+      setErrorMessage(error instanceof TypeError
+        ? 'Could not reach the server. Check your connection and try again.'
+        : error.message);
       resetTurnstile();
       playContactSfx('error');
       scheduleStatusClear();

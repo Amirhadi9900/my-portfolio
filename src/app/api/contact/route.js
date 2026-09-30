@@ -13,10 +13,18 @@ const RATE_WINDOW_MS = 60_000;
 const MAX_REQUESTS = 3;
 
 /**
- * Per-instance only: on serverless each cold region gets its own Map, so an
- * attacker spread across enough concurrent invocations multiplies the budget.
- * Turnstile, the origin check and the 3-per-minute cap still make bulk sending
- * impractical; a shared store (Upstash) is the fix if abuse ever appears.
+ * Per-instance only: on serverless each cold instance keeps its own Map, so an
+ * attacker spreading across enough concurrent invocations multiplies the budget.
+ * It stays anyway, because it is the only layer that can answer with a real 429,
+ * a Retry-After header and a JSON body this form knows how to render.
+ *
+ * In front of it, verified against the deployed site: Vercel's Attack Challenge Mode
+ * intercepts clients it cannot recognise on /api/contact before the function runs at
+ * all, answering HTML at 429 — which is why the client parses the response
+ * defensively rather than assuming JSON. A WAF rate-limit rule would add a coarse
+ * per-region ceiling ahead of both; a shared store such as Upstash is the only exact
+ * fix, and is not warranted at this traffic level against an endpoint already gated
+ * by Turnstile (fail-closed on action), an origin check and the edge challenge.
  */
 const rateLimitStore = new Map();
 
