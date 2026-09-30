@@ -1,16 +1,8 @@
 const path = require('path');
 
 /** @type {import('next').NextConfig} */
-// Turbopack's dev overlay needs eval; a production bundle does not, so drop it there.
-// script-src keeps 'unsafe-inline' because Next injects an inline bootstrap script.
-const scriptSrc = [
-  "'self'",
-  "'unsafe-inline'",
-  'https://challenges.cloudflare.com',
-  'https://va.vercel-scripts.com',
-  ...(process.env.NODE_ENV === 'production' ? [] : ["'unsafe-eval'"]),
-].join(' ');
-
+// CSP is NOT set here: it carries a per-request nonce, so it lives in src/proxy.js.
+// Every other header below is static and stays.
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: false,
@@ -40,28 +32,6 @@ const nextConfig = {
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
           { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
           { key: 'X-Permitted-Cross-Domain-Policies', value: 'none' },
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              `script-src ${scriptSrc}`,
-              "style-src 'self' 'unsafe-inline'",
-              // blob:/data: were dropped once nothing in the tree produced one; a CSP
-              // violation in the browser console is the signal to add them back.
-              "img-src 'self' https://flagcdn.com",
-              "font-src 'self' data:",
-              "connect-src 'self' https://challenges.cloudflare.com https://va.vercel-scripts.com",
-              "frame-src 'self' https://challenges.cloudflare.com",
-              "frame-ancestors 'none'",
-              "base-uri 'self'",
-              "form-action 'self'",
-              "object-src 'none'",
-              "worker-src 'self'",
-              "manifest-src 'self'",
-              "media-src 'self'",
-              "upgrade-insecure-requests",
-            ].join('; '),
-          },
         ],
       },
       {

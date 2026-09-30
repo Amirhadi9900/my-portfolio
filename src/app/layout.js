@@ -65,7 +65,7 @@ export default function RootLayout({ children }) {
         {children}
         {/* Neither SDK sets a cookie or writes to storage unless `enableCookie` or
             `identify()` is called, and this site calls neither. Disclosed on
-            /privacy; the CSP in next.config.js allowlists their host. */}
+            /privacy. Their scripts are allowed by the CSP in src/proxy.js. */}
         <Analytics />
         <SpeedInsights />
       </body>

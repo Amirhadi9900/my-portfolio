@@ -9,8 +9,14 @@ import Footer from '../components/Footer';
 import ScrollTimeline from '../components/ScrollTimeline';
 import BackToTop from '../components/BackToTop';
 import MotionProvider from '../components/MotionProvider';
+import { connection } from 'next/server';
 
-export default function Home() {
+export default async function Home() {
+  // Needs a live request so Next can stamp the CSP nonce from src/proxy.js onto its
+  // inline scripts. A prerendered shell would ship them unnonced, and with
+  // 'unsafe-inline' gone the browser would block the whole hydration payload.
+  await connection();
+
   return (
     <MotionProvider>
       <ScrollTimeline />

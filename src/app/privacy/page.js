@@ -1,5 +1,6 @@
 import BackToTop from '../../components/BackToTop';
 import MotionProvider from '../../components/MotionProvider';
+import { connection } from 'next/server';
 
 export const metadata = {
   title: 'Privacy and how I handle your message - Amirhadi Borjian Yazdi',
@@ -123,7 +124,12 @@ const sections = [
   },
 ];
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  // Needs a live request so Next can stamp the CSP nonce from src/proxy.js onto its
+  // inline scripts. A prerendered shell would ship them unnonced and the browser
+  // would refuse to run them.
+  await connection();
+
   return (
     <div className="min-h-screen">
       {/* Plain anchors, not next/link: the nav here is deliberately free of client
