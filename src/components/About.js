@@ -47,7 +47,7 @@ export default function About() {
                 {/* Front — Photo */}
                 <button
                   type="button"
-                  className="flip-card-face flip-card-front bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.15)] border border-gray-100/50 dark:border-gray-700/50 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  className="flip-card-face flip-card-front backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.15)] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   onClick={() => setIsFlipped(true)}
                   aria-label="Show about information"
                   aria-hidden={isFlipped}
@@ -74,7 +74,7 @@ export default function About() {
                 </button>
 
                 {/* Back — Info */}
-                <div className="flip-card-face flip-card-back relative flex flex-col min-h-0 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.2)] border border-indigo-500/20 text-left" aria-hidden={!isFlipped} inert={!isFlipped}>
+                <div className="flip-card-face flip-card-back flex flex-col min-h-0 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.2)] text-left" aria-hidden={!isFlipped} inert={!isFlipped}>
                   <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 pointer-events-none" />
                   <div className="absolute -top-16 -right-16 w-40 h-40 bg-blue-500/25 rounded-full blur-3xl pointer-events-none" />
                   <div className="absolute -bottom-20 -left-16 w-44 h-44 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />

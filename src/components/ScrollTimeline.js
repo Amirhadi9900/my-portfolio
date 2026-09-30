@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { scrollToId } from '../lib/scroll-to-id';
+import { getActiveSectionId } from '../lib/active-section';
 
 const SECTIONS = [
   { id: 'hero', label: 'Home', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4' },
@@ -24,15 +25,10 @@ export default function ScrollTimeline() {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(docHeight > 0 ? Math.min(scrollTop / docHeight, 1) : 0);
 
-      let current = 0;
-      for (let i = SECTIONS.length - 1; i >= 0; i--) {
-        const el = document.getElementById(SECTIONS[i].id);
-        if (el && el.getBoundingClientRect().top <= window.innerHeight / 3) {
-          current = i;
-          break;
-        }
-      }
-      setActiveIndex(current);
+      // Same rule the header nav uses, so the dot and the underline always agree.
+      const activeId = getActiveSectionId();
+      const found = SECTIONS.findIndex((section) => section.id === activeId);
+      setActiveIndex(found < 0 ? 0 : found);
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });

@@ -10,7 +10,9 @@
   }
 
   body {
-    @apply bg-slate-900 text-slate-100 transition-colors duration-200;
+    /* No background colour utility here on purpose: the `background` shorthand below
+       resets background-color to transparent, so one would be erased on every paint. */
+    @apply text-slate-100;
     background: linear-gradient(to bottom, #0f172a, #020617);
     background-attachment: fixed;
     overflow-x: hidden;
@@ -307,6 +309,9 @@ a {
   transform: rotateY(180deg);
 }
 
+/* Owns position, background and border outright, so call-site utilities for those
+   three on a `.flip-card-face` element do not apply — they are overridden here,
+   outside @layer, because the faces must stack exactly like this to flip. */
 .flip-card-face {
   position: absolute;
   inset: 0;
@@ -355,6 +360,15 @@ a {
   html.custom-cursor-active.custom-cursor-text label,
   html.custom-cursor-active.custom-cursor-text [contenteditable='true'] {
     cursor: text;
+  }
+
+  /* A checkbox or radio is clicked, not typed into, so it must never pick up the
+     I-beam above: the custom cursor stays visible over it and behaves like the
+     buttons. Listed after the text block because both selectors tie on
+     specificity, so here source order decides. */
+  html.custom-cursor-active input[type='checkbox'],
+  html.custom-cursor-active input[type='radio'] {
+    cursor: none;
   }
 }
 
@@ -464,16 +478,9 @@ a {
   opacity: 0;
 }
 
-.prompt-cursor.is-reduced-motion,
-.prompt-cursor.is-reduced-motion .prompt-cursor-lead,
-.prompt-cursor.is-reduced-motion .prompt-cursor-next {
-  transition: none;
-}
-
-.prompt-cursor.is-reduced-motion .prompt-cursor-ripple,
-.prompt-cursor.is-reduced-motion .prompt-cursor-ripple.is-rippling {
-  animation: none;
-}
+/* Reduced motion for this cursor is handled by the @media block below, not by a
+   JS-applied class: the media query is live, cannot desync from the OS setting, and
+   works before any script runs. */
 
 @media (prefers-reduced-motion: reduce) {
   .prompt-cursor,

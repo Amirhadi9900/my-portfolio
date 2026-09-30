@@ -4,9 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { scrollToId } from '../lib/scroll-to-id';
-
-// Must stay greater than the 7rem (112px) `scroll-mt-28` that sections land at.
-const NAV_PROBE_PX = 140;
+import { getActiveSectionId } from '../lib/active-section';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,24 +13,18 @@ export default function Header() {
   const pendingMobileScrollId = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const update = () => {
       setIsScrolled(window.scrollY > 10);
-
-      // scrollToId lands a section 112px below the viewport top (its `scroll-mt-28`),
-      // so the probe line must sit below that or every nav click reports the previous
-      // section. Taking the last section that has crossed the line also closes the old
-      // upper-bound gap, where a position between two sections matched nothing and left
-      // a stale highlight.
-      const probe = window.scrollY + NAV_PROBE_PX;
-      let current = null;
-      for (const section of document.querySelectorAll('section[id]')) {
-        if (section.offsetTop <= probe) current = section;
-      }
-      setActiveLink(current ? `#${current.getAttribute('id')}` : '#');
+      const current = getActiveSectionId();
+      setActiveLink(current ? `#${current}` : '#');
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', update, { passive: true });
+    // Both sibling scroll components run their handler once on mount; without this
+    // the nav shows no active item at all until the visitor scrolls, so landing on
+    // a deep link like /#services arrives unhighlighted.
+    update();
+    return () => window.removeEventListener('scroll', update);
   }, []);
 
   useEffect(() => {
@@ -155,6 +147,10 @@ export default function Header() {
                   scrollToId('contact', event);
                   setActiveLink('#contact');
                 }}
+                // Contact is deliberately not one of the four nav links, so the CTA is
+                // the only thing that can announce it. The ring is visual only; without
+                // this the reader is told nothing while the section is on screen.
+                aria-current={activeLink === '#contact' ? 'true' : undefined}
                 className={`ml-3 btn-primary-sm pulse-border transition-shadow ${
                   activeLink === '#contact' ? 'ring-2 ring-cyan-300/80 ring-offset-2 ring-offset-blue-900' : ''
                 }`}

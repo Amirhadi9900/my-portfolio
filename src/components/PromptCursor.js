@@ -4,7 +4,21 @@ import { useEffect } from 'react';
 
 const HOVER_SELECTOR = 'a, button, [role="button"], [data-cursor-hover]';
 const RIPPLE_SELECTOR = 'a, button, [role="button"]';
-const NATIVE_SELECTOR = 'input, textarea, select, label, [contenteditable="true"]';
+const FIELD_SELECTOR = 'input, textarea, select, label, [contenteditable="true"]';
+// Input types you click rather than type into. They take the button treatment:
+// the custom cursor stays visible over them. Everything else an <input> can be
+// wants a caret, so it keeps the native text cursor and hides ours.
+const POINTER_INPUT_TYPES = new Set([
+  'button',
+  'checkbox',
+  'color',
+  'file',
+  'image',
+  'radio',
+  'range',
+  'reset',
+  'submit',
+]);
 const FINE_POINTER_QUERY = '(pointer: fine)';
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -38,6 +52,46 @@ export default function PromptCursor() {
       return Boolean(element && element.closest(selector));
     }
 
+    function isPointerInput(field) {
+      return (
+        field.tagName === 'INPUT' &&
+        POINTER_INPUT_TYPES.has((field.getAttribute('type') || 'text').toLowerCase())
+      );
+    }
+
+    // A label is not a field in its own right: it belongs to whichever control it
+    // names, so hovering either the box or its caption gives that control's cursor.
+    function fieldElementFor(element) {
+      const field = element.closest(FIELD_SELECTOR);
+      if (!field) return null;
+      if (field.tagName !== 'LABEL') return field;
+      const forId = field.getAttribute('for');
+      const target = forId && document.getElementById(forId);
+      return target || field.querySelector('input, select, textarea') || field;
+    }
+
+    // 'text'   -> you type in it: native caret, custom cursor hidden
+    // 'action' -> you click it: custom cursor visible and lit up
+    // null     -> ordinary page content
+    function classify(node) {
+      const element = closestElement(node);
+      if (!element) return null;
+      const field = fieldElementFor(element);
+      if (field) return isPointerInput(field) ? 'action' : 'text';
+      if (matchesSelector(element, HOVER_SELECTOR)) return 'action';
+      return null;
+    }
+
+    // data-cursor-hover lights the cursor up but does not ripple, so a plain
+    // stretch of text in the hero reads as interactive without shouting about it.
+    function isRipplable(node) {
+      const element = closestElement(node);
+      if (!element) return false;
+      const field = fieldElementFor(element);
+      if (field) return isPointerInput(field);
+      return matchesSelector(element, RIPPLE_SELECTOR);
+    }
+
     function setHoverState(isHover) {
       if (!cursor) return;
       cursor.classList.toggle('is-hover', isHover);
@@ -49,12 +103,21 @@ export default function PromptCursor() {
       document.documentElement.classList.toggle('custom-cursor-text', isNativeField);
     }
 
+    // Recomputed from the element under the pointer on both mouseover and mousemove,
+    // rather than undoing the previous element's state on mouseout: derived state
+    // cannot go stale, and mousemove covers the page scrolling under a still pointer.
+    function applyState(target) {
+      const kind = classify(target);
+      setNativeFieldState(kind === 'text');
+      setHoverState(kind === 'action');
+    }
+
     function onMouseMove(event) {
       if (!cursor) return;
       cursor.style.setProperty('--cursor-x', `${event.clientX}px`);
       cursor.style.setProperty('--cursor-y', `${event.clientY}px`);
       cursor.classList.remove('is-hidden');
-      setNativeFieldState(matchesSelector(event.target, NATIVE_SELECTOR));
+      applyState(event.target);
     }
 
     function onDocumentLeave() {
@@ -63,25 +126,7 @@ export default function PromptCursor() {
     }
 
     function onMouseOver(event) {
-      if (matchesSelector(event.target, NATIVE_SELECTOR)) {
-        setNativeFieldState(true);
-        setHoverState(false);
-        return;
-      }
-      setNativeFieldState(false);
-      if (matchesSelector(event.target, HOVER_SELECTOR)) setHoverState(true);
-    }
-
-    function onMouseOut(event) {
-      if (matchesSelector(event.target, NATIVE_SELECTOR)) {
-        if (!matchesSelector(event.relatedTarget, NATIVE_SELECTOR)) {
-          setNativeFieldState(false);
-        }
-        return;
-      }
-      if (!matchesSelector(event.target, HOVER_SELECTOR)) return;
-      if (matchesSelector(event.relatedTarget, HOVER_SELECTOR)) return;
-      setHoverState(false);
+      applyState(event.target);
     }
 
     function triggerRipple() {
@@ -98,7 +143,7 @@ export default function PromptCursor() {
     function onMouseDown(event) {
       if (!cursor || cursor.classList.contains('is-native-field')) return;
       cursor.classList.add('is-active');
-      if (matchesSelector(event.target, RIPPLE_SELECTOR)) triggerRipple();
+      if (isRipplable(event.target)) triggerRipple();
     }
 
     function onMouseUp() {
@@ -111,7 +156,6 @@ export default function PromptCursor() {
       window.addEventListener('mousemove', onMouseMove);
       document.documentElement.addEventListener('mouseleave', onDocumentLeave);
       document.addEventListener('mouseover', onMouseOver);
-      document.addEventListener('mouseout', onMouseOut);
       document.addEventListener('mousedown', onMouseDown);
       window.addEventListener('mouseup', onMouseUp);
       listenersBound = true;
@@ -122,7 +166,6 @@ export default function PromptCursor() {
       window.removeEventListener('mousemove', onMouseMove);
       document.documentElement.removeEventListener('mouseleave', onDocumentLeave);
       document.removeEventListener('mouseover', onMouseOver);
-      document.removeEventListener('mouseout', onMouseOut);
       document.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
       if (ripple) ripple.removeEventListener('animationend', onRippleEnd);
@@ -134,7 +177,6 @@ export default function PromptCursor() {
       cursor = document.createElement('div');
       cursor.className = 'prompt-cursor is-hidden';
       cursor.setAttribute('aria-hidden', 'true');
-      if (prefersReducedMotion) cursor.classList.add('is-reduced-motion');
 
       const mark = document.createElementNS(SVG_NS, 'svg');
       mark.setAttribute('class', 'prompt-cursor-mark');
@@ -169,13 +211,11 @@ export default function PromptCursor() {
 
     function sync() {
       prefersReducedMotion = reducedMotionQuery.matches;
-      if (!finePointerQuery.matches) {
+      if (finePointerQuery.matches) {
+        enable();
+      } else {
         disable();
-        return;
       }
-      enable();
-      if (!cursor) return;
-      cursor.classList.toggle('is-reduced-motion', prefersReducedMotion);
     }
 
     sync();
