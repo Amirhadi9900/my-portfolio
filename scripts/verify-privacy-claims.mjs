@@ -147,6 +147,16 @@ check('nothing in the request path can store what you type', persisted.length ==
 check('the notice claims storage-free submission in those words', notice.includes('Nothing you type is stored anywhere on this site'),
   'phrase not found');
 
+// The consent label above the Send button makes the same promise in its own words, in a
+// component this script would otherwise never read. Rewording it is allowed; the claim
+// only has to be false when the code says otherwise.
+const labelPromisesNoStorage = /Nothing is kept on the site itself/.test(contact);
+check('the consent label only promises no storage while the code keeps that true',
+  !(labelPromisesNoStorage && persisted.length),
+  labelPromisesNoStorage
+    ? (persisted.length ? `Contact.js promises nothing is kept, but persistence exists in ${persisted.map((f) => path.relative(REPO, f)).join(', ')}` : 'label claim matches the tree')
+    : 'label no longer makes that claim, so nothing to check');
+
 // ------------------------------------------------------- consent is enforced
 check('the form renders a real consent checkbox', /type="checkbox"/.test(contact) && /name="consent"/.test(contact),
   'checkbox with name="consent" not found in Contact.js');
