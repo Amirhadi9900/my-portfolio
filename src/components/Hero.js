@@ -18,6 +18,9 @@ export default function Hero() {
 
   // Client-side mounting
   useEffect(() => {
+    // Gates animations that must not run during prerender; there is nothing to
+    // derive it from at render time because the server has no equivalent state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount gate
     setIsMounted(true);
   }, []);
 
@@ -185,7 +188,7 @@ export default function Hero() {
                 textShadow: '0 0 10px rgba(59, 130, 246, 0.4), 0 0 15px rgba(0, 0, 0, 0.8), 1px 1px 4px rgba(0, 0, 0, 0.9)',
                 marginRight: '0.75rem'
               }}
-            >I'm {article}</span>
+            >I&apos;m {article}</span>
             <span 
               className="text-white font-medium"
               style={{

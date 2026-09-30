@@ -138,6 +138,7 @@ export default async function PrivacyPage() {
           button and the MotionProvider that makes it honour reduced motion. */}
       <header className="border-b border-white/10 bg-gradient-to-r from-blue-900/70 via-blue-800/70 to-blue-900/70 backdrop-blur-md">
         <div className="container flex justify-center py-5">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- see the plain-anchor note above */}
           <a href="/" className="font-heading text-xl font-semibold text-white no-underline">
             <span>Amirhadi</span>{' '}
             <span className="font-light logo-gradient">Borjian</span>
@@ -180,6 +181,7 @@ export default async function PrivacyPage() {
         </p>
 
         <div className="mt-12 flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- the #contact target needs a real load to scroll */}
           <a href="/#contact" className="btn-primary">
             Back to the site
           </a>

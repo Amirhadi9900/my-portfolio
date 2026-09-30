@@ -25,6 +25,7 @@ export default async function NotFound() {
         </p>
         {/* Plain anchor rather than next/link: a real document load is what gets a
             fresh nonce, which is the whole point of this page being dynamic. */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- deliberate full load */}
         <a href="/" className="btn-primary">Back to the site</a>
       </div>
     </main>

@@ -14,6 +14,9 @@ export default function TurnstileField({ widgetKey = 0, onTokenChange }) {
   // failure mode is indistinguishable from success. Say something if no token arrives.
   useEffect(() => {
     if (!SITE_KEY) return undefined;
+    // Adopting a fresh widget key means the previous attempt's timeout is no longer
+    // meaningful, so it is cleared here rather than derived during render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reset on widget remount
     setUnresponsive(false);
     timerRef.current = setTimeout(() => setUnresponsive(true), LOAD_TIMEOUT_MS);
     return () => clearTimeout(timerRef.current);

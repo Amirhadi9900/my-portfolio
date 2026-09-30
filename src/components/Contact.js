@@ -32,6 +32,10 @@ export default function Contact() {
   const [sfxMuted, setSfxMuted] = useState(false);
 
   useEffect(() => {
+    // localStorage does not exist while prerendering, so the stored preference can
+    // only be adopted once on the client; reading it during render would hydrate
+    // differently on server and browser.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only storage
     setSfxMuted(isContactSfxMuted());
     // Landed on from an in-page anchor: the element exists now, so re-center it
     // once the sections below have had a chance to hydrate.
@@ -229,7 +233,7 @@ export default function Contact() {
           <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
             Get In Touch
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">Have a project in mind? Let's talk about it :)</p>
+          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">Have a project in mind? Let&apos;s talk about it :)</p>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
@@ -244,8 +248,8 @@ export default function Contact() {
               <div className="absolute -top-2 left-0 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full"></div>
               <h3 className="font-subheading text-2xl font-semibold text-gray-800 dark:text-white mb-4 tracking-tight">Contact Information</h3>
               <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                Feel free to reach out if you have any questions or if you'd like to work together.
-                I'm always open to new projects and opportunities.
+                Feel free to reach out if you have any questions or if you&apos;d like to work together.
+                I&apos;m always open to new projects and opportunities.
               </p>
             </div>
             
@@ -345,7 +349,7 @@ export default function Contact() {
                     </svg>
                   </button>
                   <h3 className="font-subheading text-2xl font-semibold text-gray-800 dark:text-white mb-2 tracking-tight">Send Me a Message</h3>
-                  <p className="text-gray-600 dark:text-gray-300">I'll get back to you as soon as possible.</p>
+                  <p className="text-gray-600 dark:text-gray-300">I&apos;ll get back to you as soon as possible.</p>
                 </div>
                 
                 <form id="contact-form" noValidate onSubmit={handleSubmit}>
