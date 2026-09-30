@@ -13,13 +13,16 @@ import { NextResponse } from 'next/server';
  */
 const CSP_DIRECTIVES = (nonce, isDev) => [
   "default-src 'self'",
-  // 'unsafe-inline' deliberately absent. Cloudflare and Vercel hosts stay listed
-  // because their scripts are fetched cross-origin, not carried by the nonce.
+  // 'unsafe-inline' deliberately absent. Cloudflare stays listed because Turnstile's
+  // script is genuinely cross-origin. Vercel's analytics and speed-insights hosts are
+  // NOT listed: verified against the live site, both are proxied to same-origin paths
+  // (/8b14b813d7e464d5/script.js and /ce75266c2cedea2b/script.js), so 'self' already
+  // covers them and allowing va.vercel-scripts.com was a wider policy than we use.
+  // A CSP violation naming that host is the signal to add it back.
   `script-src ${[
     "'self'",
     `'nonce-${nonce}'`,
     'https://challenges.cloudflare.com',
-    'https://va.vercel-scripts.com',
     // Turbopack's dev overlay needs eval; a production bundle does not.
     ...(isDev ? ["'unsafe-eval'"] : []),
   ].join(' ')}`,
@@ -31,7 +34,7 @@ const CSP_DIRECTIVES = (nonce, isDev) => [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' https://flagcdn.com",
   "font-src 'self' data:",
-  "connect-src 'self' https://challenges.cloudflare.com https://va.vercel-scripts.com",
+  "connect-src 'self' https://challenges.cloudflare.com",
   "frame-src 'self' https://challenges.cloudflare.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",

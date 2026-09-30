@@ -5,7 +5,7 @@ import { connection } from 'next/server';
 export const metadata = {
   title: 'Privacy and how I handle your message - Amirhadi Borjian Yazdi',
   description:
-    'What the contact form collects, what happens to your data during a penetration test, how this site measures visits and performance, where it all goes, how long it is kept, and how to ask for it to be deleted.',
+    'What the contact form collects, what happens to your data during a penetration test, how this site measures visits and performance, what screens traffic in front of it, where it all goes, how long it is kept, and how to ask for it to be deleted.',
 };
 
 const sections = [
@@ -13,7 +13,7 @@ const sections = [
     heading: 'The short version',
     body: [
       'I am Amirhadi Borjian, I run this site myself, and I am the one deciding what happens to anything you send through it.',
-      'The form emails me, and that is all it does. Nothing you type is stored anywhere on this site, and it is not used to profile you or make any automated decision about you. Separately, I count page visits and measure how quickly pages load: that looks at your browser, not at what you type, and it does not use cookies unless I deliberately turn that on. Three services sit behind those two things. Cloudflare serves the CAPTCHA from its own domain and may set cookies there. Vercel hosts the site and does the counting and the timing. Google delivers the email.',
+      'The form emails me, and that is all it does. Nothing you type is stored anywhere on this site, and it is not used to profile you or make any automated decision about you. Separately, I count page visits and measure how quickly pages load: that looks at your browser, not at what you type, and it does not use cookies unless I deliberately turn that on. Three services sit behind those two things. Cloudflare serves the CAPTCHA from its own domain and may set cookies there. Vercel hosts the site, does the counting and the timing, and screens incoming traffic at its edge before any of it reaches the code described here. Google delivers the email.',
     ],
   },
   {
@@ -28,21 +28,33 @@ const sections = [
     heading: 'Where the message goes',
     body: [
       'Your browser posts the form to this site, the site verifies that you are not a bot, and then hands the message to Gmail, which delivers it to my personal inbox. Once it is delivered, it simply lives in that inbox as an email.',
-      'Three services take part in that trip and so process some of your data: Cloudflare, which runs the CAPTCHA check; Google, which delivers and stores the email; and Vercel, which hosts this site. Vercel records each request it serves, which is their infrastructure logging rather than my processing, and it is the reason the wording about storing nothing below says "on this site" rather than "anywhere".',
+      'Three services take part in that trip and so process some of your data: Cloudflare, which runs the CAPTCHA check; Google, which delivers and stores the email; and Vercel, which hosts this site.',
+      'Vercel does two things that have to be described rather than waved through. It records each request it serves, which is their infrastructure logging rather than my processing, and its firewall inspects requests at the edge before they reach this site. Both are the reason the wording about storing nothing below says "on this site" rather than "anywhere".',
     ],
   },
   {
     heading: 'Your IP address',
     body: [
-      'Your IP address is used for two narrow, technical purposes: it is passed to Cloudflare as part of verifying the CAPTCHA, and it is used to rate-limit how many messages one address can send in a minute.',
-      'For rate limiting it is held only in the memory of one running server instance, and is thrown out once the window closes and the next cleanup pass runs, which works out at a couple of minutes at the very most. It is not written to disk by this site, not attached to the email I receive, and not combined with anything else about you.',
-      'The one place your IP can outlive that is Vercel, the hosting platform, which records it against the request like almost any web server would. That is their infrastructure logging, not a database I keep, and it is the honest reason the sentence above says "by this site".',
+      'Your IP address is used for narrow, technical purposes: it is passed to Cloudflare as part of verifying the CAPTCHA, and it is what the limit on how many messages one address can send in a minute is counted against. That limit is enforced twice, once by this site\u2019s own code and once by Vercel\u2019s firewall before a request ever arrives here, and the two halves keep things for very different lengths of time.',
+      'The limit inside this site\u2019s code is the modest one. Your IP is held in the memory of one running server instance and thrown out once the window closes and the next cleanup pass runs, which works out at a couple of minutes at the very most. It is not written to disk by this site and not attached to the email I receive.',
+      'The edge limit is the wider one and needs stating plainly. Vercel\u2019s firewall counts requests against the contact endpoint by two keys that I chose: your IP address, and a JA4 digest \u2014 a hash built from how your browser opens the encrypted connection, meaning the TLS version, the cipher suites and the extensions it offers. It says nothing about who you are, but it is a stable characteristic of your software, so two people sharing one address can be told apart by it while two copies of the same browser on the same machine cannot.',
+      'Both keys are recorded against a match in Vercel\u2019s firewall view, which I can read back over the last twenty-four hours, so that observation outlives the couple of minutes my own code holds anything. An earlier version of this page said your IP is "not combined with anything else about you", and that was an overstatement. The accurate claim is narrower: your name, email, subject and message never reach the firewall at all, because it screens the request before any form data is read, while an address and a fingerprint do sit side by side in that view for a day.',
+      'That fingerprint is also handed to this site\u2019s code, since Vercel sends it to every deployment. Nothing here reads it. The contact endpoint looks at three headers and nothing else \u2014 your IP address, plus the Origin and Referer of the request, which are checked only to confirm the call came from this site rather than from someone else\u2019s page. It does not read the digest, the user agent, or any other client detail, and it writes none of them anywhere.',
+      'Beyond all of that, Vercel logs the request itself, IP included, the way almost any web server would. That is their infrastructure logging, not a database I keep.',
     ],
   },
   {
     heading: 'One field you will not see',
     body: [
       'The form carries a hidden field that a real person never fills in. If something does fill it in, I treat that submission as a bot: no email is sent to me and nothing is kept. It is there to catch automation, not to collect anything from you.',
+    ],
+  },
+  {
+    heading: 'A screen in front of the whole site',
+    body: [
+      'That hidden field is not the only thing standing between a bot and my inbox. Vercel runs a firewall in front of every project it hosts, including this one, and it inspects requests before they reach the code. The part I configured is the rate limit on the contact endpoint, described above. The part that comes with the platform is a screening layer that decides for itself whether a request looks like it came from a real browser.',
+      'When that layer is unsure, you get a Vercel Security Checkpoint page instead of this site: a short wait while your browser runs some JavaScript to prove it is a browser. Pass it and you are not asked again for an hour, because the proof is remembered in your browser. That remembered session belongs to Vercel and to nothing in this repository, and I cannot read it, extend it or use it to recognise you.',
+      'There is a cost to this worth naming rather than hiding. A browser setup that blocks scripts cannot solve a checkpoint, so someone running a strict privacy extension may find this site will not open for them at all, and no setting of mine changes that. It also means a page you asked for is judged by Vercel\u2019s software before any of mine gets involved. I keep it anyway, because the alternative is a contact form that gets flooded, which mostly hurts the people trying to reach me. If it ever happens to you, letting this one domain run scripts is what gets you through, and the form is how to tell me it was a problem \u2014 narrowing what that screen covers is a decision I can actually make.',
     ],
   },
   {
@@ -59,15 +71,16 @@ const sections = [
     heading: 'Cookies and similar technologies',
     body: [
       'A cookie is a small file a site asks your browser to hold on to. This site sets none of its own: there is no login, no basket and nothing that needs to recognise you between visits.',
-      'The two candidates are already accounted for. The CAPTCHA runs on Cloudflare\u2019s domain, so whatever it stores belongs to that domain and not to this one. The visit and performance counts do not use cookies unless I deliberately turn that on, and they write nothing to local or session storage either \u2014 I checked that on the live site rather than reading it in a document.',
-      'Open your browser\u2019s cookie panel for this address and you should find nothing belonging to it. If that ever changes, this section is where the change gets described, and it will be described before the site does it, not after.',
+      'The three candidates are already accounted for. The CAPTCHA runs on Cloudflare\u2019s domain, so whatever it stores belongs to that domain and not to this one. The visit and performance counts do not use cookies unless I deliberately turn that on, and they write nothing to local or session storage either \u2014 I checked that on the live site rather than reading it in a document. The Vercel checkpoint from the section above only stores anything if you were actually challenged, and what it stores belongs to them.',
+      'Open your browser\u2019s cookie panel for this address after an ordinary visit and you should find nothing belonging to it. The one possible exception is an hour\u2019s worth of checkpoint, and only on a visit where the firewall asked. If that ever changes, this section is where the change gets described, and it will be described before the site does it, not after.',
     ],
   },
   {
     heading: 'Legal basis',
     body: [
       'Your message is processed on your consent, given explicitly by ticking the box above the Send button rather than inferred from you pressing it. Where your message is an enquiry about working together, Article 6(1)(b) applies as well, because replying is a step taken at your request before any contract.',
-      'The only thing on this site that relies on legitimate interests is the visit and performance measurement described above. Everything to do with your message runs on consent or on the two grounds just mentioned, so there is no quiet balancing test hiding behind the form.',
+      'Two things on this site rely on legitimate interests rather than on consent. One is the visit and performance measurement described above, where the interest is in knowing whether anyone is reading this and whether it is slow. The other is the technical screening: the rate limits, the origin check and the edge firewall, where the interest is in a site that still works and a form that still reaches me. Neither is a quiet balancing test hiding behind the form, and everything to do with your message itself runs on consent or on the two grounds just mentioned.',
+      'You can object to both, and they deserve different answers, so here is the honest asymmetry rather than a promise that sounds neutral. If you asked me to stop counting visits and timings, I would, because those are a convenience to me and the site loses nothing you care about. If you asked me to switch off the rate limits, I would explain and decline, because removing them leaves the endpoint open to being flooded and that harms everyone else trying to send me a message. Article 21 gives you the objection either way; it does not oblige me to pretend both requests cost the same.',
     ],
   },
   {
@@ -104,7 +117,7 @@ const sections = [
     heading: 'Your rights, and how to use them here',
     body: [
       'You can ask to access what I hold about you, to have it corrected, to have it deleted, to restrict or object to how it is processed, and to receive a copy of it. You can also withdraw your consent at any time, which does not affect anything that already happened.',
-      'For your message, withdrawal and deletion look like the same thing: ask me and it goes. For the visit and performance measurement, the right that actually bites is objection rather than withdrawal, and that is described where I explain the measurements.',
+      'For your message, withdrawal and deletion look like the same thing: ask me and it goes. For the visit and performance measurement, the right that actually bites is objection rather than withdrawal, and that is described where I explain the measurements, together with the one form of screening I would not switch off and why.',
       'To do any of this, send me a message through the form on this site and say what you want. That is deliberately the only contact channel I publish: I am one person with no staff and no data protection officer, and I would rather not put a bare email address on a public page for scrapers to find. One honest caveat: because there is no database, a deletion request means I search my inbox for messages from your address and delete them, rather than clearing a row out of a table.',
       'If you are not satisfied with how I handle your data you can complain to your data protection authority. If you are in Finland, that is the Office of the Data Protection Ombudsman (tietosuojavaltuutetun toimisto).',
     ],
@@ -112,8 +125,8 @@ const sections = [
   {
     heading: 'Local storage on your device',
     body: [
-      'The only thing kept on your side is one preference: whether the sound effects on the contact form are muted. It is stored in your browser\u2019s local storage, contains nothing about you, and disappears if you clear your site data.',
-      'The measurements above add nothing to that list as this site is configured today, and neither does the CAPTCHA, which keeps whatever it needs on Cloudflare\u2019s own domain rather than on this one.',
+      'What this site\u2019s own code keeps on your side is one preference: whether the sound effects on the contact form are muted. It is stored in your browser\u2019s local storage, contains nothing about you, and disappears if you clear your site data.',
+      'The measurements above add nothing to that list as this site is configured today, and neither does the CAPTCHA, which keeps whatever it needs on Cloudflare\u2019s own domain rather than on this one. The only other thing that could appear is an hour\u2019s worth of Vercel checkpoint, and only if their firewall asked you for it.',
     ],
   },
   {
