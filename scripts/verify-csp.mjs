@@ -86,6 +86,22 @@ const pNonced = pInline.filter((m) => m[1].includes(`nonce="${pNonce}"`));
 check('privacy page nonces its inline scripts', Boolean(pNonce) && pInline.length > 0 && pNonced.length === pInline.length,
   `${pNonced.length}/${pInline.length} nonced`);
 
+// An unmatched path is a route too, and it used to slip through: Next's built-in
+// 404 is prerendered, so its inline scripts carry no nonce while script-src offers
+// no 'unsafe-inline' fallback. The page rendered and never hydrated. Anything that
+// receives a CSP header must receive a nonced document, known route or not.
+const stray = await head('/does-not-exist-' + Math.random().toString(36).slice(2, 10));
+const sCsp = stray.res.headers.get('content-security-policy') || '';
+const sNonce = (directive(sCsp, 'script-src') || '').match(/nonce-([A-Za-z0-9=+/]+)/)?.[1];
+const sInline = [...stray.text.matchAll(/<script([^>]*)>/g)].filter((m) => !/\bsrc=/.test(m[1]));
+const sNonced = sInline.filter((m) => sNonce && m[1].includes(`nonce="${sNonce}"`));
+check('unknown path returns 404', stray.res.status === 404, `got ${stray.res.status}`);
+check('unknown path keeps a CSP header', sCsp.length > 0, sCsp ? 'present' : 'MISSING');
+check('every inline script on the 404 page is nonced',
+  sInline.length > 0 ? sNonced.length === sInline.length : false,
+  `${sNonced.length}/${sInline.length} nonced`);
+check('404 page links back to the site', /href="\/"/.test(stray.text), 'no root link in the body');
+
 const failures = results.filter((r) => !r.pass);
 if (failures.length) {
   console.error(`CSP checks: ${results.length - failures.length}/${results.length} passed`);
