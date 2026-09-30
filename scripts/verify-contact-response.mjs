@@ -88,6 +88,19 @@ expect('JSON 500 with server text', { status: 500, ok: false, body: JSON.stringi
   { outcome: 'error', message: 'Failed to send message. Please try again later.' });
 expect('JSON 500 with no text falls back', { status: 500, ok: false, body: '{}' },
   { outcome: 'error', message: GENERIC });
+// Captured verbatim from the live edge rate limiter (Vercel, x-vercel-mitigated: deny).
+// Its "error" is an object, which is the shape that produced "[object Object]" in the
+// alert before readableText() existed. This is a real response, not a hypothetical one.
+expect('edge 429 whose error is a nested object', { status: 429, ok: false, body: '{"error":{"code":"429","message":"Too Many Requests","id":"arn1::vlgz5-1790792106957-27ebc3957963"}}\n' },
+  { outcome: 'error', message: 'Too many requests. Please wait a minute before trying again.' });
+expect('403 with a nested object error is not read as captcha text', { status: 403, ok: false, body: JSON.stringify({ code: 'captcha_failed', error: { message: 'nope' } }) },
+  { outcome: 'captcha', message: 'Security check failed. Please try again.' });
+expect('400 with a whitespace-only error falls back', { status: 400, ok: false, body: JSON.stringify({ field: 'email', error: '   ' }) },
+  { outcome: 'field', field: 'email', message: GENERIC });
+expect('500 with an array error falls back', { status: 500, ok: false, body: JSON.stringify({ error: ['boom'] }) },
+  { outcome: 'error', message: GENERIC });
+expect('500 with a numeric error falls back', { status: 500, ok: false, body: JSON.stringify({ error: 500 }) },
+  { outcome: 'error', message: GENERIC });
 expect('JSON 200 success', { status: 200, ok: true, body: JSON.stringify({ success: true, message: 'Your message has been sent successfully!' }) },
   { outcome: 'success' });
 
@@ -95,20 +108,34 @@ expect('JSON 200 success', { status: 200, ok: true, body: JSON.stringify({ succe
 const allBodies = [
   CHALLENGE_HTML, '', 'null', '"ok"', '[]', '{}',
   JSON.stringify({ error: 'Too many requests.', field: 'name', code: 'captcha_failed' }),
+  JSON.stringify({ error: { code: '429', message: 'Too Many Requests' } }),
+  JSON.stringify({ error: {} }),
+  JSON.stringify({ error: null, field: 'x' }),
+  JSON.stringify({ error: 42, code: 'captcha_expired' }),
+  JSON.stringify({ message: 'no error key at all' }),
 ];
 const leakedHtml = [];
 const leakedUndefined = [];
+const leakedNonString = [];
 for (const status of [200, 400, 403, 429, 500]) {
   for (const ok of [true, false]) {
     for (const body of allBodies) {
       const v = interpretContactResponse({ status, ok, body });
       if (!['success', 'captcha', 'field', 'error'].includes(v.outcome)) leakedUndefined.push(`${status}/${v.outcome}`);
-      if (typeof v.message === 'string' && /[<>]/.test(v.message)) leakedHtml.push(`${status}:${body.slice(0, 20)} -> ${v.message.slice(0, 40)}`);
+      if (v.outcome === 'success') continue;
+      // Every non-success verdict must hand the component a sentence it can render.
+      if (typeof v.message !== 'string' || v.message.trim().length === 0) {
+        leakedNonString.push(`${status}:${body.slice(0, 24)} -> ${JSON.stringify(v.message)}`);
+      } else if (/[<>]|\[object /.test(v.message)) {
+        leakedHtml.push(`${status}:${body.slice(0, 24)} -> ${v.message.slice(0, 40)}`);
+      }
     }
   }
 }
-check('no verdict ever carries raw markup to the alert', leakedHtml.length === 0,
+check('no verdict ever carries raw markup or [object Object] to the alert', leakedHtml.length === 0,
   leakedHtml.length ? leakedHtml.join(' | ') : `${5 * 2 * allBodies.length} combinations clean`);
+check('every non-success verdict carries a renderable string', leakedNonString.length === 0,
+  leakedNonString.join(' | ') || 'all messages are non-empty strings');
 check('every verdict has a known outcome', leakedUndefined.length === 0, leakedUndefined.join(' | ') || 'all known');
 
 // The field name is passed through untouched: rejecting unknown fields is the
