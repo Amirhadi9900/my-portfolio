@@ -48,6 +48,12 @@ jobs:
       - name: Turnstile contract checks
         run: node scripts/verify-captcha.mjs
 
+      # The contact form's response handling lives in a pure function precisely so
+      # this can run without a browser: nothing else here covers what the visitor
+      # is shown when the firewall answers with HTML instead of JSON.
+      - name: Contact response contract checks
+        run: node scripts/verify-contact-response.mjs
+
       - name: Production build
         run: npm run build
 

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CONTACT_LIMITS, validateContactField } from '../lib/contact-security';
+import { interpretContactResponse } from '../lib/contact-response';
 import { isContactSfxMuted, playContactSfx, setContactSfxMuted, unlockContactSfx } from '../lib/sfx';
 import { scrollToId } from '../lib/scroll-to-id';
 import TurnstileField from './TurnstileField';
@@ -156,42 +157,32 @@ export default function Contact() {
         body: JSON.stringify({ ...formData, turnstileToken }),
       });
 
-      // Read as text, then parse by hand. Vercel's firewall answers a request it
-      // distrusts with an HTML challenge page at 429, and response.json() on that
-      // threw a SyntaxError whose message - "Unexpected token '<'..." - was then
-      // rendered to the visitor as the error text. Our own 429 is JSON, so a genuine
-      // rate limit still takes the normal path and keeps its real message.
-      let data = null;
-      try {
-        const parsed = JSON.parse(await response.text());
-        if (parsed && typeof parsed === 'object') data = parsed;
-      } catch {
-        // Left empty on purpose; the absence of a usable body is handled below.
+      // Every decision about the reply lives in interpretContactResponse so it can be
+      // tested from Node; this block only renders what it says. See that file for why
+      // the body is not assumed to be JSON.
+      const verdict = interpretContactResponse({
+        status: response.status,
+        ok: response.ok,
+        body: await response.text(),
+      });
+
+      if (verdict.outcome === 'captcha') {
+        setCaptchaError(verdict.message);
+        resetTurnstile();
+        playContactSfx('error');
+        return;
+      }
+      if (verdict.outcome === 'field') {
+        setFieldErrors(prev => ({ ...prev, [verdict.field]: verdict.message }));
+        focusField(form, verdict.field);
+        resetTurnstile();
+        playContactSfx('error');
+        return;
+      }
+      if (verdict.outcome !== 'success') {
+        throw new Error(verdict.message);
       }
 
-      if (!data) {
-        throw new Error(response.status === 429
-          ? 'A security check interrupted the send. Please try again in a minute.'
-          : 'The server sent an unexpected response. Please try again.');
-      }
-
-      if (!response.ok) {
-        if (data.code?.startsWith('captcha_')) {
-          setCaptchaError(data.error || 'Security check failed. Please try again.');
-          resetTurnstile();
-          playContactSfx('error');
-          return;
-        }
-        if (data.field) {
-          setFieldErrors(prev => ({ ...prev, [data.field]: data.error }));
-          focusField(form, data.field);
-          resetTurnstile();
-          playContactSfx('error');
-          return;
-        }
-        throw new Error(data.error || 'Something went wrong. Please try again.');
-      }
-      
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '', website: '', consent: false });
       setFieldErrors({});
