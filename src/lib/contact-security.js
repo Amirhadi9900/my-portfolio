@@ -6,7 +6,7 @@ export const CONTACT_LIMITS = {
   body: 10_000,
 };
 
-const ALLOWED_FIELDS = new Set(['name', 'email', 'subject', 'message', 'website', 'turnstileToken']);
+const ALLOWED_FIELDS = new Set(['name', 'email', 'subject', 'message', 'website', 'turnstileToken', 'consent']);
 const FORBIDDEN_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
 /** RFC 5321-style mailbox: local@domain with no display name or whitespace. */
@@ -177,10 +177,22 @@ export function parseContactRequest(body) {
     return { ok: false, status: 400, error: 'Unexpected fields in request' };
   }
 
-  const { name, email, subject, message, website, turnstileToken: _turnstileToken } = body;
+  const { name, email, subject, message, website, consent, turnstileToken: _turnstileToken } = body;
 
   if (website) {
     return { ok: false, status: 200, honeypot: true };
+  }
+
+  // Enforced here, not just in the browser: a checkbox that only the UI checks is
+  // one curl request away from being fiction, and Article 7(1) puts the burden of
+  // proving consent on me, so a claim I cannot defend is worse than no claim.
+  if (consent !== true) {
+    return {
+      ok: false,
+      status: 400,
+      error: 'Please confirm I may store your message so I can reply to you.',
+      field: 'consent',
+    };
   }
 
   if (!name || !email || !subject || !message) {

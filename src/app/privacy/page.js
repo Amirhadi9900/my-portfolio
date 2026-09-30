@@ -54,9 +54,18 @@ const sections = [
     ],
   },
   {
+    id: 'cookies',
+    heading: 'Cookies and similar technologies',
+    body: [
+      'A cookie is a small file a site asks your browser to hold on to. This site sets none of its own: there is no login, no basket and nothing that needs to recognise you between visits.',
+      'The two candidates are already accounted for. The CAPTCHA runs on Cloudflare\u2019s domain, so whatever it stores belongs to that domain and not to this one. The visit and performance counts do not use cookies unless I deliberately turn that on, and they write nothing to local or session storage either \u2014 I checked that on the live site rather than reading it in a document.',
+      'Open your browser\u2019s cookie panel for this address and you should find nothing belonging to it. If that ever changes, this section is where the change gets described, and it will be described before the site does it, not after.',
+    ],
+  },
+  {
     heading: 'Legal basis',
     body: [
-      'Under the GDPR I rely on your consent, because you choose to send the message. Where your message is an enquiry about working together, I also rely on taking steps at your request before entering into a contract.',
+      'Your message is processed on your consent, given explicitly by ticking the box above the Send button rather than inferred from you pressing it. Where your message is an enquiry about working together, Article 6(1)(b) applies as well, because replying is a step taken at your request before any contract.',
       'The only thing on this site that relies on legitimate interests is the visit and performance measurement described above. Everything to do with your message runs on consent or on the two grounds just mentioned, so there is no quiet balancing test hiding behind the form.',
     ],
   },
@@ -142,7 +151,7 @@ export default function PrivacyPage() {
 
         <div className="mt-10 space-y-10">
           {sections.map((section) => (
-            <section key={section.heading}>
+            <section key={section.heading} id={section.id}>
               <h2 className="font-subheading text-xl md:text-2xl font-semibold text-white">
                 {section.heading}
               </h2>

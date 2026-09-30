@@ -232,6 +232,11 @@ export async function POST(request) {
       },
     });
 
+    // Recorded in the message itself: Article 7(1) puts the burden of proving
+    // consent on the controller, and a line in the email is the only record a
+    // solo inbox with no database can realistically keep.
+    const consentAt = new Date().toISOString();
+
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: recipient,
@@ -243,6 +248,7 @@ export async function POST(request) {
         `Name: ${name}`,
         `Email: ${email}`,
         `Subject: ${subject}`,
+        `Consent to store and reply: given (${consentAt})`,
         '',
         'Message:',
         safeMessageText,
@@ -252,6 +258,7 @@ export async function POST(request) {
         <p><strong>Name:</strong> ${safeName}</p>
         <p><strong>Email:</strong> ${safeEmail}</p>
         <p><strong>Subject:</strong> ${safeSubject}</p>
+        <p><strong>Consent to store and reply:</strong> given (${consentAt})</p>
         <hr/>
         <h3>Message:</h3>
         <p>${safeMessageHtml}</p>

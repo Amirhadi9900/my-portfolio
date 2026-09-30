@@ -17,7 +17,8 @@ export default function Contact() {
     email: '',
     subject: '',
     message: '',
-    website: ''
+    website: '',
+    consent: false
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -77,10 +78,17 @@ export default function Contact() {
     return validateContactField('message', value);
   }
 
-  const validators = { name: validateName, email: validateEmail, subject: validateSubject, message: validateMessage };
+  function validateConsent(value) {
+    return value ? '' : 'Please confirm I may store your message so I can reply to you.';
+  }
+
+  const validators = { name: validateName, email: validateEmail, subject: validateSubject, message: validateMessage, consent: validateConsent };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, type } = e.target;
+    // A checkbox reports its `value` attribute, not whether it is ticked, so
+    // reading `.value` here would store "on" and the consent would never flip.
+    const value = type === 'checkbox' ? e.target.checked : e.target.value;
     setFormData(prev => ({ ...prev, [name]: value }));
     if (fieldErrors[name]) {
       const error = validators[name]?.(value) || '';
@@ -101,6 +109,7 @@ export default function Contact() {
     errors.email = validateEmail(formData.email);
     errors.subject = validateSubject(formData.subject);
     errors.message = validateMessage(formData.message);
+    errors.consent = validateConsent(formData.consent);
     const filtered = Object.fromEntries(Object.entries(errors).filter(([, v]) => v));
     setFieldErrors(filtered);
     return filtered;
@@ -164,7 +173,7 @@ export default function Contact() {
       }
       
       setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '', website: '' });
+      setFormData({ name: '', email: '', subject: '', message: '', website: '', consent: false });
       setFieldErrors({});
       resetTurnstile();
       playContactSfx('success');
@@ -433,17 +442,38 @@ export default function Contact() {
                     )}
                   </div>
                   
-                  <p className="-mt-2 mb-5 text-xs leading-relaxed text-gray-600 dark:text-gray-400">
-                    Sending this emails me directly. Nothing you send is stored on the site, and it
-                    is used to reply to you and for nothing else.{' '}
-                    <Link
-                      href="/privacy"
-                      className="underline decoration-gray-400/50 underline-offset-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                    >
-                      How I handle it
-                    </Link>
-                    .
-                  </p>
+                  <div className="mb-5">
+                    <label htmlFor="consent" className="flex cursor-pointer items-start gap-3">
+                      <input
+                        id="consent"
+                        name="consent"
+                        type="checkbox"
+                        checked={formData.consent}
+                        onChange={handleChange}
+                        // aria-required rather than required: native validation would
+                        // block submit before our own check runs, so the field error and
+                        // the failure cue would never fire.
+                        aria-required="true"
+                        aria-invalid={!!fieldErrors.consent}
+                        aria-describedby={fieldErrors.consent ? 'consent-error' : undefined}
+                        className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                        I agree that Amirhadi may store this message and my contact details in order
+                        to reply. Nothing is kept on the site itself &mdash; it arrives as an email.{' '}
+                        <Link
+                          href="/privacy"
+                          className="underline decoration-gray-400/50 underline-offset-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        >
+                          Privacy notice
+                        </Link>
+                        .
+                      </span>
+                    </label>
+                    {fieldErrors.consent && (
+                      <p id="consent-error" className="mt-1.5 text-sm text-red-600 dark:text-red-400">{fieldErrors.consent}</p>
+                    )}
+                  </div>
 
                   <button
                     type="submit"

@@ -82,7 +82,7 @@ export default function Footer() {
                   must not take the scrollToId handler the section links share. */}
               <li>
                 <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Privacy
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Privacy &amp; Cookies
                 </Link>
               </li>
             </ul>
