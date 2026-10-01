@@ -1,3 +1,8 @@
+// Extension carried deliberately. The test harness loads this file by copying src/lib
+// into a temp directory and importing it with plain Node, which requires an explicit
+// specifier; webpack would have resolved it either way.
+import { describeRequestFailure, describeHttpResponse, boundedList, boundedToken } from './contact-diagnostics.js';
+
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const MAX_TOKEN_LENGTH = 2048;
 const EXPECTED_ACTION = 'contact_submit';
@@ -56,7 +61,9 @@ export async function verifyTurnstileToken(token, remoteIp) {
       cache: 'no-store',
     });
   } catch (error) {
-    console.error('Turnstile siteverify request failed:', error);
+    // Bounded: the fetch error is not ours to shape, and the request body it failed
+    // with carries the Turnstile secret. Nothing here echoes any of it.
+    console.error('[turnstile] siteverify unreachable', describeRequestFailure(error));
     return {
       ok: false,
       error: 'Security verification failed. Please try again.',
@@ -68,7 +75,9 @@ export async function verifyTurnstileToken(token, remoteIp) {
   try {
     result = await response.json();
   } catch (error) {
-    console.error('Turnstile siteverify response parse failed:', error);
+    // A SyntaxError's message quotes the text it failed to parse, which is whoever
+    // answered siteverify — often an HTML error page from an intermediary. Status only.
+    console.error('[turnstile] siteverify response was not JSON', describeHttpResponse(response));
     return {
       ok: false,
       error: 'Security verification failed. Please try again.',
@@ -77,7 +86,7 @@ export async function verifyTurnstileToken(token, remoteIp) {
   }
 
   if (!result.success) {
-    console.warn('Turnstile verification rejected:', result['error-codes']);
+    console.warn('[turnstile] verification rejected', { codes: boundedList(result['error-codes']) });
     return {
       ok: false,
       error: 'Security check failed. Please try again.',
@@ -94,7 +103,7 @@ export async function verifyTurnstileToken(token, remoteIp) {
   // this check is the first thing to revisit.
   if (result.action !== EXPECTED_ACTION) {
     if (secret !== CLOUDFLARE_TEST_SECRET) {
-      console.warn('Turnstile action mismatch:', result.action);
+      console.warn('[turnstile] action mismatch', { action: boundedToken(result.action) });
       return {
         ok: false,
         error: 'Security verification mismatch. Please refresh and try again.',

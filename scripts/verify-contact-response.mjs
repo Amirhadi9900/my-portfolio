@@ -18,11 +18,13 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-// contact-response.js is ESM source in a CommonJS package, so Node cannot import it
-// by name. Copied verbatim under an .mjs name each run, so it cannot drift.
+// contact-response.js is ESM source in a CommonJS package. Copy the whole src/lib into
+// the temp directory and declare it ESM there, so relative imports inside it resolve
+// and adding one later does not break this harness. Copied every run, so it cannot drift.
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'contact-response-'));
-fs.copyFileSync(path.join(REPO, 'src/lib/contact-response.js'), path.join(tmp, 'cr.mjs'));
-const { interpretContactResponse } = await import(pathToFileURL(path.join(tmp, 'cr.mjs')).href);
+fs.cpSync(path.join(REPO, 'src/lib'), tmp, { recursive: true });
+fs.writeFileSync(path.join(tmp, 'package.json'), JSON.stringify({ type: 'module' }));
+const { interpretContactResponse } = await import(pathToFileURL(path.join(tmp, 'contact-response.js')).href);
 
 const SECURITY = 'A security check interrupted the send. Please try again in a minute.';
 const UNEXPECTED = 'The server sent an unexpected response. Please try again.';

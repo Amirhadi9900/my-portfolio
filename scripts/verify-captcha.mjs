@@ -16,16 +16,18 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-// turnstile.js is ESM source in a CommonJS package; copy it under an .mjs name so
-// Node will load it. Copied every run so it cannot drift from the repo file.
+// turnstile.js is ESM source in a CommonJS package. Copy the whole src/lib into the
+// temp directory and declare it ESM there, so relative imports inside it resolve and
+// adding one later does not break this harness. Copied every run so it cannot drift.
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'captcha-check-'));
-fs.copyFileSync(path.join(REPO, 'src/lib/turnstile.js'), path.join(tmp, 'ts.mjs'));
+fs.cpSync(path.join(REPO, 'src/lib'), tmp, { recursive: true });
+fs.writeFileSync(path.join(tmp, 'package.json'), JSON.stringify({ type: 'module' }));
 
 process.env.TURNSTILE_SECRET_KEY = 'test-secret';
 process.env.TURNSTILE_EXPECTED_HOSTNAME = 'portfolio.example';
 const EXPECTED_ACTION = 'contact_submit';
 
-const { verifyTurnstileToken } = await import(pathToFileURL(path.join(tmp, 'ts.mjs')).href);
+const { verifyTurnstileToken } = await import(pathToFileURL(path.join(tmp, 'turnstile.js')).href);
 
 const results = [];
 const check = (label, pass, detail) => results.push({ label, pass, detail });

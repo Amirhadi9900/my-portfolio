@@ -154,6 +154,10 @@ export async function OPTIONS() {
 }
 
 export async function POST(request) {
+  // Which part of the handler was running when it threw. The catch below is attached to
+  // the whole body, so without this a bug in validation is logged identically to Gmail
+  // refusing the send — and both look like "the form is broken" at 3am.
+  let stage = 'validate';
   try {
     const contentType = request.headers.get('content-type') || '';
     if (contentType.toLowerCase().includes('multipart/')) {
@@ -227,6 +231,7 @@ export async function POST(request) {
       );
     }
 
+    stage = 'compose';
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
     const safeSubject = escapeHtml(subject);
@@ -274,6 +279,7 @@ export async function POST(request) {
       `,
     };
 
+    stage = 'send';
     await transporter.sendMail(mailOptions);
 
     return NextResponse.json(
@@ -287,7 +293,7 @@ export async function POST(request) {
     // as an object that reaches the platform's retained function logs verbatim, so
     // only the bounded summary from describeSendFailure() is passed. See that file
     // for why over-long values are dropped rather than truncated.
-    console.error('[contact] handler failed', describeSendFailure(error));
+    console.error('[contact] handler failed', { stage, ...describeSendFailure(error) });
     return NextResponse.json(
       { error: 'Failed to send message. Please try again later.' },
       { status: 500 }

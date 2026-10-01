@@ -25,6 +25,14 @@ const MAX_CODE_LENGTH = 40;
 // address, a URL or markup fails these and is dropped whole.
 const CODE_SHAPE = /^[A-Z][A-Z0-9_. -]*$/;
 const COMMAND_SHAPE = /^[A-Z][A-Z. -]*$/;
+// Cloudflare-supplied identifiers (an action name, a siteverify error code) arrive in
+// lower case and carry no spaces, so the shape is tighter than the one above: it cannot
+// express an email address, a URL or a tag, which is the whole point.
+const TOKEN_SHAPE = /^[A-Za-z0-9._-]{1,40}$/;
+const MAX_LIST_ITEMS = 8;
+
+const NETWORK_CODES = new Set(['ETIMEDOUT', 'ECONNRESET', 'ECONNREFUSED', 'ENOTFOUND', 'ESOCKET', 'ECONNCLOSED']);
+const TLS_CODES = new Set(['EPROTO', 'SELF_SIGNED_CERT_IN_CHAIN', 'UNABLE_TO_VERIFY_LEAF_SIGNATURE', 'CERT_HAS_EXPIRED', 'DEPTH_ZERO_SELF_SIGNED_CERT']);
 
 function boundedCode(value) {
   if (typeof value !== 'string') return null;
@@ -50,12 +58,8 @@ function boundedSmtpCode(value) {
 
 function classify(smtpCode, nodeCode) {
   if (nodeCode === 'EAUTH' || smtpCode === 535) return 'auth';
-  if (['ETIMEDOUT', 'ECONNRESET', 'ECONNREFUSED', 'ENOTFOUND', 'ESOCKET', 'ECONNCLOSED'].includes(nodeCode)) {
-    return 'network';
-  }
-  if (nodeCode === 'EPROTO' || nodeCode === 'SELF_SIGNED_CERT_IN_CHAIN' || nodeCode === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
-    return 'tls';
-  }
+  if (NETWORK_CODES.has(nodeCode)) return 'network';
+  if (TLS_CODES.has(nodeCode)) return 'tls';
   if (smtpCode !== null) return 'rejected';
   return 'unknown';
 }
@@ -89,4 +93,55 @@ export function describeSendFailure(error) {
     command,
     sawServerReply,
   };
+}
+
+/**
+ * A bounded token from a third party's response — a Turnstile action name or one of
+ * Cloudflare's siteverify error codes. Their documented values all fit this shape;
+ * anything that does not is dropped rather than shortened, because the part that does
+ * not fit is exactly the part worth reading.
+ */
+export function boundedToken(value) {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 && TOKEN_SHAPE.test(trimmed) ? trimmed : null;
+}
+
+/** A bounded list of bounded tokens. Non-arrays become empty rather than throwing. */
+export function boundedList(value, max = MAX_LIST_ITEMS) {
+  if (!Array.isArray(value)) return [];
+  return value.slice(0, max).map(boundedToken).filter(Boolean);
+}
+
+/**
+ * Summarise a failed outbound request (fetch to siteverify). undici wraps the system
+ * error one level down in `cause`, which is where the useful code lives.
+ */
+export function describeRequestFailure(error) {
+  let nodeCode = null;
+  if (error && typeof error === 'object') {
+    try {
+      nodeCode = boundedCode(error.code) ?? boundedCode(error.cause?.code);
+    } catch {
+      nodeCode = null;
+    }
+  }
+  const reason = NETWORK_CODES.has(nodeCode) ? 'network' : TLS_CODES.has(nodeCode) ? 'tls' : 'unknown';
+  return { reason, nodeCode };
+}
+
+/**
+ * Summarise an HTTP response when its body could not be parsed. Only the status is
+ * lifted: headers and body text belong to whoever answered, and a proxy error page is
+ * not something to write into a retained log.
+ */
+export function describeHttpResponse(response) {
+  let status = null;
+  try {
+    const raw = response?.status;
+    if (Number.isInteger(raw) && raw >= 100 && raw <= 599) status = raw;
+  } catch {
+    status = null;
+  }
+  return { status };
 }

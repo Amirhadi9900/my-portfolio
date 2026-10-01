@@ -25,11 +25,14 @@ import { inspect } from 'node:util';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-// contact-diagnostics.js is ESM source in a CommonJS package, so Node cannot import it
-// by name. Copied verbatim under an .mjs name each run, so it cannot drift.
+// contact-diagnostics.js is ESM source in a CommonJS package. Copy the whole src/lib
+// into the temp directory and declare it ESM there, so relative imports inside it
+// resolve and adding one later does not break this harness.
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'contact-diag-'));
-fs.copyFileSync(path.join(REPO, 'src/lib/contact-diagnostics.js'), path.join(tmp, 'cd.mjs'));
-const { describeSendFailure } = await import(pathToFileURL(path.join(tmp, 'cd.mjs')).href);
+fs.cpSync(path.join(REPO, 'src/lib'), tmp, { recursive: true });
+fs.writeFileSync(path.join(tmp, 'package.json'), JSON.stringify({ type: 'module' }));
+const { describeSendFailure, describeRequestFailure, describeHttpResponse, boundedToken, boundedList } =
+  await import(pathToFileURL(path.join(tmp, 'contact-diagnostics.js')).href);
 
 const CANARY = {
   name: 'Zoltan Peczely',
@@ -167,15 +170,104 @@ try {
 check('an object whose getters all throw is handled', !evilThrew && evilSummary.reason === 'unknown',
   evilThrew ? `threw: ${evilThrew.message}` : inspect(evilSummary));
 
-// ----------------------------------------------------------- the call site
+// ------------------------------------------- the Turnstile-side summarisers
+for (const [label, input, want] of [
+  ['a documented error code survives', 'invalid-input-response', 'invalid-input-response'],
+  ['an action name survives', 'contact_submit', 'contact_submit'],
+  ['an email address is refused', 'someone@example.test', null],
+  ['markup is refused', '<script>alert(1)</script>', null],
+  ['a URL is refused', 'https://example.test/a?b=c', null],
+  ['prose is refused', 'rejected for spam reasons', null],
+  ['whitespace is refused', '   ', null],
+  ['a 400-character value is refused', 'a'.repeat(400), null],
+  ['a number is refused', 42, null],
+  ['undefined is refused', undefined, null],
+]) {
+  check(`boundedToken: ${label}`, boundedToken(input) === want, `got ${inspect(boundedToken(input))}`);
+}
+
+check('boundedList: a list holding an address yields nothing',
+  boundedList(['invalid-input-response', 'spam@visitor.example.test']).join() === 'invalid-input-response',
+  inspect(boundedList(['invalid-input-response', 'spam@visitor.example.test'])));
+check('boundedList: length is capped', boundedList(Array.from({ length: 200 }, (_, i) => `code-${i}`).concat([CANARY.email])).length <= 8,
+  `got ${boundedList(Array.from({ length: 200 }, (_, i) => `code-${i}`)).length}`);
+for (const [label, value] of [['null', null], ['a string', 'boom'], ['an object', {}], ['undefined', undefined]]) {
+  check(`boundedList: non-array ${label} becomes empty rather than throwing`,
+    Array.isArray(boundedList(value)) && boundedList(value).length === 0, inspect(boundedList(value)));
+}
+
+const wrapped = Object.assign(new TypeError('fetch failed'), {
+  cause: Object.assign(new Error(`connect ECONNREFUSED ${CANARY.email}`), { code: 'ECONNREFUSED' }),
+});
+const requestSummary = describeRequestFailure(wrapped);
+check('CONTROL: a real fetch failure does carry the address in its cause',
+  inspect(wrapped).includes(CANARY.email), 'fixture is too weak to prove anything');
+check('describeRequestFailure lifts the code without the message',
+  requestSummary.nodeCode === 'ECONNREFUSED' && requestSummary.reason === 'network' && leakFree(requestSummary).length === 0,
+  inspect(requestSummary));
+check('describeRequestFailure classifies a TLS failure',
+  describeRequestFailure({ cause: { code: 'CERT_HAS_EXPIRED' } }).reason === 'tls',
+  inspect(describeRequestFailure({ cause: { code: 'CERT_HAS_EXPIRED' } })));
+for (const [label, value] of [['null', null], ['a string', 'nope'], ['an empty object', {}], ['a number', 7]]) {
+  let got = null;
+  let threw = null;
+  try { got = describeRequestFailure(value); } catch (error) { threw = error; }
+  check(`describeRequestFailure is safe on ${label}`,
+    !threw && got.reason === 'unknown' && got.nodeCode === null, threw ? `threw ${threw.message}` : inspect(got));
+}
+const evilCause = { get cause() { throw new Error(CANARY.message); } };
+let causeThrew = null;
+let causeSummary = null;
+try { causeSummary = describeRequestFailure(evilCause); } catch (error) { causeThrew = error; }
+check('a throwing cause getter is handled', !causeThrew && causeSummary.nodeCode === null,
+  causeThrew ? `threw ${causeThrew.message}` : inspect(causeSummary));
+
+check('describeHttpResponse lifts an integer status', describeHttpResponse({ status: 502 }).status === 502,
+  inspect(describeHttpResponse({ status: 502 })));
+for (const [label, value] of [
+  ['a string status', { status: '502' }],
+  ['an out-of-range high status', { status: 999 }],
+  ['an out-of-range low status', { status: 99 }],
+  ['a response with no status', {}],
+  ['an undefined response', undefined],
+  ['a null response', null],
+]) {
+  check(`describeHttpResponse refuses ${label}`, describeHttpResponse(value).status === null,
+    inspect(describeHttpResponse(value)));
+}
+check('describeHttpResponse survives a throwing status getter',
+  describeHttpResponse({ get status() { throw new Error(CANARY.message); } }).status === null, 'leaked or threw');
+
+// ----------------------------------------------------------- the call sites
 const route = fs.readFileSync(path.join(REPO, 'src/app/api/contact/route.js'), 'utf8');
+const turnstile = fs.readFileSync(path.join(REPO, 'src/lib/turnstile.js'), 'utf8');
 const catchBlock = route.match(/catch \(error\) \{[\s\S]*?\n {2}\}/)?.[0] ?? '';
 check('the contact route catch block was located', catchBlock.length > 0, 'regex found no catch(error) block');
 check('the call site logs the bounded summary, not the error', catchBlock.includes('describeSendFailure(error)'),
   catchBlock.split('\n').filter((l) => l.includes('console.')).join(' | ') || 'no console call found');
-check('no console call in route.js passes a raw error object',
-  !/console\.\w+\([^)]*,\s*error\s*\)/.test(route) && !/console\.\w+\(\s*error\s*\)/.test(route),
-  'a console.* call still receives the bare error');
+
+for (const [label, src] of [['route.js', route], ['turnstile.js', turnstile]]) {
+  check(`${label}: no console call passes a raw error object`,
+    !/console\.\w+\([^)]*,\s*error\s*\)/.test(src) && !/console\.\w+\(\s*error\s*\)/.test(src),
+    src.split('\n').filter((l) => /console\.\w+\([^)]*,\s*error\s*\)/.test(l)).join(' | ') || 'matched something unexpected');
+}
+
+check('turnstile.js logs the bounded request summary', turnstile.includes('describeRequestFailure(error)'),
+  'call site no longer uses the helper');
+check('turnstile.js logs the bounded response summary', turnstile.includes('describeHttpResponse(response)'),
+  'call site no longer uses the helper');
+check('turnstile.js bounds the Cloudflare error codes it logs', turnstile.includes("boundedList(result['error-codes'])"),
+  'call site no longer uses the helper');
+check('turnstile.js bounds the action name it logs', turnstile.includes('boundedToken(result.action)'),
+  'call site no longer uses the helper');
+
+// The catch wraps the whole handler, so the log has to say which part threw.
+check('the contact route records which stage was running',
+  /let stage = 'validate';/.test(route) && /stage = 'compose';/.test(route) && /stage = 'send';/.test(route),
+  'one or more stage assignments are missing');
+check('the failure log carries the stage alongside the summary',
+  catchBlock.includes('{ stage, ...describeSendFailure(error) }'),
+  catchBlock.split('\n').filter((l) => l.includes('console.')).join(' | '));
 
 // ------------------------------------------------------------- summary
 fs.rmSync(tmp, { recursive: true, force: true });
