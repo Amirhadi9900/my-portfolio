@@ -8,6 +8,7 @@ import {
   parseContactRequest,
 } from '../../../lib/contact-security';
 import { verifyTurnstileToken } from '../../../lib/turnstile';
+import { describeSendFailure } from '../../../lib/contact-diagnostics';
 
 const RATE_WINDOW_MS = 60_000;
 const MAX_REQUESTS = 3;
@@ -280,7 +281,13 @@ export async function POST(request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error sending email:', error);
+    // This catch wraps the whole handler, so `error` may come from nodemailer, from
+    // the SMTP server's reply text, or from a bug in the code above — and the scope
+    // it is thrown in holds the visitor's name, address, subject and message. Logged
+    // as an object that reaches the platform's retained function logs verbatim, so
+    // only the bounded summary from describeSendFailure() is passed. See that file
+    // for why over-long values are dropped rather than truncated.
+    console.error('[contact] handler failed', describeSendFailure(error));
     return NextResponse.json(
       { error: 'Failed to send message. Please try again later.' },
       { status: 500 }

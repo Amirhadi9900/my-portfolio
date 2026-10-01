@@ -89,7 +89,13 @@ npm start
 myportfolio/
 ├── public/                     # Static assets (images, flags)
 ├── scripts/
-│   └── verify-rate-limit.mjs   # Live regression test for the contact API guards
+│   ├── verify-xss.mjs              # Input validation and the email HTML contract
+│   ├── verify-captcha.mjs          # Turnstile fail-closed behaviour, stubbed siteverify
+│   ├── verify-contact-response.mjs # How the form reads a server reply
+│   ├── verify-error-logging.mjs    # Failure logs must not carry visitor content
+│   ├── verify-privacy-claims.mjs   # /privacy statements vs the source they describe
+│   ├── verify-rate-limit.mjs       # Live bypass probes against a running server
+│   └── verify-csp.mjs              # Live CSP nonce and header regression checks
 ├── src/
 │   ├── app/
 │   │   ├── api/contact/        # Contact form API route
@@ -121,7 +127,7 @@ myportfolio/
 | `npm run build` | Production build |
 | `npm start` | Serve the production build |
 | `npm run audit` | `npm audit` for production dependencies only |
-| `npm run test:security` | Hit a **running** server and assert the rate limit cannot be bypassed by rotating `X-Forwarded-For`, and that a request with no `Origin` is refused. Requires `npm start` (or `npm run dev`) first |
+| `npm run test:security` | Runs all seven verifiers. Five need no server (input and email escaping, Turnstile contract, response handling, error-logging safety, privacy-claim checks). The last two probe a **running** server, asserting the rate limit cannot be bypassed by rotating `X-Forwarded-For`, that a request with no `Origin` is refused, and that every inline script ships with a valid nonce. Run `npm start` (or `npm run dev`) first |
 
 ## Customization
 

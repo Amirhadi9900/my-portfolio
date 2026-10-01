@@ -61,6 +61,12 @@ jobs:
       - name: Contact response contract checks
         run: node scripts/verify-contact-response.mjs
 
+      # Keeps the failure path from writing visitor content into retained function
+      # logs. Needs no server: it drives the summariser with fabricated SMTP errors
+      # carrying canaries, and asserts the old raw-object log would have leaked them.
+      - name: Error-logging safety checks
+        run: node scripts/verify-error-logging.mjs
+
       # Reads the notice and the code it describes in one run. Nothing else here can
       # see this class of defect: a wrong sentence in a published privacy notice
       # leaves every other step green.
