@@ -43,7 +43,7 @@ if (csp) {
   check('script-src carries a nonce', Boolean(nonce), nonce ? nonce.slice(0, 12) + '…' : 'none');
 
   // The whole point: every inline script must arrive pre-nonce or it will not run.
-  const inline = [...text.matchAll(/<script([^>]*)>/g)].filter((m) => !/\bsrc=/.test(m[1]));
+  const inline = [...text.matchAll(/<script([^>]*)>/gi)].filter((m) => !/\bsrc=/i.test(m[1]));
   const nonced = inline.filter((m) => /nonce="([^"]+)"/.test(m[1]));
   const allMatch = inline.length > 0 && nonced.length === inline.length &&
     nonced.every((m) => m[1].match(/nonce="([^"]+)"/)[1] === nonce);
@@ -81,7 +81,7 @@ check('api route keeps nosniff', api.res.headers.get('x-content-type-options') =
 const privacy = await head('/privacy');
 const pCsp = privacy.res.headers.get('content-security-policy') || '';
 const pNonce = (directive(pCsp, 'script-src') || '').match(/nonce-([A-Za-z0-9=+/]+)/)?.[1];
-const pInline = [...privacy.text.matchAll(/<script([^>]*)>/g)].filter((m) => !/\bsrc=/.test(m[1]));
+const pInline = [...privacy.text.matchAll(/<script([^>]*)>/gi)].filter((m) => !/\bsrc=/i.test(m[1]));
 const pNonced = pInline.filter((m) => m[1].includes(`nonce="${pNonce}"`));
 check('privacy page nonces its inline scripts', Boolean(pNonce) && pInline.length > 0 && pNonced.length === pInline.length,
   `${pNonced.length}/${pInline.length} nonced`);
@@ -93,7 +93,7 @@ check('privacy page nonces its inline scripts', Boolean(pNonce) && pInline.lengt
 const stray = await head('/does-not-exist-' + Math.random().toString(36).slice(2, 10));
 const sCsp = stray.res.headers.get('content-security-policy') || '';
 const sNonce = (directive(sCsp, 'script-src') || '').match(/nonce-([A-Za-z0-9=+/]+)/)?.[1];
-const sInline = [...stray.text.matchAll(/<script([^>]*)>/g)].filter((m) => !/\bsrc=/.test(m[1]));
+const sInline = [...stray.text.matchAll(/<script([^>]*)>/gi)].filter((m) => !/\bsrc=/i.test(m[1]));
 const sNonced = sInline.filter((m) => sNonce && m[1].includes(`nonce="${sNonce}"`));
 check('unknown path returns 404', stray.res.status === 404, `got ${stray.res.status}`);
 check('unknown path keeps a CSP header', sCsp.length > 0, sCsp ? 'present' : 'MISSING');
