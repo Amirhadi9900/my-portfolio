@@ -25,10 +25,12 @@ function usePrefersReducedMotion() {
 /**
  * Collapses a word into glyph noise and resolves it left to right, once, on mount.
  *
- * The real text is server-rendered and stays in the DOM, so the word is readable with
- * JavaScript off and is never announced as gibberish: the animated copy is aria-hidden
- * and a screen-reader-only span carries the word. The loop runs to completion and
- * releases its frame callback rather than ticking forever.
+ * The real text is what the server renders, so the word is correct with JavaScript off
+ * and appears exactly once in the document. A screen-reader-only duplicate was tried
+ * first and is wrong: it put "AmirhadiAmirhadi" in the h1 for every crawler. The
+ * residual trade-off is that assistive tech reading the heading inside the 900ms window
+ * would encounter glyph noise, which is both unlikely and gone in under a second, and
+ * does not happen at all under prefers-reduced-motion.
  */
 export default function ScrambleWord({ text, delay = 0, className }) {
   const ref = useRef(null);
@@ -79,11 +81,8 @@ export default function ScrambleWord({ text, delay = 0, className }) {
   }, [text, delay, reducedMotion]);
 
   return (
-    <>
-      <span ref={ref} className={className} data-cursor-hover aria-hidden="true">
-        {text}
-      </span>
-      <span className="sr-only">{text}</span>
-    </>
+    <span ref={ref} className={className} data-cursor-hover>
+      {text}
+    </span>
   );
 }
