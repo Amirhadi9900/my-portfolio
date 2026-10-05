@@ -89,6 +89,12 @@ jobs:
       - name: Cursor tracking checks
         run: node scripts/verify-cursor.mjs
 
+      # The hero name scrambles for 900ms; a browser probe that arrives afterwards
+      # cannot tell a working animation from one that would have frozen as gibberish.
+      # Asserted as a pure function of progress instead.
+      - name: Scramble resolution checks
+        run: node scripts/verify-scramble.mjs
+
       - name: Production build
         run: npm run build
 

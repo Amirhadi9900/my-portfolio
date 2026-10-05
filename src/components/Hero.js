@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { scrollToId } from '../lib/scroll-to-id';
+import ScrambleWord from './ScrambleWord';
 
 const ROLES = ['Pentester', 'Android Developer', 'Web Developer'];
 
@@ -114,13 +115,12 @@ export default function Hero() {
             className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6"
             style={{
               textShadow: '0 0 15px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(0, 0, 0, 0.9)',
-              WebkitTextStroke: '1px rgba(0, 0, 0, 0.6)',
               filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.8))',
             }}
           >
-            Hi, I&apos;m <span data-cursor-hover>Amirhadi</span>
+            Hi, I&apos;m <ScrambleWord text="Amirhadi" className="text-white" />
             <br />
-            <span data-cursor-hover>Borjian</span>
+            <ScrambleWord text="Borjian" delay={180} className="text-white" />
           </h1>
 
           {/* Typing Animation — click to pause and resume */}

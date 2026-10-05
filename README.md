@@ -94,6 +94,7 @@ myportfolio/
 │   ├── verify-contact-response.mjs # How the form reads a server reply
 │   ├── verify-error-logging.mjs    # Failure logs must not carry visitor content
 │   ├── verify-privacy-claims.mjs   # /privacy statements vs the source they describe
+│   ├── verify-scramble.mjs         # Hero name always resolves out of its scramble
 │   ├── verify-cursor.mjs           # Cursor tracks the pointer without easing
 │   ├── verify-rate-limit.mjs       # Live bypass probes against a running server
 │   └── verify-csp.mjs              # Live CSP nonce and header regression checks
@@ -128,7 +129,7 @@ myportfolio/
 | `npm run build` | Production build |
 | `npm start` | Serve the production build |
 | `npm run audit` | `npm audit` for production dependencies only |
-| `npm run test:security` | Runs all eight verifiers. Six need no server (input and email escaping, Turnstile contract, response handling, error-logging safety, privacy-claim checks, cursor tracking). The last two probe a **running** server, asserting the rate limit cannot be bypassed by rotating `X-Forwarded-For`, that a request with no `Origin` is refused, and that every inline script ships with a valid nonce. Run `npm start` (or `npm run dev`) first |
+| `npm run test:security` | Runs all nine verifiers. Seven need no server (input and email escaping, Turnstile contract, response handling, error-logging safety, privacy-claim checks, scramble resolution, cursor tracking). The last two probe a **running** server, asserting the rate limit cannot be bypassed by rotating `X-Forwarded-For`, that a request with no `Origin` is refused, and that every inline script ships with a valid nonce. Run `npm start` (or `npm run dev`) first |
 
 ## Customization
 
