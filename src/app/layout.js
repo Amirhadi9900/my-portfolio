@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import { IBM_Plex_Sans, Source_Sans_3, Fira_Sans, JetBrains_Mono } from 'next/font/google';
+import { IBM_Plex_Sans, Source_Sans_3, Fira_Sans, JetBrains_Mono, Outfit } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import PromptCursor from '../components/PromptCursor';
@@ -28,6 +28,14 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400'],
 });
 
+// A display token rather than replacing --font-heading, which eleven call sites use
+// including every button. The hero gets its own voice without restyling the UI.
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['500', '600', '700'],
+});
+
 const SITE_URL = 'https://my-portfolio-lime-three-67.vercel.app';
 
 export const metadata = {
@@ -53,7 +61,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${ibmPlexSans.variable} ${sourceSans3.variable} ${firaSans.variable} ${jetbrainsMono.variable} scroll-smooth`}>
+    <html lang="en" className={`${ibmPlexSans.variable} ${sourceSans3.variable} ${firaSans.variable} ${jetbrainsMono.variable} ${outfit.variable} scroll-smooth`}>
       <body className="min-h-screen font-sans antialiased">
         <a
           href="#main"

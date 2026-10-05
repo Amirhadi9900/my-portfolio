@@ -61,6 +61,16 @@ if (csp) {
   check("'self' still covers the vercel analytics chunk", /connect-src[^;]*'self'/.test(csp),
     directive(csp, 'connect-src') || 'MISSING');
 
+  // src/proxy.js allows va.vercel-scripts.com in development only, because the SDKs
+  // fetch a debug script straight from that host there. Nothing else in this file would
+  // notice if that dev-only branch ever reached production, so assert the exclusion
+  // against the mode the server is actually running in: 'unsafe-eval' is dev-only too,
+  // which makes it a reliable discriminator.
+  const isDevResponse = /'unsafe-eval'/.test(scriptSrc || '');
+  check('va.vercel-scripts.com appears only when the server is in dev',
+    isDevResponse === /va\.vercel-scripts\.com/.test(scriptSrc || ''),
+    `mode=${isDevResponse ? 'dev' : 'production'} scriptSrc=${scriptSrc}`);
+
   const second = await head('/');
   const nonce2 = (directive(second.res.headers.get('content-security-policy') || '', 'script-src') || '')
     .match(/nonce-([A-Za-z0-9=+/]+)/)?.[1];

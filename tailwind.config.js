@@ -11,6 +11,7 @@ module.exports = {
         heading: ['var(--font-heading)', 'IBM Plex Sans', 'sans-serif'],
         subheading: ['var(--font-subheading)', 'Source Sans 3', 'sans-serif'],
         mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
+        display: ['var(--font-display)', 'Outfit', 'sans-serif'],
       },
     },
   },

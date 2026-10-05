@@ -15,16 +15,25 @@ const CSP_DIRECTIVES = (nonce, isDev) => [
   "default-src 'self'",
   // 'unsafe-inline' deliberately absent. Cloudflare stays listed because Turnstile's
   // script is genuinely cross-origin. Vercel's analytics and speed-insights hosts are
-  // NOT listed: verified against the live site, both are proxied to same-origin paths
-  // (/8b14b813d7e464d5/script.js and /ce75266c2cedea2b/script.js), so 'self' already
-  // covers them and allowing va.vercel-scripts.com was a wider policy than we use.
-  // A CSP violation naming that host is the signal to add it back.
+  // NOT in the shipped policy: verified against the live site, both are proxied to
+  // same-origin paths (/8b14b813d7e464d5/script.js and /ce75266c2cedea2b/script.js),
+  // so 'self' already covers them and allowing va.vercel-scripts.com was a wider
+  // policy than we use. It reappears below in development only, where the SDKs fetch
+  // a debug script straight from that host. A CSP violation naming it on production is
+  // the signal to add it back.
   `script-src ${[
     "'self'",
     `'nonce-${nonce}'`,
     'https://challenges.cloudflare.com',
     // Turbopack's dev overlay needs eval; a production bundle does not.
     ...(isDev ? ["'unsafe-eval'"] : []),
+    // Dev-only. In production @vercel/analytics and Speed Insights are proxied to
+    // same-origin paths, which 'self' already covers — verified against the live
+    // deployment. But in development the SDKs load a debug script straight from
+    // va.vercel-scripts.com, and blocking it prints two red CSP errors on every page
+    // plus a misleading "check if any ad blockers are enabled". Listing it in dev only
+    // keeps the console honest without widening the shipped policy by one character.
+    ...(isDev ? ['https://va.vercel-scripts.com'] : []),
   ].join(' ')}`,
   // Stays 'unsafe-inline': a nonce covers <style> elements and Next's own style
   // tags, not `style="..."` attributes. Eleven of those are load-bearing — the

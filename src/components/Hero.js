@@ -111,54 +111,16 @@ export default function Hero() {
         >
           {/* Main Heading */}
           <h1
-            className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6"
+            className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6"
             style={{
               textShadow: '0 0 15px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(0, 0, 0, 0.9)',
               WebkitTextStroke: '1px rgba(0, 0, 0, 0.6)',
               filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.8))',
             }}
           >
-            Hi, I&apos;m <span 
-              data-cursor-hover
-              className="text-white cursor-pointer inline-block"
-              style={{
-                textShadow: '0 0 15px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 8px rgba(59, 130, 246, 0.6)',
-                WebkitTextStroke: '1px rgba(0, 0, 0, 0.6)',
-                filter: 'drop-shadow(0 0 6px rgba(59, 130, 246, 0.4))',
-                transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), text-shadow 0.3s ease, filter 0.3s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
-                e.currentTarget.style.textShadow = '0 0 25px rgba(0, 0, 0, 1), 3px 3px 8px rgba(0, 0, 0, 1), 0 0 15px rgba(59, 130, 246, 0.9)';
-                e.currentTarget.style.filter = 'drop-shadow(0 0 15px rgba(59, 130, 246, 0.7)) drop-shadow(0 8px 20px rgba(0, 0, 0, 0.8))';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.textShadow = '0 0 15px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 8px rgba(59, 130, 246, 0.6)';
-                e.currentTarget.style.filter = 'drop-shadow(0 0 6px rgba(59, 130, 246, 0.4))';
-              }}
-            >Amirhadi</span>
+            Hi, I&apos;m <span data-cursor-hover>Amirhadi</span>
             <br />
-            <span 
-              data-cursor-hover
-              className="text-white cursor-pointer inline-block"
-              style={{
-                textShadow: '0 0 15px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 8px rgba(59, 130, 246, 0.6)',
-                WebkitTextStroke: '1px rgba(0, 0, 0, 0.6)',
-                filter: 'drop-shadow(0 0 6px rgba(59, 130, 246, 0.4))',
-                transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), text-shadow 0.3s ease, filter 0.3s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
-                e.currentTarget.style.textShadow = '0 0 25px rgba(0, 0, 0, 1), 3px 3px 8px rgba(0, 0, 0, 1), 0 0 15px rgba(59, 130, 246, 0.9)';
-                e.currentTarget.style.filter = 'drop-shadow(0 0 15px rgba(59, 130, 246, 0.7)) drop-shadow(0 8px 20px rgba(0, 0, 0, 0.8))';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.textShadow = '0 0 15px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 8px rgba(59, 130, 246, 0.6)';
-                e.currentTarget.style.filter = 'drop-shadow(0 0 6px rgba(59, 130, 246, 0.4))';
-              }}
-            >Borjian</span>
+            <span data-cursor-hover>Borjian</span>
           </h1>
 
           {/* Typing Animation — click to pause and resume */}
