@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { scrollToId } from '../lib/scroll-to-id';
-import ScrambleWord from './ScrambleWord';
+import HeroName from './HeroName';
 
 const ROLES = ['Pentester', 'Android Developer', 'Web Developer'];
 
@@ -118,9 +118,7 @@ export default function Hero() {
               filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.8))',
             }}
           >
-            Hi, I&apos;m <ScrambleWord text="Amirhadi" className="text-white" />
-            <br />
-            <ScrambleWord text="Borjian" delay={180} className="text-white" />
+            Hi, I&apos;m <HeroName lines={['Amirhadi', 'Borjian']} />
           </h1>
 
           {/* Typing Animation — click to pause and resume */}

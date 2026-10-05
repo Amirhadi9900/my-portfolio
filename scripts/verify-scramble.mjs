@@ -2,7 +2,7 @@
 /**
  * Proves the hero scramble always resolves.
  *
- * ScrambleWord is rAF plumbing around one pure decision, and the only failure that
+ * HeroName's decode is rAF plumbing around one pure decision, and the only failure that
  * would be seen by a visitor is the name stopping as gibberish. A browser check cannot
  * catch that reliably — the animation runs for 900ms and a probe that arrives after it
  * sees a correct name whether or not the logic is sound. So the frame function is
