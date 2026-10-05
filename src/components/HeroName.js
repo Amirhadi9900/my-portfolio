@@ -120,7 +120,9 @@ export default function HeroName({ lines = DEFAULT_LINES }) {
       // browser to relayout between each letter — sixteen reflows a frame for an effect
       // that only changes colour. Rects are re-read each frame rather than cached
       // because the decode changes glyph widths, so the letters really do move.
-      const radius = parseFloat(getComputedStyle(root).fontSize) * COLOUR_RADIUS_PER_EM || COLOUR_RADIUS_PER_EM * 16;
+      // Radius scales with the rendered type so it stays a local pool of light rather
+      // than flooding the word at 24px and only touching two letters at 48px.
+      const radius = parseFloat(getComputedStyle(root).fontSize) * COLOUR_RADIUS_PER_EM;
       const measured = letters.map((el) => {
         const r = el.getBoundingClientRect();
         return { el, cx: r.left + r.width / 2, cy: r.top + r.height / 2 };
@@ -168,11 +170,15 @@ export default function HeroName({ lines = DEFAULT_LINES }) {
   }, [reducedMotion]);
 
   return (
-    <span ref={rootRef} data-cursor-hover className="inline-block">
+    // Deliberately inline, not inline-block. An inline-block containing a line break
+    // takes its baseline from its LAST line box, which pulled "Hi, I'm" down onto the
+    // second line and left "Amirhadi" floating above it. As a plain inline wrapper the
+    // <br> breaks the h1's own line boxes and the name lays out as designed.
+    <span ref={rootRef} data-cursor-hover>
       {lines.map((word, lineIndex) => (
         <span key={word}>
           {lineIndex > 0 && <br />}
-          <span data-name-line={lineIndex} className="text-white">
+          <span data-name-line={lineIndex}>
             {[...word].map((char, i) => (
               <span key={i} className="inline-block">{char}</span>
             ))}

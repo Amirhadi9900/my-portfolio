@@ -118,7 +118,7 @@ export default function Hero() {
               filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.8))',
             }}
           >
-            Hi, I&apos;m <HeroName lines={['Amirhadi', 'Borjian']} />
+            Hi, I&apos;m <HeroName />
           </h1>
 
           {/* Typing Animation — click to pause and resume */}
