@@ -25,18 +25,18 @@
     "@marsidev/react-turnstile": "^1.6.1",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "autoprefixer": "^10.6.1",
     "framer-motion": "^12.43.0",
     "next": "^16.3.6",
     "nodemailer": "^10.0.11",
-    "postcss": "^8.5.15",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "simple-icons": "^16.33.0",
-    "tailwindcss": "^3.4.19"
+    "simple-icons": "^16.33.0"
   },
   "devDependencies": {
+    "autoprefixer": "^10.6.1",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.3.8"
+    "eslint-config-next": "^16.3.8",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^3.4.19"
   }
 }
