@@ -73,6 +73,11 @@ jobs:
       - name: Privacy notice claim checks
         run: node scripts/verify-privacy-claims.mjs
 
+      # The cursor lag was one CSS declaration, invisible at runtime unless someone
+      # was looking for it. Asserted against the stylesheet so it cannot return.
+      - name: Cursor tracking checks
+        run: node scripts/verify-cursor.mjs
+
       - name: Production build
         run: npm run build
 
