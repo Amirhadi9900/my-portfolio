@@ -41,10 +41,10 @@ export default function ScrollTimeline() {
       className="fixed left-5 xl:left-7 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-center"
       aria-label="Page sections"
     >
-      <div className="relative bg-white/70 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-200/80 dark:border-gray-700/60 shadow-[0_8px_40px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] p-2.5">
+      <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl border border-gray-200/80 shadow-[0_8px_40px_rgba(0,0,0,0.12)] p-2.5">
         {/* Progress track behind buttons. The fill is nested so its percentage
             resolves against the track rather than the whole card. */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-5 bottom-14 w-[2px] rounded-full bg-gray-200 dark:bg-gray-700/50">
+        <div className="absolute left-1/2 -translate-x-1/2 top-5 bottom-14 w-[2px] rounded-full bg-gray-200">
           <div
             className="absolute left-0 top-0 w-full rounded-full bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500 transition-all duration-500 ease-out"
             style={{ height: `${Math.round(scrollProgress * 100)}%` }}
@@ -66,8 +66,8 @@ export default function ScrollTimeline() {
                   isActive
                     ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-[0_4px_15px_rgba(59,130,246,0.4)]'
                     : isPast
-                      ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50'
-                      : 'bg-gray-100 dark:bg-gray-800/60 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700/60 hover:text-gray-700 dark:hover:text-gray-300'
+                      ? 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700'
                 }`}
               >
                 <svg
@@ -96,8 +96,8 @@ export default function ScrollTimeline() {
         </div>
 
         {/* Scroll percentage at bottom */}
-        <div className="mt-4 pt-2 border-t border-gray-200/60 dark:border-gray-700/40 text-center">
-          <span className="text-[10px] font-mono font-semibold text-gray-500 dark:text-gray-400 tabular-nums">
+        <div className="mt-4 pt-2 border-t border-gray-200/60 text-center">
+          <span className="text-[10px] font-mono font-semibold text-gray-500 tabular-nums">
             {Math.round(scrollProgress * 100)}%
           </span>
         </div>

@@ -31,7 +31,7 @@ const SUSPICIOUS_PATTERNS = [
 /**
  * Normalize Unicode to NFC so visually identical inputs compare consistently.
  */
-export function normalizeUnicode(value) {
+function normalizeUnicode(value) {
   if (typeof value !== 'string') return '';
   return value.normalize('NFC');
 }
@@ -39,11 +39,11 @@ export function normalizeUnicode(value) {
 /**
  * Reject CR/LF and Unicode line/paragraph separators used in header-splitting attacks.
  */
-export function hasHeaderInjection(value) {
+function hasHeaderInjection(value) {
   return /[\r\n\u2028\u2029]/.test(value);
 }
 
-export function stripControlCharacters(value, { allowNewlines = false } = {}) {
+function stripControlCharacters(value, { allowNewlines = false } = {}) {
   if (typeof value !== 'string') return '';
 
   let result = '';
@@ -65,7 +65,7 @@ export function stripControlCharacters(value, { allowNewlines = false } = {}) {
   return result;
 }
 
-export function containsSuspiciousContent(value) {
+function containsSuspiciousContent(value) {
   // A denylist: it catches obvious attempts, and `&#60;script&#62;` walks straight
   // through it. It exists to reject noise early, not to make anything safe — the
   // escaping in escapeHtml() is what a sink has to rely on.
@@ -94,7 +94,7 @@ export function formatMessageForHtmlEmail(message) {
   return escapeHtml(message).replace(/\r\n|\r|\n/g, '<br>');
 }
 
-export function isValidName(value) {
+function isValidName(value) {
   const normalized = normalizeUnicode(value).trim();
   if (!normalized) return false;
   if (normalized.length > CONTACT_LIMITS.name) return false;
@@ -113,7 +113,7 @@ export function isValidEmail(value) {
   return EMAIL_REGEX.test(normalized);
 }
 
-export function isValidSubject(value) {
+function isValidSubject(value) {
   const normalized = normalizeUnicode(value).trim();
   if (!normalized) return false;
   if (normalized.length > CONTACT_LIMITS.subject) return false;
@@ -128,7 +128,7 @@ export function isValidSubject(value) {
 // safe without this: their allowlists never matched these code points anyway.
 const INVISIBLE_CHARACTERS = /[\p{White_Space}\p{Cf}\u00AD\u200B\u2060\uFEFF]/gu;
 
-export function isValidMessage(value) {
+function isValidMessage(value) {
   const normalized = normalizeUnicode(value).trim();
   if (!normalized) return false;
   if (normalized.length > CONTACT_LIMITS.message) return false;

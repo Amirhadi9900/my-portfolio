@@ -1,8 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import SkillIcon from './SkillIcon';
+import SkillIcon, { usesLightTile } from './SkillIcon';
 import FlagIcon from './FlagIcon';
+import { trackPointer, releasePointer } from '../lib/magnetic-pointer';
 
 const SKILL_CATEGORIES = [
   {
@@ -79,10 +80,16 @@ const SKILL_CATEGORIES = [
 
 function SkillChip({ skill }) {
   const isLanguage = typeof skill === 'object';
+  // Flags are artwork drawn for a white field, so they keep the light tile.
+  const lightTile = isLanguage || usesLightTile(skill);
 
   return (
-    <div className="skill-chip group">
-      <div className="skill-chip-icon skill-icon-sparkle">
+    <div
+      className={`skill-chip group ${lightTile ? 'is-light-tile' : 'is-dark-tile'}`}
+      onPointerMove={trackPointer}
+      onPointerLeave={releasePointer}
+    >
+      <div className="skill-chip-icon magnetic-icon">
         {isLanguage ? (
           <FlagIcon code={skill.flagCode} src={skill.flagSrc} />
         ) : (
@@ -98,14 +105,14 @@ function SkillChip({ skill }) {
 
 function CategoryCard({ category, variants }) {
   return (
-    <motion.div className="skill-category-card" variants={variants}>
+    <motion.div className="skill-category-card panel-3d" variants={variants}>
       <div className="relative mb-6">
-        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full" />
-        <h3 className="font-subheading text-xl sm:text-2xl font-semibold text-center text-gray-800 dark:text-white tracking-tight pt-2">
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-full" />
+        <h3 className="font-subheading text-2xl font-semibold text-center text-emerald-200 tracking-tight pt-2">
           {category.name}
         </h3>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(min(240px,100%),1fr))] gap-3">
         {category.skills.map((skill) => (
           <SkillChip key={typeof skill === 'object' ? skill.name : skill} skill={skill} />
         ))}
@@ -129,10 +136,10 @@ export default function Skills() {
   };
 
   return (
-    <section id="skills" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden scroll-mt-28">
+    <section id="skills" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 relative overflow-hidden scroll-mt-28">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70" />
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl" />
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 dark:bg-purple-700/10 rounded-full blur-3xl" />
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl" />
 
       <div className="container relative z-10">
         <motion.div
@@ -142,10 +149,10 @@ export default function Skills() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
+          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
             My Skills
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">
+          <p className="text-xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">
             Technologies and tools I work with
           </p>
         </motion.div>

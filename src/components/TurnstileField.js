@@ -33,7 +33,7 @@ export default function TurnstileField({ widgetKey = 0, onTokenChange }) {
   if (!SITE_KEY) {
     return (
       <div
-        className="rounded-lg border border-amber-300/60 bg-amber-50/80 dark:bg-amber-950/30 dark:border-amber-700/40 px-4 py-3 text-sm text-amber-800 dark:text-amber-200"
+        className="rounded-lg border border-amber-300/60 bg-amber-50/80 px-4 py-3 text-sm text-amber-800"
         role="status"
       >
         Security check is not configured. Add Turnstile keys to enable form protection.
@@ -59,12 +59,12 @@ export default function TurnstileField({ widgetKey = 0, onTokenChange }) {
         onError={() => onTokenChange(null)}
       />
       {unresponsive && (
-        <p className="text-xs text-amber-700 dark:text-amber-400" role="status">
+        <p className="text-xs text-amber-700" role="status">
           The security check has not loaded yet. An ad-blocker or privacy extension may be
           blocking Cloudflare Turnstile &mdash; disable it for this site and reload.
         </p>
       )}
-      <p className="text-xs text-gray-500 dark:text-gray-400">
+      <p className="text-xs text-gray-500">
         Protected by Cloudflare Turnstile.
       </p>
     </div>

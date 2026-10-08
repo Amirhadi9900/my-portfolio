@@ -1,5 +1,7 @@
 const MUTE_KEY = 'portfolio:contact-sfx-muted';
-const MASTER_GAIN = 0.5;
+// 0.65 leaves the loudest overlapping moment of the success cue at roughly a third of
+// full scale, so there is still headroom before the destination clips.
+const MASTER_GAIN = 0.65;
 
 let audioCtx = null;
 let masterGain = null;

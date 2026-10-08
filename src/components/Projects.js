@@ -2,15 +2,15 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { trackPointer, releasePointer } from '../lib/magnetic-pointer';
 
 const PROJECTS = [
   {
     id: 1,
     title: 'FinLern Web App',
-    description: 'Professional educational and communication website built with Next.js, TypeScript, and Tailwind CSS with server-side rendering and SEO optimization.',
+    description: 'Professional educational and communication website with server-side rendering and SEO optimization.',
     category: 'web',
     image: '/image/finlern.jpg',
-    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Firestore'],
     link: 'https://finlern.vercel.app/'
   }
 ];
@@ -53,8 +53,7 @@ function CodeWindow() {
           <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
         </div>
-        <span className="ml-3 text-gray-500 text-xs font-mono">page.tsx</span>
-        <span className="ml-auto text-gray-600 text-[10px] font-mono">TypeScript · Next.js</span>
+        <span className="ml-3 text-gray-500 text-xs font-mono">page</span>
       </div>
       <div className="p-4 overflow-auto flex-1">
         <div className="flex text-[13px] leading-[1.75] font-mono">
@@ -81,10 +80,10 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden scroll-mt-28">
+    <section id="projects" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 relative overflow-hidden scroll-mt-28">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70"></div>
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 dark:bg-purple-700/10 rounded-full blur-3xl"></div>
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"></div>
 
       <div className="container relative z-10">
         <motion.div
@@ -94,10 +93,10 @@ export default function Projects() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
+          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
             Projects
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">Check out my recent project</p>
+          <p className="text-xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">Check out my recent project</p>
         </motion.div>
 
         <div className="flex justify-center">
@@ -110,13 +109,7 @@ export default function Projects() {
               viewport={{ once: true, amount: 0.1 }}
               variants={fadeInUp}
             >
-              <motion.div
-                className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.1)] dark:shadow-[0_20px_50px_rgba(8,112,184,0.07)] border border-gray-100/50 dark:border-gray-700/50 transition-all duration-500"
-                whileHover={{
-                  y: -4,
-                  boxShadow: '0 30px 60px rgba(8,112,184,0.18)',
-                }}
-              >
+              <div className="panel-3d">
                 {/* Split view: Screenshot + Code */}
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   {/* Left: Screenshot */}
@@ -138,7 +131,7 @@ export default function Projects() {
                   </div>
 
                   {/* Right: Code window (desktop only) */}
-                  <div className="hidden lg:block p-4 bg-gray-50/50 dark:bg-gray-900/30">
+                  <div className="hidden lg:block p-4 bg-gray-900/30">
                     <CodeWindow />
                   </div>
                 </div>
@@ -147,20 +140,8 @@ export default function Projects() {
                 <div className="p-6 sm:p-8 md:p-10 relative">
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"></div>
 
-                  <h3 className="font-heading text-3xl font-bold text-gray-800 dark:text-white mb-4 tracking-tight">{project.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-8 text-lg leading-relaxed">{project.description}</p>
-
-                  {/* Tech tags with interactive glow */}
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {project.technologies.map((tech, index) => (
-                      <span
-                        key={index}
-                        className="text-sm px-4 py-2 rounded-full bg-cyan-50/70 dark:bg-cyan-900/10 text-cyan-700 dark:text-cyan-300 font-medium border border-cyan-200/50 dark:border-cyan-800/30 hover:border-cyan-400/60 dark:hover:border-cyan-500/40 hover:shadow-[0_0_12px_rgba(34,211,238,0.15)] transition-all duration-300 cursor-default"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                  <h3 className="font-subheading text-2xl font-semibold text-emerald-200 mb-4 tracking-tight">{project.title}</h3>
+                  <p className="text-gray-300 mb-8 leading-relaxed">{project.description}</p>
 
                   <div className="flex justify-between items-center">
                     <a
@@ -172,15 +153,21 @@ export default function Projects() {
                       View Live
                     </a>
 
-                    <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
+                    <div className="text-sm text-gray-400 flex items-center gap-1.5">
+                      <span
+                        className="magnetic-icon flex items-center justify-center"
+                        onPointerMove={trackPointer}
+                        onPointerLeave={releasePointer}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </span>
                       <span>2026</span>
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           ))}
         </div>

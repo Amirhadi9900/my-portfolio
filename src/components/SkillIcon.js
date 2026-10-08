@@ -73,6 +73,29 @@ const SKILL_ICONS = {
   'Bash Scripting': siGnubash,
 };
 
+// No fixed icon tile can hold all 35 marks: nine brand colours fail 3:1 on white
+// (JavaScript, Vault, React Native...) and six fail on the CRT green (OWASP, Next.js,
+// Vercel, GitHub, Hashcat, Gradle). Choosing the tile from each mark's own luminance
+// clears 3:1 everywhere without altering a single brand colour.
+const LIGHT_TILE_BELOW = 0.35;
+const CUSTOM_HEX = { 'VS Code': '007ACC', 'AWS': 'FF9900' };
+
+function relativeLuminance(hex) {
+  const channels = [0, 2, 4]
+    .map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+    .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+export function usesLightTile(name) {
+  const hex = CUSTOM_HEX[name] ?? SKILL_ICONS[name]?.hex;
+  // An unmapped name renders no mark at all, so there is nothing to protect.
+  if (!hex) return true;
+  // Judged as BrandIcon will draw it: a pure-white mark is forced to black.
+  const drawn = hex.toLowerCase() === 'ffffff' ? '000000' : hex;
+  return relativeLuminance(drawn) < LIGHT_TILE_BELOW;
+}
+
 // simple-icons ships some marks as pure white (Hashcat), which would be invisible on
 // the white chips. This site has no dark theme, so force those to plain black.
 function BrandIcon({ icon, className = 'w-7 h-7' }) {

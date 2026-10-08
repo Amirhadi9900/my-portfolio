@@ -13,10 +13,10 @@ export default function About() {
   };
 
   return (
-    <section id="about" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden scroll-mt-28">
+    <section id="about" className="section py-16 md:py-28 bg-gradient-to-b from-gray-50/80 to-gray-100/90 relative overflow-hidden scroll-mt-28">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70" />
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 dark:bg-blue-700/10 rounded-full blur-3xl" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/10 dark:bg-purple-700/10 rounded-full blur-3xl" />
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
+      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl" />
 
       <div className="container relative z-10">
         <motion.div
@@ -26,10 +26,10 @@ export default function About() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">
+          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
             About Me
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">
+          <p className="text-xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">
             Click the card to discover who I am
           </p>
         </motion.div>
@@ -135,7 +135,7 @@ export default function About() {
                 transition={{ delay: 0.8, duration: 0.5 }}  
               >
                 <svg
-                  className="w-16 h-20 sm:w-20 sm:h-24 text-blue-500 dark:text-blue-400 mb-0.5 mr-4 sm:mr-8"
+                  className="w-16 h-20 sm:w-20 sm:h-24 text-blue-500 mb-0.5 mr-4 sm:mr-8"
                   viewBox="0 0 60 72"
                   fill="none"
                   aria-hidden="true"
@@ -149,7 +149,7 @@ export default function About() {
                   />
                   <path d="M30 14 L24 22 M30 14 L36 22" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" />
                 </svg>
-                <span className="font-heading text-4xl sm:text-5xl font-bold text-blue-600 dark:text-blue-400 rotate-[-6deg] leading-none">
+                <span className="font-heading text-4xl sm:text-5xl font-bold text-blue-600 rotate-[-6deg] leading-none">
                   Flip me!
                 </span>
               </motion.div>
