@@ -298,7 +298,7 @@ export default function Contact() {
                   href="https://github.com/Amirhadi9900" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700/50 text-gray-300 hover:text-cyan-400 transition-all duration-300 hover:shadow-md hover:scale-110 no-underline"
+                  className="social-button w-10 h-10"
                 >
                   <span className="sr-only">GitHub</span>
                   <span className="magnetic-icon flex items-center justify-center" onPointerMove={trackPointer} onPointerLeave={releasePointer}>
@@ -311,7 +311,7 @@ export default function Contact() {
                   href="https://www.linkedin.com/in/amirhadi-borjian-yazdi-5108431a1" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700/50 text-gray-300 hover:text-cyan-400 transition-all duration-300 hover:shadow-md hover:scale-110 no-underline"
+                  className="social-button w-10 h-10"
                 >
                   <span className="sr-only">LinkedIn</span>
                   <span className="magnetic-icon flex items-center justify-center" onPointerMove={trackPointer} onPointerLeave={releasePointer}>
@@ -324,7 +324,7 @@ export default function Contact() {
                   href="#contact"
                   scroll={false}
                   onClick={(event) => scrollToId('contact', event)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700/50 text-gray-300 hover:text-cyan-400 transition-all duration-300 hover:shadow-md hover:scale-110 no-underline"
+                  className="social-button w-10 h-10"
                 >
                   <span className="sr-only">Send a message</span>
                   <span className="magnetic-icon flex items-center justify-center" onPointerMove={trackPointer} onPointerLeave={releasePointer}>

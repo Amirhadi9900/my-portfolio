@@ -314,34 +314,53 @@ a {
   }
 }
 
+/* One keyboard-focus treatment for the whole site. Applied globally rather than
+   as a class to opt into, because ~30 controls are focusable and hand-picking
+   them is how a ring ended up on two of them and missing off the rest.
+   `outline` rather than `box-shadow`: the CTAs already own box-shadow for their
+   hover glow, and a shadow ring would replace it. Cyan clears both the light
+   sections and the #07120b panels, and an outline survives forced-colours mode. */
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 2px;
+}
+
+/* One social-icon button, used by the Contact card and the Footer alike. It was
+   two: a 40px rounded-full tile in Contact and a 48px rounded-lg tile in the
+   Footer, with LinkedIn special-cased to purple inside the latter. The shape and
+   hover colour now live here so the two cannot drift apart again. Size stays at
+   the call site because the footer row genuinely wants a larger target. */
+.social-button {
+  @apply flex items-center justify-center rounded-full bg-gray-700/50 text-gray-300 no-underline;
+  transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.social-button:hover {
+  color: #22d3ee;
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.25);
+}
+
 /* Header styles */
 .nav-link {
   position: relative;
   transition: all 0.3s ease;
 }
 
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
-  transition: width 0.3s ease;
-}
-
-.nav-link:hover::after {
-  width: 100%;
-}
-
+/* The underline used to live here as an ::after that grew on :hover and on
+   .active. It is gone: the active bar is a real element animated by
+   framer-motion (Header.js), so this rule only ever drew a *second* underline
+   under the active item, two pixels below the first and in a third gradient.
+   Hover feedback stays with `hover:text-white` on the link itself. */
 .nav-link.active {
   color: white;
   font-weight: 500;
-}
-
-.nav-link.active::after {
-  width: 100%;
 }
 
 .header-glow {

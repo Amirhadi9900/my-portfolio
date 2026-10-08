@@ -47,7 +47,7 @@ export default function About() {
                 {/* Front — Photo */}
                 <button
                   type="button"
-                  className="flip-card-face flip-card-front backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.15)] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  className="flip-card-face flip-card-front backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.15)] cursor-pointer"
                   onClick={() => setIsFlipped(true)}
                   aria-label="Show about information"
                   aria-hidden={isFlipped}
@@ -89,7 +89,7 @@ export default function About() {
                     <span className="font-mono text-[11px] text-cyan-400/90 truncate min-w-0">~/about/developer.md</span>
                     <button
                       type="button"
-                      className="ml-auto shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-[0_4px_14px_rgba(59,130,246,0.4)] border border-blue-400/30 transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                      className="btn-primary-sm ml-auto shrink-0"
                       onClick={() => setIsFlipped(false)}
                       aria-label="Show profile photo"
                     >

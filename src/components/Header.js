@@ -130,7 +130,7 @@ export default function Header() {
                   {/* Active indicator */}
                   {activeLink === link.href && (
                     <motion.span 
-                      className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400"
+                      className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400"
                       layoutId="activeIndicator"
                       transition={{ type: 'spring', duration: 0.5 }}
                     ></motion.span>

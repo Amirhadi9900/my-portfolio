@@ -1,4 +1,5 @@
 import BackToTop from '../../components/BackToTop';
+import Footer from '../../components/Footer';
 import MotionProvider from '../../components/MotionProvider';
 import { connection } from 'next/server';
 
@@ -203,6 +204,11 @@ export default async function PrivacyPage() {
 
       <MotionProvider>
         <BackToTop />
+        {/* Same reason page.js keeps the Footer outside <main>: nested inside it
+            stops being exposed as a contentinfo landmark. It also gives this page
+            the site's real navigation, which a single "Back to the site" button
+            did not. */}
+        <Footer home={false} />
       </MotionProvider>
     </div>
   );

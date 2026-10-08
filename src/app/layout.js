@@ -19,13 +19,19 @@ const sourceSans3 = Source_Sans_3({
 const firaSans = Fira_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
-  weight: ['400', '500'],
+  // 300 is not optional: nine call sites ask for `font-light` (every section
+  // subtitle, the hero paragraph, both logo wordmarks, the privacy lede). With
+  // only 400/500 loaded the browser resolved 300 to the 400 face — measured
+  // identical rendered width — so the weight was silently doing nothing.
+  weight: ['300', '400', '500'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
-  weight: ['400'],
+  // ScrollTimeline's counter asks for `font-semibold`; on a 400-only face that
+  // resolved back to 400, so the emphasis never appeared.
+  weight: ['400', '600'],
 });
 
 // A display token rather than replacing --font-heading, which eleven call sites use
