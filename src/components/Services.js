@@ -46,7 +46,7 @@ const SERVICES = [
       'Source and infrastructure are yours at handover, with no lock-in to me.',
       'If a project is not something I can do well, I say so instead of taking it on.',
     ],
-    cta: 'Discuss a build',
+    cta: 'Discuss A Build',
   },
   {
     id: 'ethical-pentesting',
@@ -82,7 +82,7 @@ const SERVICES = [
       'If a step looks unethical or unlawful I stop, tell you, and will not carry it out even if asked.',
       'Findings are reported to you in writing, and nothing is published without your consent.',
     ],
-    cta: 'Scope a test',
+    cta: 'Scope A Test',
   },
 ];
 
