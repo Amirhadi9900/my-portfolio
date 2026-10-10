@@ -3,3 +3,8 @@ Allow: /
 Disallow: /api/
 Disallow: /_next/
 Disallow: /*.json$
+
+# Do not add "Disallow: /image/borjian.jpg". The portrait is kept out of Image Search with
+# X-Robots-Tag: noindex on that file and noimageindex on every page, and both need the
+# crawler to actually fetch the URL. A Disallow line hides the instruction, not the photo.
+Sitemap: https://my-portfolio-lime-three-67.vercel.app/sitemap.xml

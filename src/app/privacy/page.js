@@ -4,9 +4,13 @@ import MotionProvider from '../../components/MotionProvider';
 import { connection } from 'next/server';
 
 export const metadata = {
-  title: 'Privacy and how I handle your message - Amirhadi Borjian Yazdi',
+  // The root layout's title template appends " - Amirhadi Borjian Yazdi", so the suffix
+  // is not repeated here. canonical must be restated per route or it is inherited from
+  // the layout and this page would declare itself to be the home page.
+  title: 'Privacy and how I handle your message',
   description:
     'What the contact form collects, what happens to your data during a penetration test, how this site measures visits and performance, what screens traffic in front of it, where it all goes, how long it is kept, and how to ask for it to be deleted.',
+  alternates: { canonical: '/privacy' },
 };
 
 const sections = [

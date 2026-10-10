@@ -35,6 +35,17 @@ const nextConfig = {
         ],
       },
       {
+        // Google documents X-Robots-Tag as valid on image files, and this is the only
+        // instruction that travels with the photo itself rather than with a page. The path
+        // is deliberately NOT disallowed in robots.txt: a blocked URL is never fetched, so
+        // the crawler would never see this header, and Google cannot honour noindex on a
+        // file it has not read.
+        source: '/image/borjian.jpg',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, noimageindex' },
+        ],
+      },
+      {
         source: '/api/:path*',
         headers: [
           { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate, proxy-revalidate' },

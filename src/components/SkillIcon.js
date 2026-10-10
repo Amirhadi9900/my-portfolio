@@ -78,7 +78,7 @@ const SKILL_ICONS = {
 // Vercel, GitHub, Hashcat, Gradle). Choosing the tile from each mark's own luminance
 // clears 3:1 everywhere without altering a single brand colour.
 const LIGHT_TILE_BELOW = 0.35;
-const CUSTOM_HEX = { 'VS Code': '007ACC', 'AWS': 'FF9900' };
+const CUSTOM_HEX = { 'VS Code': '007ACC', 'AWS': 'FF9900', 'Nikto': '000000' };
 
 function relativeLuminance(hex) {
   const channels = [0, 2, 4]
@@ -134,10 +134,32 @@ const CUSTOM_ICONS = {
   'AWS': AWSIcon,
 };
 
+// Nikto has no vector mark anywhere — the only official artwork is this grayscale raster in
+// documentation/ of the project repo, kept byte-for-byte as published. Its background is pure
+// white and so is the light chip tile, so the two meet with no visible edge.
+const RASTER_ICONS = {
+  'Nikto': '/image/nikto-alien.png',
+};
+
 export default function SkillIcon({ name, className = 'w-7 h-7' }) {
   const CustomIcon = CUSTOM_ICONS[name];
   if (CustomIcon) {
     return <CustomIcon className={className} />;
+  }
+
+  const raster = RASTER_ICONS[name];
+  if (raster) {
+    return (
+      <img
+        src={raster}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        width={28}
+        height={28}
+        className={`${className} object-contain`}
+      />
+    );
   }
 
   const icon = SKILL_ICONS[name];

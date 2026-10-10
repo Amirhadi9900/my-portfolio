@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, Source_Sans_3, Fira_Sans, JetBrains_Mono, Outfit } from 
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import PromptCursor from '../components/PromptCursor';
+import { SITE_URL, AUTHOR, SITE_TITLE, SITE_DESCRIPTION } from '../lib/site';
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
@@ -42,26 +43,36 @@ const outfit = Outfit({
   weight: ['500', '600', '700'],
 });
 
-const SITE_URL = 'https://my-portfolio-lime-three-67.vercel.app';
-
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Amirhadi Borjian Yazdi - Software Developer & Security Enthusiast',
-  description: 'Android, web and security work by Amirhadi Borjian Yazdi — modern, responsive applications built with clean code.',
+  title: { default: SITE_TITLE, template: `%s - ${AUTHOR}` },
+  description: SITE_DESCRIPTION,
+  applicationName: AUTHOR,
+  authors: [{ name: AUTHOR, url: SITE_URL }],
+  creator: AUTHOR,
+  publisher: AUTHOR,
   keywords: ['portfolio', 'developer', 'android development', 'kotlin', 'web development', 'next.js', 'firebase', 'penetration testing', 'network security'],
+  // noimageindex stops Google using any page of this site as the source for an image
+  // result, which is the documented way to keep the portrait out of Image Search. The photo
+  // also carries X-Robots-Tag: noindex at its own URL (next.config.js), and it is kept out
+  // of og:image, twitter:image and the Person schema (src/app/page.js) — those are the
+  // places a crawler learns a photo's direct address in the first place.
+  robots: { index: true, follow: true, noimageindex: true },
+  alternates: { canonical: '/' },
   openGraph: {
-    title: 'Amirhadi Borjian Yazdi - Software Developer & Security Enthusiast',
-    description: 'Android, web and security work by Amirhadi Borjian Yazdi.',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
-    siteName: 'Amirhadi Borjian Yazdi',
-    images: [{ url: '/image/borjian.jpg', width: 1200, height: 1200, alt: 'Amirhadi Borjian Yazdi' }],
+    siteName: AUTHOR,
+    locale: 'en_US',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Amirhadi Borjian Yazdi — software developer and security enthusiast' }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Amirhadi Borjian Yazdi - Software Developer & Security Enthusiast',
-    description: 'Android, web and security work by Amirhadi Borjian Yazdi.',
-    images: ['/image/borjian.jpg'],
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ['/og.png'],
   },
 };
 

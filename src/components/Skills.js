@@ -64,6 +64,7 @@ const SKILL_CATEGORIES = [
       'OWASP Top 10',
       'Penetration Testing',
       'Burp Suite',
+      'Nikto',
       'Metasploit',
       'Hashcat',
     ],
