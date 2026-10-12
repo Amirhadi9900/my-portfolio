@@ -106,20 +106,20 @@ export default function About() {
                     aria-label="About information"
                   >
                     <div className="rounded-xl bg-white/[0.06] backdrop-blur-sm border border-white/10 p-4 shadow-inner">
-                      <h3 className="font-subheading font-semibold text-2xl sm:text-3xl text-blue-300 mb-2 leading-tight">
+                      <h3 className="font-subheading font-semibold text-2xl text-blue-300 mb-2 leading-tight">
                         Who I Am
                       </h3>
-                      <p className="text-blue-100/95 text-base sm:text-lg leading-relaxed">
-                        I&apos;m a software developer who loves building cool stuff and solving tricky problems with code. Whether it&apos;s web development, Android development, or debugging, I enjoy every moment of the process—from brainstorming ideas to bringing them to life.
+                      <p className="text-blue-100/95 text-base leading-relaxed">
+                        I&apos;m Amirhadi Borjian, a full-stack developer at Finlern Oy. I build a TypeScript web platform with a custom AI agent, and a native Android app in Kotlin with end-to-end encrypted messaging. I came to security from the inside, by breaking my own work before anyone else could.
                       </p>
                     </div>
 
                     <div className="rounded-xl bg-white/[0.06] backdrop-blur-sm border border-white/10 p-4 shadow-inner">
-                      <h3 className="font-subheading font-semibold text-2xl sm:text-3xl text-blue-300 mb-2 leading-tight">
+                      <h3 className="font-subheading font-semibold text-2xl text-blue-300 mb-2 leading-tight">
                         My Approach
                       </h3>
-                      <p className="text-blue-100/95 text-base sm:text-lg leading-relaxed">
-                        I believe in creating clean, efficient code and making things work smoothly and flawlessly. Whether it&apos;s front-end, back-end, or Android development, I love diving into projects that challenge me and make me think outside the box.
+                      <p className="text-blue-100/95 text-base leading-relaxed">
+                        I don&apos;t trust an assertion I haven&apos;t had to defend. Every security control on this site has a test that fails if it breaks: input validation, a CSP without unsafe-inline, rate limits, the honeypot. Nine verifiers run on every push, and a control nobody re-checks is only a rumour.
                       </p>
                     </div>
                   </div>

@@ -11,7 +11,7 @@ import BackToTop from '../components/BackToTop';
 import MotionProvider from '../components/MotionProvider';
 import { connection } from 'next/server';
 import { headers } from 'next/headers';
-import { SITE_URL, AUTHOR, SITE_DESCRIPTION, PROFILE_URLS } from '../lib/site';
+import { SITE_URL, AUTHOR, BRAND_NAME, SITE_DESCRIPTION, PROFILE_URLS } from '../lib/site';
 
 // Entity markup is what turns "Amirhadi Borjian Yazdi" from a string match into a thing
 // Google can resolve: `sameAs` names the GitHub, LinkedIn and TryHackMe profiles that also
@@ -24,7 +24,8 @@ const PERSON_SCHEMA = {
     {
       '@type': 'Person',
       '@id': `${SITE_URL}/#person`,
-      name: AUTHOR,
+      name: BRAND_NAME,
+      alternateName: AUTHOR,
       url: SITE_URL,
       description: SITE_DESCRIPTION,
       jobTitle: ['Software Developer', 'Security Enthusiast'],
@@ -48,7 +49,7 @@ const PERSON_SCHEMA = {
       '@type': 'WebSite',
       '@id': `${SITE_URL}/#website`,
       url: SITE_URL,
-      name: AUTHOR,
+      name: BRAND_NAME,
       description: SITE_DESCRIPTION,
       inLanguage: 'en',
       publisher: { '@id': `${SITE_URL}/#person` },

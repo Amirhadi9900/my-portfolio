@@ -4,6 +4,11 @@
 // site are the same entity, so a divergence here would be a real defect, not a typo.
 export const SITE_URL = 'https://my-portfolio-lime-three-67.vercel.app';
 export const AUTHOR = 'Amirhadi Borjian Yazdi';
+// The form the site shows out loud: the hero heading, the About card and the logo all read
+// "Amirhadi Borjian". Structured data is supposed to describe the visible page, so the
+// schema `name` fields use this and keep AUTHOR as `alternateName` — the full legal form
+// stays searchable without contradicting what a crawler can see.
+export const BRAND_NAME = 'Amirhadi Borjian';
 export const SITE_TITLE = 'Amirhadi Borjian Yazdi - Software Developer & Security Enthusiast';
 export const SITE_DESCRIPTION =
   'Portfolio of Amirhadi Borjian Yazdi: Android apps in Kotlin, web apps in Next.js and TypeScript, and hands-on network security and penetration testing.';
