@@ -46,7 +46,7 @@ export default function Footer({ home = true }) {
             Amirhadi Borjian
           </h2>
           <p className="text-gray-400 mt-2">
-            Web and Android applications that hold up — and penetration tests you can act on.
+            Web and Android applications that hold up. Findings you can act on.
           </p>
         </motion.div>
         

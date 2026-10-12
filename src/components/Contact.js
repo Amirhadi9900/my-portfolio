@@ -510,7 +510,7 @@ export default function Contact() {
                       />
                       <span className="text-sm leading-relaxed text-gray-300">
                         I agree that Amirhadi may store this message and my contact details in order
-                        to reply. Nothing is kept on the site itself &mdash; it arrives as an email.{' '}
+                        to reply. Nothing is kept on the site itself. It arrives as an email.{' '}
                         <Link
                           href="/privacy"
                           className="underline decoration-gray-400/50 underline-offset-2 hover:text-cyan-400 transition-colors"

@@ -65,7 +65,7 @@ export const metadata = {
     url: SITE_URL,
     siteName: AUTHOR,
     locale: 'en_US',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Amirhadi Borjian Yazdi — software developer and security enthusiast' }],
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Amirhadi Borjian Yazdi, software developer and security enthusiast' }],
     type: 'website',
   },
   twitter: {

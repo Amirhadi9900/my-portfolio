@@ -61,7 +61,7 @@ export default function TurnstileField({ widgetKey = 0, onTokenChange }) {
       {unresponsive && (
         <p className="text-xs text-amber-700" role="status">
           The security check has not loaded yet. An ad-blocker or privacy extension may be
-          blocking Cloudflare Turnstile &mdash; disable it for this site and reload.
+          blocking Cloudflare Turnstile. Disable it for this site and reload.
         </p>
       )}
       <p className="text-xs text-gray-500">
