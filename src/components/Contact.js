@@ -430,7 +430,7 @@ export default function Contact() {
                       aria-describedby={fieldErrors.name ? 'name-error' : undefined}
                     />
                     {fieldErrors.name && (
-                      <p id="name-error" className="mt-1.5 text-sm text-red-400">{fieldErrors.name}</p>
+                      <p id="name-error" className="mt-1.5 text-sm text-red-700">{fieldErrors.name}</p>
                     )}
                   </div>
                   
@@ -451,7 +451,7 @@ export default function Contact() {
                       aria-describedby={fieldErrors.email ? 'email-error' : undefined}
                     />
                     {fieldErrors.email && (
-                      <p id="email-error" className="mt-1.5 text-sm text-red-400">{fieldErrors.email}</p>
+                      <p id="email-error" className="mt-1.5 text-sm text-red-700">{fieldErrors.email}</p>
                     )}
                   </div>
                   
@@ -472,7 +472,7 @@ export default function Contact() {
                       aria-describedby={fieldErrors.subject ? 'subject-error' : undefined}
                     />
                     {fieldErrors.subject && (
-                      <p id="subject-error" className="mt-1.5 text-sm text-red-400">{fieldErrors.subject}</p>
+                      <p id="subject-error" className="mt-1.5 text-sm text-red-700">{fieldErrors.subject}</p>
                     )}
                   </div>
                   
@@ -493,7 +493,7 @@ export default function Contact() {
                       aria-describedby={fieldErrors.message ? 'message-error' : undefined}
                     ></textarea>
                     {fieldErrors.message && (
-                      <p id="message-error" className="mt-1.5 text-sm text-red-400">{fieldErrors.message}</p>
+                      <p id="message-error" className="mt-1.5 text-sm text-red-700">{fieldErrors.message}</p>
                     )}
                   </div>
 
@@ -506,7 +506,7 @@ export default function Contact() {
                       }}
                     />
                     {captchaError && (
-                      <p role="alert" className="mt-2 text-sm text-red-400">{captchaError}</p>
+                      <p role="alert" className="mt-2 text-sm text-red-700">{captchaError}</p>
                     )}
                   </div>
                   
@@ -539,7 +539,7 @@ export default function Contact() {
                       </span>
                     </label>
                     {fieldErrors.consent && (
-                      <p id="consent-error" className="mt-1.5 text-sm text-red-400">{fieldErrors.consent}</p>
+                      <p id="consent-error" className="mt-1.5 text-sm text-red-700">{fieldErrors.consent}</p>
                     )}
                   </div>
 
@@ -552,9 +552,9 @@ export default function Contact() {
                   </button>
                   
                   {submitStatus === 'success' && (
-                    <div role="status" className="mt-6 p-4 bg-[#0d1117] rounded-lg border border-green-500/20 font-mono text-sm">
-                      <div className="flex items-center gap-2 text-emerald-700">
-                        <span className="text-green-500">&#10003;</span>
+                    <div role="status" className="mt-6 p-4 bg-white rounded-lg border border-slate-300 shadow-sm font-mono text-sm">
+                      <div className="flex items-center gap-2 text-emerald-800">
+                        <span className="text-emerald-700">&#10003;</span>
                         <span className="text-slate-600">~/contact $</span>
                         <span>send --message</span>
                       </div>
@@ -565,8 +565,8 @@ export default function Contact() {
                   )}
                   
                   {submitStatus === 'error' && (
-                    <div role="alert" className="mt-6 p-4 bg-red-900/30 text-red-300 rounded-lg border border-red-900/50 flex items-center">
-                      <svg className="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div role="alert" className="mt-6 p-4 bg-white text-red-800 rounded-lg border border-slate-300 shadow-sm flex items-center">
+                      <svg className="w-5 h-5 mr-3 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <span>{errorMessage || "Failed to send message. Please try again."}</span>
