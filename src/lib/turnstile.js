@@ -91,7 +91,6 @@ export async function verifyTurnstileToken(token, remoteIp) {
       ok: false,
       error: 'Security check failed. Please try again.',
       code: 'captcha_failed',
-      codes: result['error-codes'] ?? [],
     };
   }
 

@@ -222,8 +222,6 @@ export default function Contact() {
     <section id="contact" className={CONTACT_SECTION_CLASS}>
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70"></div>
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"></div>
       
       <div className="container relative z-10">
         <motion.div 
@@ -236,30 +234,40 @@ export default function Contact() {
           <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
             Get In Touch
           </h2>
-          <p className="text-xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed subtitle-blink">Have a project in mind? Let&apos;s talk about it :)</p>
+          <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed subtitle-blink">Have a project in mind? Let&apos;s talk about it :)</p>
         </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
           <motion.div
-            className="panel-3d p-6 sm:p-8 md:p-10"
+            className="panel-3d group p-6 sm:p-8 md:p-10"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={fadeInUp}
           >
-            <div className="relative mb-8">
-              <div className="absolute -top-2 left-0 w-12 h-1 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-full"></div>
-              <h3 className="font-subheading text-2xl font-semibold text-emerald-200 mb-4 tracking-tight">Contact Information</h3>
-              <p className="text-gray-300 leading-relaxed">
-                Feel free to reach out if you have any questions or if you&apos;d like to work together.
-                I&apos;m always open to new projects and opportunities.
-              </p>
+            <div className="mb-8 flex items-start gap-4">
+              <span
+                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 shadow-lg transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] magnetic-icon"
+                onPointerMove={trackPointer}
+                onPointerLeave={releasePointer}
+              >
+                <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0v1.5a2.25 2.25 0 004.5 0V12a9 9 0 10-3.5 7.1" />
+                </svg>
+              </span>
+              <div className="min-w-0">
+                <h3 className="font-subheading text-2xl font-semibold text-slate-900 mb-4 tracking-tight">Contact Information</h3>
+                <p className="text-slate-700 leading-relaxed">
+                  Feel free to reach out if you have any questions or if you&apos;d like to work together.
+                  I&apos;m always open to new projects and opportunities.
+                </p>
+              </div>
             </div>
             
             <div className="space-y-6 mb-10">
               <div className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
                 <div
-                  className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-cyan-950/40 text-cyan-400 mr-4 shadow-sm magnetic-icon"
+                  className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-cyan-50 text-cyan-700 mr-4 shadow-sm magnetic-icon"
                   onPointerMove={trackPointer}
                   onPointerLeave={releasePointer}
                 >
@@ -268,8 +276,8 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-subheading text-base font-semibold text-cyan-300 mb-1">Email</h4>
-                  <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-gray-300 hover:text-cyan-400 transition-colors duration-200">
+                  <h4 className="font-subheading text-base font-semibold text-cyan-800 mb-1">Email</h4>
+                  <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-slate-700 hover:text-cyan-700 transition-colors duration-200">
                     Send a message
                   </Link>
                 </div>
@@ -277,7 +285,7 @@ export default function Contact() {
               
               <div className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
                 <div
-                  className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-cyan-950/40 text-cyan-400 mr-4 shadow-sm magnetic-icon"
+                  className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-cyan-50 text-cyan-700 mr-4 shadow-sm magnetic-icon"
                   onPointerMove={trackPointer}
                   onPointerLeave={releasePointer}
                 >
@@ -287,14 +295,14 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-subheading text-base font-semibold text-cyan-300 mb-1">Location</h4>
-                  <p className="text-gray-300">Available remotely worldwide and onsite in Finland</p>
+                  <h4 className="font-subheading text-base font-semibold text-cyan-800 mb-1">Location</h4>
+                  <p className="text-slate-700">Available remotely worldwide and onsite in Finland</p>
                 </div>
               </div>
             </div>
             
-            <div className="pt-8 border-t border-gray-700/30">
-              <h4 className="font-subheading text-base font-semibold text-cyan-300 mb-4">Connect With Me</h4>
+            <div className="pt-8 border-t border-slate-300">
+              <h4 className="font-subheading text-base font-semibold text-cyan-800 mb-4">Connect With Me</h4>
               <div className="flex space-x-4">
                 <a 
                   href={PROFILE_URLS.github} 
@@ -357,17 +365,29 @@ export default function Contact() {
             viewport={{ once: true, amount: 0.2 }}
             variants={fadeInUp}
           >
-            <div className="panel-3d">
-              <div className="p-8 md:p-10">
-                <div className="relative mb-8">
-                  <div className="absolute -top-2 left-0 w-12 h-1 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-full"></div>
+            <div className="panel-3d group">
+              <div className="p-6 sm:p-8 md:p-10">
+                <div className="relative mb-8 flex items-start gap-4">
+                  <span
+                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 shadow-lg transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] magnetic-icon"
+                    onPointerMove={trackPointer}
+                    onPointerLeave={releasePointer}
+                  >
+                    <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    </svg>
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-subheading text-2xl font-semibold text-slate-900 mb-2 tracking-tight">Send Me a Message</h3>
+                    <p className="text-slate-700">I&apos;ll get back to you as soon as possible.</p>
+                  </div>
                   <button
                     type="button"
                     onClick={toggleSfx}
                     aria-pressed={sfxMuted}
                     aria-label={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
                     title={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
-                    className="absolute -top-1 right-0 p-2 rounded-lg text-gray-400 hover:text-cyan-400 hover:bg-gray-700/50 transition-colors duration-200 magnetic-icon"
+                    className="absolute -top-1 right-0 p-2 rounded-lg text-slate-500 hover:text-cyan-700 hover:bg-slate-200 transition-colors duration-200 magnetic-icon"
                     onPointerMove={trackPointer}
                     onPointerLeave={releasePointer}
                   >
@@ -378,8 +398,6 @@ export default function Contact() {
                         : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.5 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" />}
                     </svg>
                   </button>
-                  <h3 className="font-subheading text-2xl font-semibold text-emerald-200 mb-2 tracking-tight">Send Me a Message</h3>
-                  <p className="text-gray-300">I&apos;ll get back to you as soon as possible.</p>
                 </div>
                 
                 <form id="contact-form" noValidate onSubmit={handleSubmit}>
@@ -396,7 +414,7 @@ export default function Contact() {
                     />
                   </div>
                   <div className="mb-6">
-                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-white">Your Name</label>
+                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-slate-900">Your Name</label>
                     <input
                       type="text"
                       id="name"
@@ -406,7 +424,7 @@ export default function Contact() {
                       onBlur={handleBlur}
                       required
                       maxLength={CONTACT_LIMITS.name}
-                      className={`w-full px-5 py-3 bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-white transition-colors duration-200 ${fieldErrors.name ? 'border-red-500' : 'border-gray-700'}`}
+                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-cyan-600 focus:border-cyan-600 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.name ? 'border-red-500' : 'border-slate-300'}`}
                       placeholder="John Doe"
                       aria-invalid={!!fieldErrors.name}
                       aria-describedby={fieldErrors.name ? 'name-error' : undefined}
@@ -417,7 +435,7 @@ export default function Contact() {
                   </div>
                   
                   <div className="mb-6">
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-white">Your Email</label>
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-slate-900">Your Email</label>
                     <input
                       type="email"
                       id="email"
@@ -427,7 +445,7 @@ export default function Contact() {
                       onBlur={handleBlur}
                       required
                       maxLength={CONTACT_LIMITS.email}
-                      className={`w-full px-5 py-3 bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-white transition-colors duration-200 ${fieldErrors.email ? 'border-red-500' : 'border-gray-700'}`}
+                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-cyan-600 focus:border-cyan-600 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.email ? 'border-red-500' : 'border-slate-300'}`}
                       placeholder="john@example.com"
                       aria-invalid={!!fieldErrors.email}
                       aria-describedby={fieldErrors.email ? 'email-error' : undefined}
@@ -438,7 +456,7 @@ export default function Contact() {
                   </div>
                   
                   <div className="mb-6">
-                    <label htmlFor="subject" className="block mb-2 text-sm font-medium text-white">Subject</label>
+                    <label htmlFor="subject" className="block mb-2 text-sm font-medium text-slate-900">Subject</label>
                     <input
                       type="text"
                       id="subject"
@@ -448,7 +466,7 @@ export default function Contact() {
                       onBlur={handleBlur}
                       required
                       maxLength={CONTACT_LIMITS.subject}
-                      className={`w-full px-5 py-3 bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-white transition-colors duration-200 ${fieldErrors.subject ? 'border-red-500' : 'border-gray-700'}`}
+                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-cyan-600 focus:border-cyan-600 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.subject ? 'border-red-500' : 'border-slate-300'}`}
                       placeholder="Project Inquiry"
                       aria-invalid={!!fieldErrors.subject}
                       aria-describedby={fieldErrors.subject ? 'subject-error' : undefined}
@@ -459,7 +477,7 @@ export default function Contact() {
                   </div>
                   
                   <div className="mb-6">
-                    <label htmlFor="message" className="block mb-2 text-sm font-medium text-white">Your Message</label>
+                    <label htmlFor="message" className="block mb-2 text-sm font-medium text-slate-900">Your Message</label>
                     <textarea
                       id="message"
                       name="message"
@@ -469,7 +487,7 @@ export default function Contact() {
                       required
                       rows="5"
                       maxLength={CONTACT_LIMITS.message}
-                      className={`w-full px-5 py-3 bg-gray-700/30 border rounded-lg focus:ring-blue-500 focus:border-blue-500 text-white transition-colors duration-200 ${fieldErrors.message ? 'border-red-500' : 'border-gray-700'}`}
+                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-cyan-600 focus:border-cyan-600 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.message ? 'border-red-500' : 'border-slate-300'}`}
                       placeholder="Hello, I'd like to discuss a project..."
                       aria-invalid={!!fieldErrors.message}
                       aria-describedby={fieldErrors.message ? 'message-error' : undefined}
@@ -508,12 +526,12 @@ export default function Contact() {
                         aria-describedby={fieldErrors.consent ? 'consent-error' : undefined}
                         className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                       />
-                      <span className="text-sm leading-relaxed text-gray-300">
+                      <span className="text-sm leading-relaxed text-slate-700">
                         I agree that Amirhadi may store this message and my contact details in order
                         to reply. Nothing is kept on the site itself. It arrives as an email.{' '}
                         <Link
                           href="/privacy"
-                          className="underline decoration-gray-400/50 underline-offset-2 hover:text-cyan-400 transition-colors"
+                          className="underline decoration-slate-400 underline-offset-2 hover:text-cyan-700 transition-colors"
                         >
                           Privacy notice
                         </Link>
@@ -535,12 +553,12 @@ export default function Contact() {
                   
                   {submitStatus === 'success' && (
                     <div role="status" className="mt-6 p-4 bg-[#0d1117] rounded-lg border border-green-500/20 font-mono text-sm">
-                      <div className="flex items-center gap-2 text-green-400">
+                      <div className="flex items-center gap-2 text-emerald-700">
                         <span className="text-green-500">&#10003;</span>
-                        <span className="text-gray-500">~/contact $</span>
+                        <span className="text-slate-600">~/contact $</span>
                         <span>send --message</span>
                       </div>
-                      <div className="mt-1 text-green-300/90 pl-5">
+                      <div className="mt-1 text-emerald-800 pl-5">
                         Message delivered to Amirhadi. He will get back to you soon.
                       </div>
                     </div>

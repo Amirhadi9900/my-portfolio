@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, Source_Sans_3, Fira_Sans, JetBrains_Mono, Outfit } from 
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import PromptCursor from '../components/PromptCursor';
+import MotionProvider from '../components/MotionProvider';
 import { SITE_URL, AUTHOR, SITE_TITLE, SITE_DESCRIPTION } from '../lib/site';
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -87,7 +88,7 @@ export default function RootLayout({ children }) {
           Skip to content
         </a>
         <PromptCursor />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         {/* Neither SDK sets a cookie or writes to storage unless `enableCookie` or
             `identify()` is called, and this site calls neither. Disclosed on
             /privacy. Their scripts are allowed by the CSP in src/proxy.js. */}

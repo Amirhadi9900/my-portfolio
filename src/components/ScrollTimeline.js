@@ -38,7 +38,7 @@ export default function ScrollTimeline() {
 
   return (
     <nav
-      className="fixed left-5 xl:left-7 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-center"
+      className="scroll-rail fixed top-1/2 -translate-y-1/2 z-40 hidden min-[1500px]:flex flex-col items-center"
       aria-label="Page sections"
     >
       <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl border border-gray-200/80 shadow-[0_8px_40px_rgba(0,0,0,0.12)] p-2.5">

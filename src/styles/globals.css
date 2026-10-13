@@ -7,6 +7,10 @@
     --cursor-ink: #020617;
     --cursor-paper: #f8fafc;
     --cursor-accent: #7dd3fc;
+    /* One source for the content column width and the rail's width, so the rail can be
+       positioned against the column it tracks instead of against the viewport. */
+    --content-max: 80rem;
+    --rail-w: 4.25rem;
   }
 
   body {
@@ -36,7 +40,19 @@ a {
 
 @layer components {
   .container {
-    @apply px-4 max-w-7xl mx-auto;
+    @apply px-4 mx-auto;
+    max-width: var(--content-max);
+  }
+
+  /* The rail is an overlay, so it must never land on content. Its left edge is derived from
+     the same --content-max the container uses: on a wide screen it sits in the gutter just
+     outside the column it tracks, and max() clamps it to the viewport edge when the gutter
+     is narrower than the rail needs. Below 1500px there is no gutter at all (an 80rem
+     container leaves none until the viewport passes it), so the rail is hidden there rather
+     than drawn on top of a card. The 1.5rem allowance absorbs the vertical scrollbar, which
+     100vw counts but the centred container does not. */
+  .scroll-rail {
+    left: max(1.25rem, calc((100vw - var(--content-max)) / 2 - var(--rail-w) - 1.5rem));
   }
   
   .section {
@@ -44,15 +60,15 @@ a {
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 text-white font-heading font-semibold tracking-wide transition-all duration-300 hover:scale-105 no-underline disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 text-white font-heading font-semibold tracking-wide transition-all duration-300 hover:scale-105 no-underline disabled:hover:scale-100 disabled:cursor-not-allowed;
   }
 
   .btn-primary-sm {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-2 text-sm text-white font-heading font-semibold tracking-wide transition-all duration-300 no-underline disabled:opacity-70 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-2 text-sm text-white font-heading font-semibold tracking-wide transition-all duration-300 no-underline disabled:cursor-not-allowed;
   }
 
   .btn-primary-block {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 w-full text-white font-heading font-semibold tracking-wide transition-all duration-300 hover:scale-105 no-underline disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 w-full text-white font-heading font-semibold tracking-wide transition-all duration-300 hover:scale-105 no-underline disabled:hover:scale-100 disabled:cursor-not-allowed;
   }
 
   /* CTA shape. The colour, radius and shadow live on a layer behind the label
@@ -95,122 +111,53 @@ a {
     transform: skewX(-10deg);
   }
 
+  /* Disabled used to be `opacity: 0.7`. That was harmless on the black shell and is not on
+     this one: the blue fill blends toward the card and the white label falls to 3.29:1.
+     A deliberately grey fill still reads as inactive, and keeps the label at 10:1. */
+  .btn-primary:disabled::before,
+  .btn-primary-sm:disabled::before,
+  .btn-primary-block:disabled::before {
+    background-image: linear-gradient(to right, #1e293b, #334155);
+    box-shadow: none;
+    transform: none;
+  }
+
   /* Shared 3D shell for every card-like surface on the site: skill categories, the
      project card, both service cards, and both contact cards. One definition so they
      read as the same physical material - a dark convex panel with a lit top-left rim
      and a shaded bottom-right one. */
   .panel-3d {
     @apply relative rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1;
-    /* Stacking context the ::after beam's z-index: -1 (below) needs to stay contained
-       to this card instead of sinking behind the page or a sibling card. */
+    /* Contains the z-index of the absolutely positioned decoration inside each card, so it
+       cannot escape and paint over a sibling. */
     z-index: 0;
-    /* Opaque - a translucent glass background cost the labels their contrast. */
-    border: 2px solid transparent;
-    /* Two background layers clipped to different boxes: the body gradient fills the
-       padding box and the rim gradient only shows through the 2px border ring. That is
-       what produces a genuinely lit edge - light along the top-left, shadow along the
-       bottom-right - instead of a single flat hairline that disappears on dark. */
-    /* Flat #07120b fill. It is written as a two-stop gradient of the same colour only
-       because the lit rim below needs an opaque layer clipped to the padding box to sit
-       on top of it - otherwise the rim gradient would tint the whole card. */
-    background:
-      linear-gradient(#07120b, #07120b) padding-box,
-      linear-gradient(
-          168deg,
-          rgba(255, 255, 255, 0.34) 0%,
-          rgba(255, 255, 255, 0.08) 32%,
-          rgba(0, 0, 0, 0.50) 70%,
-          rgba(0, 0, 0, 0.78) 100%
-        )
-        border-box;
-    /* Convex bevel: a lit inner hairline top and left, a heavier shade bottom and right,
-       then three stacked outer shadows so the card sits above the page rather than on it. */
+    background: #e2e8f0;
+    /* A real 1px edge. The shell previously had no border of its own: a 2px transparent ring
+       let a border-box gradient show through as a lit rim, which reads as a raised edge on
+       near-black and measures 1.23:1 on this fill. The rim gradient went with it, so the
+       background is now a flat colour rather than two layers clipped to different boxes. */
+    border: 1px solid #94a3b8;
     box-shadow:
-      inset 0 2px 0 rgba(255, 255, 255, 0.13),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.60),
-      inset 2px 0 0 rgba(255, 255, 255, 0.05),
-      inset -2px 0 0 rgba(0, 0, 0, 0.45),
-      0 2px 3px rgba(2, 10, 6, 0.35),
-      0 18px 34px -8px rgba(2, 10, 6, 0.45),
-      0 44px 72px -22px rgba(2, 10, 6, 0.60);
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 2px 3px rgba(15, 23, 42, 0.08),
+      0 18px 34px -8px rgba(15, 23, 42, 0.16),
+      0 44px 72px -22px rgba(15, 23, 42, 0.22);
   }
 
   .panel-3d:hover {
-    background:
-      linear-gradient(#07120b, #07120b) padding-box,
-      linear-gradient(
-          168deg,
-          rgba(255, 255, 255, 0.42) 0%,
-          rgba(255, 255, 255, 0.10) 32%,
-          rgba(0, 0, 0, 0.50) 70%,
-          rgba(0, 0, 0, 0.80) 100%
-        )
-        border-box;
+    border-color: #64748b;
     box-shadow:
-      inset 0 2px 0 rgba(255, 255, 255, 0.17),
-      inset 0 -2px 0 rgba(0, 0, 0, 0.60),
-      inset 2px 0 0 rgba(255, 255, 255, 0.07),
-      inset -2px 0 0 rgba(0, 0, 0, 0.45),
-      0 3px 5px rgba(2, 10, 6, 0.35),
-      0 26px 46px -10px rgba(2, 10, 6, 0.52),
-      0 60px 90px -26px rgba(2, 10, 6, 0.66);
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 3px 5px rgba(15, 23, 42, 0.08),
+      0 26px 46px -10px rgba(15, 23, 42, 0.20),
+      0 60px 90px -26px rgba(15, 23, 42, 0.26);
   }
 
   /* Skills-only padding. Kept as its own rule (rather than folded into .panel-3d)
-     because every other card applies this scale at the call site. The shell,
-     stacking context and beam all live in .panel-3d, shared with every card. */
+     because every other card applies this scale at the call site. The shell and
+     stacking context live in .panel-3d, shared with every card. */
   .skill-category-card {
     @apply p-6 sm:p-8 md:p-10;
-  }
-
-  /* One sweep per hover, shared by every .panel-3d card. background-position is
-     animated rather than an offset, so the beam never touches layout, and it
-     restarts on every arrival instead of looping. */
-  .panel-3d::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0;
-    mix-blend-mode: screen;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgba(74, 222, 128, 0.05) 30%,
-      rgba(74, 222, 128, 0.55) 47%,
-      #4ade80 50%,
-      rgba(74, 222, 128, 0.55) 53%,
-      rgba(74, 222, 128, 0.05) 70%,
-      transparent 100%
-    );
-    background-size: 100% 46%;
-    background-repeat: no-repeat;
-    background-position: 0 -46%;
-  }
-
-  .panel-3d:hover::after {
-    /* `both` holds the final keyframe, which ends at opacity 0. Without a fill mode the
-       beam snapped back to its resting position the instant the sweep finished and sat
-       visible across the top of the card for as long as the pointer stayed. */
-    animation: panel-scan-beam 1.5s cubic-bezier(0.4, 0, 0.6, 1) 1 both;
-  }
-
-  @keyframes panel-scan-beam {
-    0% {
-      background-position: 0 -46%;
-      opacity: 0;
-    }
-    14% {
-      opacity: 1;
-    }
-    86% {
-      opacity: 1;
-    }
-    100% {
-      background-position: 0 146%;
-      opacity: 0;
-    }
   }
 
   /* Magnetic icon: the mark leans toward the cursor and springs back. --px/--py are
@@ -221,29 +168,28 @@ a {
     transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.25, 1);
   }
 
-  /* Skill chips are a phosphor terminal. The icon tile is chosen per mark because no
-     fixed tile holds all 35 brand colours above the 3:1 a graphic needs - see
-     SkillIcon.usesLightTile. No brand colour is altered anywhere. */
+  /* Skill chips are raised white tiles. They were dark insets under the black shell, and the
+     same fill on a light card composites to a mid grey that swallows the label: 3.13:1
+     against slate-900 text. The icon tile is still chosen per mark because no single tile
+     holds all 35 brand colours above the 3:1 a graphic needs - see SkillIcon.usesLightTile.
+     No brand colour is altered anywhere. */
   .skill-chip {
     @apply relative flex items-center gap-3 p-3 rounded-xl border;
-    /* Translucent so the beam reads through the chip body as well as through the
-       gutters; an opaque fill would leave it visible only between the cards. */
-    background: rgba(4, 20, 10, 0.6);
-    border-color: rgba(134, 239, 172, 0.16);
-    /* Same light direction as the card: lit along the top, shaded below. Keeps the two
-       layers reading as one physical stack instead of a sticker on a panel. */
+    background: #ffffff;
+    border-color: #cbd5e1;
+    /* Lit along the top, shaded below, same light direction as the shell. */
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.07),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.40),
-      0 2px 6px rgba(2, 10, 6, 0.35);
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(15, 23, 42, 0.05),
+      0 2px 6px rgba(15, 23, 42, 0.08);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   .skill-chip:hover {
-    border-color: #16a34a;
+    border-color: #0e7490;
     box-shadow:
-      0 0 20px rgba(34, 197, 94, 0.18),
-      inset 0 0 18px rgba(34, 197, 94, 0.07);
+      0 0 0 3px rgba(14, 116, 144, 0.14),
+      0 4px 10px rgba(15, 23, 42, 0.10);
   }
 
   .skill-chip-icon {
@@ -251,8 +197,10 @@ a {
   }
 
 
+  /* slate-200 measured 1:1 against the shell, so the tile had no edge at all. slate-500 is
+     the lightest step that clears 3:1 as a graphic. */
   .skill-chip.is-light-tile .skill-chip-icon {
-    @apply bg-white border border-gray-200;
+    @apply bg-white border border-slate-500;
   }
 
   .skill-chip.is-dark-tile .skill-chip-icon {
@@ -267,8 +215,7 @@ a {
        grid column and off the card. Zeroing it lets the label wrap inside the chip. */
     min-width: 0;
     overflow-wrap: break-word;
-    color: #d1fae5;
-    text-shadow: 0 0 7px rgba(34, 197, 94, 0.35);
+    color: #0f172a;
   }
 }
 
@@ -318,8 +265,10 @@ a {
    as a class to opt into, because ~30 controls are focusable and hand-picking
    them is how a ring ended up on two of them and missing off the rest.
    `outline` rather than `box-shadow`: the CTAs already own box-shadow for their
-   hover glow, and a shadow ring would replace it. Cyan clears both the light
-   sections and the #07120b panels, and an outline survives forced-colours mode. */
+   hover glow, and a shadow ring would replace it.
+   cyan-700 is the only value measured to clear 3:1 on every surface a control can
+   sit on - card shell 4.35, white chip 5.36, page 5.13, dark footer 3.31, dark icon
+   tile 3.53. The cyan-400 it replaces was 1.47:1 on the card shell. */
 a:focus-visible,
 button:focus-visible,
 [role='button']:focus-visible,
@@ -327,7 +276,7 @@ summary:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid #22d3ee;
+  outline: 2px solid #0e7490;
   outline-offset: 2px;
 }
 
@@ -345,6 +294,19 @@ select:focus-visible {
   color: #22d3ee;
   transform: scale(1.1);
   box-shadow: 0 0 12px rgba(34, 211, 238, 0.25);
+}
+
+/* The footer keeps these on its dark background, where the translucent grey fill and
+   gray-300 icon are correct. Inside a card the same fill composites to a mid grey and the
+   icon loses its separation, so the pair inverts. Scoped rather than global for that
+  reason: changing .social-button itself would break the footer. */
+.panel-3d .social-button {
+  @apply bg-white text-slate-600 border border-slate-300;
+}
+
+.panel-3d .social-button:hover {
+  @apply text-cyan-700 border-cyan-700;
+  box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.14);
 }
 
 /* Header styles */
@@ -435,7 +397,9 @@ select:focus-visible {
   width: 100%;
   height: 100%;
   padding: 0;
-  border: none;
+  /* The same 1px edge every card now carries. Both faces, so the photo side and the text
+     side are bounded identically. */
+  border: 1px solid #94a3b8;
   background: transparent;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -624,13 +588,11 @@ select:focus-visible {
   }
 }
 
-/* Service cards. Positioning only - the hover sweep itself is .panel-3d's shared
-   green beam (added via the panel-3d class alongside this one), not a bespoke
-   effect here. A second ::after rule on this same selector previously defined its
-   own glare and animation; because it came later in the stylesheet it silently won
-   the cascade on every longhand it touched, replacing the shared beam's background
-   and animation outright. Removed rather than merged, so every panel-3d card -
-   including these two - renders the identical effect. */
+/* Service cards. Positioning only. A second ::after rule on this same selector once gave
+   these two cards their own glare and animation; because it came later in the stylesheet it
+   silently won the cascade on every longhand it touched, so they rendered differently from
+   every other panel-3d card. Removed rather than merged, so the shared shell is the only
+   thing that draws a card. */
 .service-card {
   position: relative;
   overflow: hidden;
@@ -668,6 +630,20 @@ select:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* One blanket rule rather than an enumeration. Every lift, flip, zoom and slide on
+     this site is either a Tailwind hover utility or a framer-motion value, and a
+     hand-maintained list of them goes stale the first time a class is renamed - which
+     is how the card lift and the 3D flip came to be missing from this block. Durations
+     collapse rather than the end state being removed, so the change of state still
+     happens, instantly and without travel. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
   html {
     scroll-behavior: auto;
   }
@@ -683,12 +659,6 @@ select:focus-visible {
   .magnetic-icon {
     transform: none;
     transition: none;
-  }
-
-  /* The beam is decoration, so it is removed outright rather than frozen mid-travel,
-     which would leave a green band parked across the card. */
-  .panel-3d::after {
-    display: none;
   }
 
   /* The shear stays — it is the hover affordance, not decoration — but it snaps

@@ -102,9 +102,6 @@ function ServiceCard({ service }) {
       id={service.id}
       className="service-card panel-3d group flex h-full flex-col text-left"
     >
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
-      <div className="pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-cyan-500/15 blur-3xl" />
-
       <div className="relative z-10 flex items-start gap-4 p-6 sm:p-8 md:p-10">
         <span
           className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 shadow-lg transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] magnetic-icon"
@@ -125,20 +122,20 @@ function ServiceCard({ service }) {
           </svg>
         </span>
         <div className="min-w-0">
-          <h3 className="font-subheading text-2xl font-semibold tracking-tight text-emerald-200">
+          <h3 className="font-subheading text-2xl font-semibold tracking-tight text-slate-900">
             {service.title}
           </h3>
-          <p className="mt-1 text-base font-medium text-cyan-300">{service.promise}</p>
+          <p className="mt-1 text-base font-medium text-cyan-800">{service.promise}</p>
         </div>
       </div>
 
       <div className="relative z-10 px-6 pb-6 sm:px-8 sm:pb-8 md:px-10 md:pb-10">
-        <h4 className="font-mono text-xs uppercase tracking-widest text-gray-400">
+        <h4 className="font-mono text-xs uppercase tracking-widest text-slate-600">
           {service.deliverablesHeading}
         </h4>
         <ul className="mt-3 space-y-2.5">
           {service.deliverables.map((item) => (
-            <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-gray-200">
+            <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-slate-700">
               <span
                 className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-400"
                 aria-hidden="true"
@@ -150,16 +147,16 @@ function ServiceCard({ service }) {
       </div>
 
       {service.panel && (
-        <div className="relative z-10 mx-6 mb-6 rounded-xl border p-5 sm:mx-8 sm:mb-8 md:mx-10 md:mb-10 border-cyan-400/25 bg-cyan-950/25">
-          <h4 className="font-subheading text-base font-semibold text-cyan-300">
+        <div className="relative z-10 mx-6 mb-6 rounded-xl border p-5 sm:mx-8 sm:mb-8 md:mx-10 md:mb-10 border-slate-300 bg-white">
+          <h4 className="font-subheading text-base font-semibold text-cyan-800">
             {service.panel.heading}
           </h4>
-          <p className="mt-2 text-sm leading-relaxed text-gray-300">{service.panel.intro}</p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-700">{service.panel.intro}</p>
           <ul className="mt-3 space-y-2">
             {service.panel.points.map((point) => (
               <li
                 key={point}
-                className="flex items-start gap-2.5 text-sm leading-relaxed text-gray-200"
+                className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-700"
               >
                 <span
                   className="mt-2 h-1 w-1 shrink-0 rounded-full bg-cyan-400"
@@ -169,15 +166,15 @@ function ServiceCard({ service }) {
               </li>
             ))}
           </ul>
-          <p className="mt-3 text-sm leading-relaxed text-gray-300">{service.panel.closing}</p>
+          <p className="mt-3 text-sm leading-relaxed text-slate-700">{service.panel.closing}</p>
           {service.panel.reference && (
-            <p className="mt-4 font-mono text-xs text-gray-400">
+            <p className="mt-4 font-mono text-xs text-slate-600">
               Worked from{' '}
               <a
                 href={service.panel.reference.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cyan-300 underline decoration-cyan-400/40 underline-offset-2 transition-colors hover:text-cyan-200"
+                className="text-cyan-800 underline decoration-cyan-600/60 underline-offset-2 transition-colors hover:text-cyan-900"
               >
                 {service.panel.reference.label}
                 <span className="sr-only"> (opens in a new tab)</span>
@@ -189,14 +186,14 @@ function ServiceCard({ service }) {
       )}
 
       <div className="relative z-10 mt-auto border-t border-white/10 px-6 py-6 sm:px-8 sm:py-8 md:px-10 md:py-10">
-        <h4 className="font-mono text-xs uppercase tracking-widest text-gray-400">
+        <h4 className="font-mono text-xs uppercase tracking-widest text-slate-600">
           What you can hold me to
         </h4>
         <ul className="mt-3 space-y-2.5">
           {service.commitments.map((commitment) => (
-            <li key={commitment} className="flex items-start gap-3 text-sm leading-relaxed text-gray-300">
+            <li key={commitment} className="flex items-start gap-3 text-sm leading-relaxed text-slate-700">
               <svg
-                className="mt-1 h-3.5 w-3.5 shrink-0 text-cyan-300"
+                className="mt-1 h-3.5 w-3.5 shrink-0 text-cyan-700"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -212,7 +209,7 @@ function ServiceCard({ service }) {
           ))}
         </ul>
 
-        <p className="mt-5 font-mono text-xs text-gray-400">
+        <p className="mt-5 font-mono text-xs text-slate-600">
           No rate card. Price follows scope, agreed over email.
         </p>
 
@@ -235,8 +232,6 @@ export default function Services() {
       className="section relative scroll-mt-28 overflow-hidden bg-gradient-to-b from-gray-100/90 to-gray-50/80 py-16 md:py-28"
     >
       <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-70" />
-      <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-blue-600/10 blur-3xl" />
-      <div className="absolute -right-40 bottom-20 h-96 w-96 rounded-full bg-purple-600/10 blur-3xl" />
 
       <div className="container relative z-10">
         <motion.div
@@ -249,7 +244,7 @@ export default function Services() {
           <h2 className="font-subheading text-3xl font-semibold tracking-tight sm:text-5xl md:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
             Services
           </h2>
-          <p className="subtitle-blink mx-auto max-w-2xl text-xl font-light leading-relaxed text-gray-600">
+          <p className="subtitle-blink mx-auto max-w-2xl text-xl font-medium leading-relaxed text-gray-600">
             Two things I do, and how each one is agreed before it starts
           </p>
         </motion.div>

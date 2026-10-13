@@ -40,7 +40,7 @@ const nextConfig = {
         // is deliberately NOT disallowed in robots.txt: a blocked URL is never fetched, so
         // the crawler would never see this header, and Google cannot honour noindex on a
         // file it has not read.
-        source: '/image/borjian.jpg',
+        source: '/image/borjian-portrait.jpg',
         headers: [
           { key: 'X-Robots-Tag', value: 'noindex, noimageindex' },
         ],

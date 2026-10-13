@@ -163,6 +163,7 @@ export default function Header() {
 
         {/* Mobile Menu Button */}
         <motion.button
+          type="button"
           className="p-2 rounded-full bg-blue-800/50 border border-blue-700/30 text-white md:hidden hover:bg-blue-700/70 transition-colors"
           onClick={() => {
             // Re-opening mid-exit cancels onExitComplete, so a queued link tap would

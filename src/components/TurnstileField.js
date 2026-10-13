@@ -64,7 +64,7 @@ export default function TurnstileField({ widgetKey = 0, onTokenChange }) {
           blocking Cloudflare Turnstile. Disable it for this site and reload.
         </p>
       )}
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-slate-600">
         Protected by Cloudflare Turnstile.
       </p>
     </div>

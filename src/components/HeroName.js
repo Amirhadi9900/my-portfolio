@@ -39,12 +39,12 @@ function usePrefersReducedMotion() {
  * no whitespace between them, and the real characters are server-rendered, so the h1
  * still contains the name exactly once.
  */
-export default function HeroName({ lines = DEFAULT_LINES }) {
+export default function HeroName() {
   const rootRef = useRef(null);
   const reducedMotion = usePrefersReducedMotion();
-  // A primitive, not the array: the parent re-renders on its own timer, and an inline
-  // array prop would be a new identity every time, restarting the decode forever.
-  const lineKey = lines.join('|');
+  // A primitive, not the array: an array literal recomputed each render would be a new
+  // identity every time and would restart the decode forever.
+  const lineKey = DEFAULT_LINES.join('|');
 
   // ---- decode on mount -------------------------------------------------------
   useEffect(() => {
@@ -175,7 +175,7 @@ export default function HeroName({ lines = DEFAULT_LINES }) {
     // second line and left "Amirhadi" floating above it. As a plain inline wrapper the
     // <br> breaks the h1's own line boxes and the name lays out as designed.
     <span ref={rootRef} data-cursor-hover>
-      {lines.map((word, lineIndex) => (
+      {DEFAULT_LINES.map((word, lineIndex) => (
         <span key={word}>
           {lineIndex > 0 && <br />}
           <span data-name-line={lineIndex}>

@@ -1,6 +1,5 @@
 import BackToTop from '../../components/BackToTop';
 import Footer from '../../components/Footer';
-import MotionProvider from '../../components/MotionProvider';
 import { connection } from 'next/server';
 
 export const metadata = {
@@ -153,7 +152,7 @@ export default async function PrivacyPage() {
       {/* Plain anchors, not next/link: the nav here is deliberately free of client
           JS, and a real document load is what makes the #contact anchor actually
           scroll on arrival. The only client components on the page are the back-to-top
-          button and the MotionProvider that makes it honour reduced motion. */}
+          button and the footer. */}
       <header className="border-b border-white/10 bg-gradient-to-r from-blue-900/70 via-blue-800/70 to-blue-900/70 backdrop-blur-md">
         <div className="container flex justify-center py-5">
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- see the plain-anchor note above */}
@@ -206,14 +205,12 @@ export default async function PrivacyPage() {
         </div>
       </main>
 
-      <MotionProvider>
-        <BackToTop />
-        {/* Same reason page.js keeps the Footer outside <main>: nested inside it
-            stops being exposed as a contentinfo landmark. It also gives this page
-            the site's real navigation, which a single "Back to the site" button
-            did not. */}
-        <Footer home={false} />
-      </MotionProvider>
+      <BackToTop />
+      {/* Same reason page.js keeps the Footer outside <main>: nested inside it
+          stops being exposed as a contentinfo landmark. It also gives this page
+          the site's real navigation, which a single "Back to the site" button
+          did not. */}
+      <Footer home={false} />
     </div>
   );
 }

@@ -25,7 +25,6 @@ export function scrambleFrame(text, progress, random = Math.random) {
     .map((char, index) => {
       if (char === ' ') return ' ';
       if (index < settled) return char;
-      if (clamped === 1) return char;
       const pick = random();
       const safe = Number.isFinite(pick) ? Math.min(0.999999, Math.max(0, pick)) : 0;
       return GLYPHS[Math.floor(safe * GLYPHS.length)];
