@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { CONTACT_LIMITS, validateContactField } from '../lib/contact-security';
 import { interpretContactResponse } from '../lib/contact-response';
 import { isContactSfxMuted, playContactSfx, setContactSfxMuted, unlockContactSfx } from '../lib/sfx';
@@ -58,7 +58,10 @@ export default function Contact() {
 
   function scheduleStatusClear() {
     if (statusTimer.current) clearTimeout(statusTimer.current);
-    statusTimer.current = setTimeout(() => setSubmitStatus(null), 6000);
+    // 9s, not the original 6: the notice now spends ~0.35s expanding in and another
+    // 0.3s collapsing out, and the success line is two sentences a visitor may still
+    // be reading when it disappears.
+    statusTimer.current = setTimeout(() => setSubmitStatus(null), 9000);
   }
 
   useEffect(() => () => {
@@ -551,27 +554,54 @@ export default function Contact() {
                     {isSubmitting ? "Sending..." : "Send Message"}
                   </button>
                   
-                  {submitStatus === 'success' && (
-                    <div role="status" className="mt-6 p-4 bg-white rounded-lg border border-slate-300 shadow-sm font-mono text-sm">
-                      <div className="flex items-center gap-2 text-emerald-800">
-                        <span className="text-emerald-700">&#10003;</span>
-                        <span className="text-slate-600">~/contact $</span>
-                        <span>send --message</span>
-                      </div>
-                      <div className="mt-1 text-emerald-800 pl-5">
-                        Message delivered to Amirhadi. He will get back to you soon.
-                      </div>
-                    </div>
-                  )}
+                  {/* AnimatePresence holds the element mounted while its exit animation plays,
+                      so the notice expands into place and collapses away instead of appearing
+                      and vanishing in a single frame. Height animates alongside opacity because
+                      this is the last element in the card: fading it alone would still leave
+                      the card's bottom edge to jump when it unmounts. */}
+                  <AnimatePresence>
+                    {submitStatus === 'success' && (
+                      <motion.div
+                        key="contact-success"
+                        role="status"
+                        className="overflow-hidden"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.35, ease: [0.22, 0.61, 0.36, 1] }}
+                      >
+                        <div className="mt-6 p-4 bg-white rounded-lg border border-slate-300 shadow-sm font-mono text-sm">
+                          <div className="flex items-center gap-2 text-emerald-800">
+                            <span className="text-emerald-700">&#10003;</span>
+                            <span className="text-slate-600">~/contact $</span>
+                            <span>send --message</span>
+                          </div>
+                          <div className="mt-1 text-emerald-800 pl-5">
+                            Message delivered to Amirhadi. He will get back to you soon.
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
                   
-                  {submitStatus === 'error' && (
-                    <div role="alert" className="mt-6 p-4 bg-white text-red-800 rounded-lg border border-slate-300 shadow-sm flex items-center">
-                      <svg className="w-5 h-5 mr-3 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span>{errorMessage || "Failed to send message. Please try again."}</span>
-                    </div>
-                  )}
+                    {submitStatus === 'error' && (
+                      <motion.div
+                        key="contact-error"
+                        role="alert"
+                        className="overflow-hidden"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.35, ease: [0.22, 0.61, 0.36, 1] }}
+                      >
+                        <div className="mt-6 p-4 bg-white text-red-800 rounded-lg border border-slate-300 shadow-sm flex items-center">
+                          <svg className="w-5 h-5 mr-3 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span>{errorMessage || "Failed to send message. Please try again."}</span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </form>
               </div>
             </div>
