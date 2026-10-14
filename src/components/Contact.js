@@ -370,7 +370,7 @@ export default function Contact() {
           >
             <div className="panel-3d group">
               <div className="p-6 sm:p-8 md:p-10">
-                <div className="relative mb-8 flex items-start gap-4">
+                <div className="mb-8 flex items-start gap-4">
                   <span
                     className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 shadow-lg transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] magnetic-icon"
                     onPointerMove={trackPointer}
@@ -390,7 +390,7 @@ export default function Contact() {
                     aria-pressed={sfxMuted}
                     aria-label={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
                     title={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
-                    className="absolute -top-1 right-0 p-2 rounded-lg text-slate-500 hover:text-cyan-700 hover:bg-slate-200 transition-colors duration-200 magnetic-icon"
+                    className="ml-auto -mt-1 shrink-0 p-2 rounded-lg text-slate-500 hover:text-cyan-700 hover:bg-slate-200 transition-colors duration-200 magnetic-icon"
                     onPointerMove={trackPointer}
                     onPointerLeave={releasePointer}
                   >
