@@ -196,7 +196,13 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    const captcha = await verifyTurnstileToken(body.turnstileToken, ip);
+    // Optional chaining is not cosmetic. JSON.parse accepts `null`, and reading a
+    // property off it throws a TypeError that the catch at the bottom of this handler
+    // reports as a 500 — a client's malformed body logged as our own failure, with
+    // `stage: 'validate'` and `reason: 'unknown'` and nothing in the log to explain it.
+    // parseContactRequest does reject a non-object, but it runs after the captcha, so
+    // this is the first place the value is touched.
+    const captcha = await verifyTurnstileToken(body?.turnstileToken, ip);
     if (!captcha.ok) {
       return NextResponse.json(
         { error: captcha.error, code: captcha.code },
