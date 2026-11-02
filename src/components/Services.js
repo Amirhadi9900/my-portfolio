@@ -244,7 +244,7 @@ export default function Services() {
           <h2 className="font-subheading text-3xl font-semibold tracking-tight sm:text-5xl md:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
             Services
           </h2>
-          <p className="subtitle-blink mx-auto max-w-2xl text-xl font-medium leading-relaxed text-gray-600">
+          <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed subtitle-blink">
             Two things I do, and how each one is agreed before it starts
           </p>
         </motion.div>

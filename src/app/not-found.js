@@ -1,7 +1,10 @@
 import { connection } from 'next/server';
 
 export const metadata = {
-  title: 'Page not found - Amirhadi Borjian Yazdi',
+  // The root layout's title template appends " - Amirhadi Borjian Yazdi". Restating it
+  // here produced "Page not found - Amirhadi Borjian Yazdi - Amirhadi Borjian Yazdi",
+  // which is the same rule /privacy already documents.
+  title: 'Page not found',
   robots: { index: false, follow: false },
 };
 

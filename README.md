@@ -10,7 +10,7 @@ Personal portfolio showcasing Android and web development work and an ethical pe
 - Responsive design with smooth scroll navigation and Framer Motion animations
 - Custom typography stack (IBM Plex Sans, Source Sans 3, Fira Sans, JetBrains Mono)
 - Interactive About card with flip animation
-- Project showcase with code-preview styling
+- Project showcase with a banner screenshot, live host, and a Year/Host spec column
 - Skills grid with brand icons (Simple Icons) and language flags
 - Services section: full-stack development and ethical pentesting under an agreed Rules of Engagement
 - Contact form with email delivery via Nodemailer
@@ -106,6 +106,7 @@ myportfolio/
 │   │   ├── page.js             # Home page
 │   │   └── privacy/            # Privacy notice (/privacy)
 │   ├── components/             # UI sections and widgets
+│   ├── proxy.js                # Per-request CSP nonce; script-src carries no unsafe-inline
 │   ├── lib/
 │   │   ├── contact-security.js # Input validation and sanitization
 │   │   ├── scroll-to-id.js     # Hash-free smooth scrolling shared by nav widgets

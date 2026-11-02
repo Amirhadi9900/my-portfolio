@@ -10,6 +10,12 @@ export const metadata = {
   description:
     'What the contact form collects, what happens to your data during a penetration test, how this site measures visits and performance, what screens traffic in front of it, where it all goes, how long it is kept, and how to ask for it to be deleted.',
   alternates: { canonical: '/privacy' },
+  // openGraph.url is deliberately NOT restated here, even though it then points at the site
+  // root while canonical points at /privacy. Restating any openGraph key on a route makes
+  // Next 16 emit only the keys named in that object: og:type, og:image, og:site_name and
+  // og:locale all vanished from this page, including the ones spelled out in full. Losing the
+  // share image is a worse defect than the url/canonical disagreement, so the block stays
+  // inherited. Re-test this before trying again: request /privacy and count the og: tags.
 };
 
 const sections = [
