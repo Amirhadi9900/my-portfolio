@@ -11,6 +11,8 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeLink, setActiveLink] = useState('#');
   const pendingMobileScrollId = useRef(null);
+  const menuButtonRef = useRef(null);
+  const overlayRef = useRef(null);
 
   useEffect(() => {
     const update = () => {
@@ -27,13 +29,62 @@ export default function Header() {
     return () => window.removeEventListener('scroll', update);
   }, []);
 
+  // The takeover covers the whole viewport, so while it is open it owns the page: the
+  // body stops scrolling behind it, keyboard focus starts inside it and cannot tab out,
+  // and closing hands focus back to the button that opened it. Restoring in the cleanup
+  // rather than in onExitComplete means focus still comes home when re-opening the menu
+  // mid-exit cancels that animation and onExitComplete never fires.
   useEffect(() => {
     if (!isMenuOpen) return undefined;
+
+    const overlay = overlayRef.current;
+    const toggleButton = menuButtonRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const focusables = () =>
+      overlay
+        ? [...overlay.querySelectorAll('a[href], button:not([disabled])')].filter((el) => el.getClientRects().length > 0)
+        : [];
+
+    focusables()[0]?.focus();
+
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') setIsMenuOpen(false);
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !(overlay && overlay.contains(active)))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    // Opening at 400px and then rotating a tablet to 800px would otherwise leave an
+    // invisible overlay locking body scroll: md:hidden hides the element without
+    // unmounting it, so nothing else ever unlocks the page.
+    const wide = window.matchMedia('(min-width: 768px)');
+    const closeIfWide = (event) => {
+      if (event.matches) setIsMenuOpen(false);
+    };
+    wide.addEventListener('change', closeIfWide);
+
+    document.addEventListener('keydown', handleKeyDown, true);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown, true);
+      wide.removeEventListener('change', closeIfWide);
+      document.body.style.overflow = previousOverflow;
+      toggleButton?.focus();
+    };
   }, [isMenuOpen]);
 
   // Contact is deliberately absent: the "Get In Touch" CTA below already points
@@ -64,6 +115,27 @@ export default function Header() {
     visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
+  // The overlay gets its own variants rather than reusing the two above: the desktop nav
+  // fades *down* from the header and the takeover rises from below, and changing the
+  // shared pair would move both. No clip-path wipe, deliberately. MotionConfig's
+  // reducedMotion="user" only suppresses transform and layout animation, so a clip reveal
+  // would keep playing for visitors who asked us not to move things; y is a transform, so
+  // these collapse to plain opacity fades for them.
+  const sheetContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.22, ease: 'easeOut', staggerChildren: 0.06, delayChildren: 0.08 }
+    },
+    exit: { opacity: 0, transition: { duration: 0.16, ease: 'easeIn' } }
+  };
+
+  const sheetItem = {
+    hidden: { opacity: 0, y: 12 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.32, ease: 'easeOut' } },
+    exit: { opacity: 0, y: 8, transition: { duration: 0.16 } }
+  };
+
   function handleMobileNav(event, id) {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     if (typeof event.button === 'number' && event.button !== 0) return;
@@ -74,6 +146,7 @@ export default function Header() {
   }
 
   return (
+    <>
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 header-blur ${
       isScrolled 
         ? 'py-2 bg-gradient-to-r from-blue-900/95 via-blue-800/95 to-blue-900/95 shadow-lg border-b border-blue-700/30' 
@@ -163,6 +236,7 @@ export default function Header() {
 
         {/* Mobile Menu Button */}
         <motion.button
+          ref={menuButtonRef}
           type="button"
           className="p-2 rounded-full bg-blue-800/50 border border-blue-700/30 text-white md:hidden hover:bg-blue-700/70 transition-colors"
           onClick={() => {
@@ -196,8 +270,12 @@ export default function Header() {
           </svg>
         </motion.button>
       </div>
+    </header>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation: a full-bleed takeover, not a dropdown. It is a sibling of the
+          header rather than a child because it covers the header band as well; nested
+          inside, it would inherit that element's stacking context and sit under the very
+          logo it is meant to replace. The logo is redrawn inside for that reason. */}
       <AnimatePresence
         onExitComplete={() => {
           const id = pendingMobileScrollId.current;
@@ -207,50 +285,102 @@ export default function Header() {
         }}
       >
         {isMenuOpen && (
-          <motion.nav 
+          <motion.div
+            ref={overlayRef}
             id="mobile-nav"
-            className="container py-4 md:hidden"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-gradient-to-b from-blue-950 via-blue-950 to-slate-950 md:hidden"
+            variants={sheetContainer}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
           >
-            <motion.div 
-              className="flex flex-col space-y-4 px-2 py-3 bg-blue-800/40 backdrop-blur-md rounded-xl border border-blue-700/30"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
+            {/* Sticky, and carrying the top inset itself rather than the scroll container,
+                so the close button stays under the notch but never under the fold. */}
+            <div
+              className="sticky top-0 z-10 flex shrink-0 items-center justify-between bg-blue-950/85 px-6 py-4 backdrop-blur-sm"
+              style={{ paddingTop: 'calc(1rem + env(safe-area-inset-top))' }}
             >
-              {navLinks.map((link) => (
-                <motion.div key={link.href} variants={itemVariants}>
+              <span className="font-heading text-lg font-bold tracking-tight text-white">
+                Amirhadi <span className="font-light logo-gradient">Borjian</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  pendingMobileScrollId.current = null;
+                  setIsMenuOpen(false);
+                }}
+                aria-label="Close menu"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-blue-700/40 bg-blue-900/60 text-white transition-colors hover:bg-blue-800/80"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* my-auto, not justify-center: a centred flex child overflows a scroll
+                container by clipping its own top, and that half is unreachable. my-auto
+                distributes the same free space when there is any and collapses to zero
+                when there is not, so a landscape phone scrolls to every row instead of
+                hiding the first one. */}
+            <nav className="my-auto flex flex-col px-6">
+              {navLinks.map((link, index) => (
+                <motion.div key={link.href} variants={sheetItem}>
                   <Link
                     href={link.href}
                     scroll={false}
-                    className={`block px-4 py-2 rounded-lg transition-colors nav-link no-underline ${
-                      activeLink === link.href
-                        ? 'active text-white font-medium bg-blue-700/40' 
-                        : 'text-blue-200 hover:text-white hover:bg-blue-700/20'
+                    aria-current={activeLink === link.href ? 'true' : undefined}
+                    className={`flex items-baseline gap-4 border-t border-white/10 py-5 no-underline transition-colors ${
+                      activeLink === link.href ? 'text-white' : 'text-blue-200/80 hover:text-white'
                     }`}
                     onClick={(event) => handleMobileNav(event, link.href.slice(1))}
                   >
-                    {link.label}
+                    <span
+                      className={`font-mono text-[11px] ${
+                        activeLink === link.href ? 'text-cyan-300' : 'text-cyan-300/70'
+                      }`}
+                    >
+                      0{index + 1}
+                    </span>
+                    <span className="font-heading text-3xl">{link.label}</span>
+                    {activeLink === link.href && (
+                      <span className="ml-auto h-8 w-0.5 self-center bg-cyan-300" />
+                    )}
                   </Link>
                 </motion.div>
               ))}
-              <motion.div variants={itemVariants}>
-                <Link
-                  href="#contact"
-                  scroll={false}
-                  className="block btn-primary-sm w-full text-center"
-                  onClick={(event) => handleMobileNav(event, 'contact')}
-                >
-                  Get In Touch
-                </Link>
-              </motion.div>
+            </nav>
+
+            <motion.div
+              variants={sheetItem}
+              className="shrink-0 border-t border-white/10 px-6 py-5"
+              style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom))' }}
+            >
+              <Link
+                href="#contact"
+                scroll={false}
+                aria-current={activeLink === '#contact' ? 'true' : undefined}
+                className="btn-primary-block w-full text-center"
+                onClick={(event) => handleMobileNav(event, 'contact')}
+              >
+                Get In Touch
+              </Link>
             </motion.div>
-          </motion.nav>
+          </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 } 
