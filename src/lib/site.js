@@ -9,7 +9,11 @@ export const AUTHOR = 'Amirhadi Borjian Yazdi';
 // schema `name` fields use this and keep AUTHOR as `alternateName` — the full legal form
 // stays searchable without contradicting what a crawler can see.
 export const BRAND_NAME = 'Amirhadi Borjian';
-export const SITE_TITLE = 'Amirhadi Borjian Yazdi - Software Developer & Security Enthusiast';
+// 59 characters: Google truncates SERP titles around 55-60, and the previous 65-char form
+// cut off mid-tagline. This uses BRAND_NAME (the form the site shows out loud) and keeps the
+// full tagline; the legal name still reaches crawlers via AUTHOR in the subpage template,
+// og:site_name, the author fields and the schema's alternateName.
+export const SITE_TITLE = 'Amirhadi Borjian - Software Developer & Security Enthusiast';
 export const SITE_DESCRIPTION =
   'Portfolio of Amirhadi Borjian Yazdi: Android apps in Kotlin, web apps in Next.js and TypeScript, and hands-on network security and penetration testing.';
 

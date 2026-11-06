@@ -1,6 +1,11 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+# Google's renderer obeys robots.txt when it fetches subresources, and Next serves every
+# stylesheet and script under /_next/static/. A bare "Disallow: /_next/" therefore made
+# Googlebot render the page unstyled and unscripted. robots.txt resolves by longest match,
+# so this Allow wins for the assets while /_next/image (the optimizer) stays blocked.
+Allow: /_next/static/
 Disallow: /_next/
 Disallow: /*.json$
 

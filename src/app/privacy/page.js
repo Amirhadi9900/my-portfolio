@@ -3,10 +3,11 @@ import Footer from '../../components/Footer';
 import { connection } from 'next/server';
 
 export const metadata = {
-  // The root layout's title template appends " - Amirhadi Borjian Yazdi", so the suffix
-  // is not repeated here. canonical must be restated per route or it is inherited from
-  // the layout and this page would declare itself to be the home page.
-  title: 'Privacy and how I handle your message',
+  // The root layout's title template appends " - Amirhadi Borjian Yazdi" (25 chars), so the
+  // suffix is not repeated here and this part stays under 35 to keep the rendered title
+  // inside Google's ~60-char truncation point. canonical must be restated per route or it is
+  // inherited from the layout and this page would declare itself to be the home page.
+  title: 'Privacy: how I handle your message',
   description:
     'What the contact form collects, what happens to your data during a penetration test, how this site measures visits and performance, what screens traffic in front of it, where it all goes, how long it is kept, and how to ask for it to be deleted.',
   alternates: { canonical: '/privacy' },
