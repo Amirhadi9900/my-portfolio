@@ -22,7 +22,7 @@ const sections = [
   {
     heading: 'The short version',
     body: [
-      'I am Amirhadi Borjian, I run this site myself, and I am the one deciding what happens to anything you send through it.',
+      'I am Amirhadi Borjian. I run this site myself, so I am the one deciding what happens to anything you send through it.',
       'The form emails me, and that is all it does. Nothing you type is stored anywhere on this site, and it is not used to profile you or make any automated decision about you. Separately, I count page visits and measure how quickly pages load: that looks at your browser, not at what you type, and it does not use cookies unless I deliberately turn that on. Three services sit behind those two things. Cloudflare serves the CAPTCHA from its own domain and may set cookies there. Vercel hosts the site, does the counting and the timing, and screens incoming traffic at its edge before any of it reaches the code described here. Google delivers the email.',
     ],
   },
@@ -45,7 +45,7 @@ const sections = [
   {
     heading: 'Your IP address',
     body: [
-      'Your IP address is used for narrow, technical purposes: it is passed to Cloudflare as part of verifying the CAPTCHA, and it is what the limit on how many messages one address can send in a minute is counted against. That limit is enforced twice, once by this site\u2019s own code and once by Vercel\u2019s firewall before a request ever arrives here, and the two halves keep things for very different lengths of time.',
+      'Your IP address is used for narrow, technical purposes: it is passed to Cloudflare as part of verifying the CAPTCHA, and it is the key the message limit is counted against, which is three messages a minute from one address. That limit is enforced twice, once by this site\u2019s own code and once by Vercel\u2019s firewall before a request ever arrives here, and the two halves keep things for very different lengths of time.',
       'The limit inside this site\u2019s code is the modest one. Your IP is held in the memory of one running server instance and thrown out once the window closes and the next cleanup pass runs, which works out at under three minutes at the very most, because the sweep that clears expired entries only runs every two minutes. It is not written to disk by this site and not attached to the email I receive.',
       'The edge limit is the wider one and needs stating plainly. Vercel\u2019s firewall counts requests against the contact endpoint by two keys that I chose: your IP address, and a JA4 digest. That digest is a hash built from how your browser opens the encrypted connection, meaning the TLS version, the cipher suites and the extensions it offers. It says nothing about who you are, but it is a stable characteristic of your software, so two people sharing one address can be told apart by it while two copies of the same browser on the same machine cannot.',
       'Both keys are recorded against a match in Vercel\u2019s firewall view, which I can read back over the last twenty-four hours, so that observation outlives the under-three-minutes maximum my own code works to. An earlier version of this page said your IP is "not combined with anything else about you", and that was an overstatement. The narrower, accurate claim is that the screening works from request metadata rather than from what you typed: my rule matches on the path and the HTTP method, and the view I can read groups traffic by IP address, user agent, request path, network provider, JA4 digest and country. Your name, email, subject and message are not among those fields, and no setting of mine reads the body of a request. What does sit side by side in that view for a day is an address, a fingerprint, and the ordinary metadata around them.',
@@ -158,11 +158,17 @@ export default async function PrivacyPage() {
       {/* Plain anchors, not next/link: the nav here is deliberately free of client
           JS, and a real document load is what makes the #contact anchor actually
           scroll on arrival. The only client components on the page are the back-to-top
-          button and the footer. */}
-      <header className="border-b border-white/10 bg-gradient-to-r from-blue-900/70 via-blue-800/70 to-blue-900/70 backdrop-blur-md">
-        <div className="container flex justify-center py-5">
+          button and the footer.
+          The band itself is the same `.nav-island` the main header draws, with the same
+          frame padding, so the wordmark lands on the same vertical as it does on the home
+          page. It used to carry the blue-900 → blue-800 → blue-900 gradient the main nav has
+          moved away from, which is what a second copy of a material does when the first one
+          is redesigned. Still in flow rather than fixed: a fixed band would need a
+          scroll-margin that a plain #contact anchor arriving from another page does not have. */}
+      <header className="px-4 py-3 md:px-6">
+        <div className="nav-island container mx-auto flex items-center py-2.5 pl-5 pr-2.5 md:pl-6">
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- see the plain-anchor note above */}
-          <a href="/" className="font-heading text-xl font-semibold text-white no-underline">
+          <a href="/" className="font-heading text-2xl font-bold tracking-tight text-white no-underline">
             <span>Amirhadi</span>{' '}
             <span className="font-light logo-gradient">Borjian</span>
           </a>
@@ -170,7 +176,7 @@ export default async function PrivacyPage() {
       </header>
 
       <main id="main" className="container max-w-3xl py-12 md:py-16">
-        <h1 className="font-subheading text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
+        <h1 className="page-title text-3xl sm:text-4xl md:text-5xl">
           Privacy
         </h1>
         <p className="mt-3 font-mono text-sm text-gray-400">

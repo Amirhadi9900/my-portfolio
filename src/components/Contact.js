@@ -234,7 +234,7 @@ export default function Contact() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+          <h2 className="section-title text-3xl sm:text-5xl md:text-6xl mb-6">
             Get In Touch
           </h2>
           <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed subtitle-blink">Have a project in mind? Let&apos;s talk about it :)</p>
@@ -250,11 +250,11 @@ export default function Contact() {
           >
             <div className="mb-8 flex items-start gap-4">
               <span
-                className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 shadow-lg transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] magnetic-icon"
+                className="icon-tile magnetic-icon transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(3,105,161,0.45)]"
                 onPointerMove={trackPointer}
                 onPointerLeave={releasePointer}
               >
-                <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0v1.5a2.25 2.25 0 004.5 0V12a9 9 0 10-3.5 7.1" />
                 </svg>
               </span>
@@ -270,7 +270,7 @@ export default function Contact() {
             <div className="space-y-6 mb-10">
               <div className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
                 <div
-                  className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-cyan-50 text-cyan-700 mr-4 shadow-sm magnetic-icon"
+                  className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-cyan-50 text-sky-700 mr-4 shadow-sm magnetic-icon"
                   onPointerMove={trackPointer}
                   onPointerLeave={releasePointer}
                 >
@@ -280,7 +280,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-subheading text-base font-semibold text-cyan-800 mb-1">Email</h4>
-                  <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-slate-700 hover:text-cyan-700 transition-colors duration-200">
+                  <Link href="#contact" scroll={false} onClick={(event) => scrollToId('contact', event)} className="text-slate-700 hover:text-sky-700 transition-colors duration-200">
                     Send a message
                   </Link>
                 </div>
@@ -288,7 +288,7 @@ export default function Contact() {
               
               <div className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
                 <div
-                  className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-cyan-50 text-cyan-700 mr-4 shadow-sm magnetic-icon"
+                  className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-cyan-50 text-sky-700 mr-4 shadow-sm magnetic-icon"
                   onPointerMove={trackPointer}
                   onPointerLeave={releasePointer}
                 >
@@ -299,7 +299,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-subheading text-base font-semibold text-cyan-800 mb-1">Location</h4>
-                  <p className="text-slate-700">Available remotely worldwide and onsite in Finland</p>
+                  <p className="text-slate-700">Available remotely worldwide, and on-site in Finland</p>
                 </div>
               </div>
             </div>
@@ -372,11 +372,11 @@ export default function Contact() {
               <div className="p-6 sm:p-8 md:p-10">
                 <div className="mb-8 flex items-start gap-4">
                   <span
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 shadow-lg transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] magnetic-icon"
+                    className="icon-tile magnetic-icon transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(3,105,161,0.45)]"
                     onPointerMove={trackPointer}
                     onPointerLeave={releasePointer}
                   >
-                    <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                     </svg>
                   </span>
@@ -390,7 +390,7 @@ export default function Contact() {
                     aria-pressed={sfxMuted}
                     aria-label={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
                     title={sfxMuted ? 'Turn submission sounds on' : 'Turn submission sounds off'}
-                    className="ml-auto -mt-1 shrink-0 p-2 rounded-lg text-slate-500 hover:text-cyan-700 hover:bg-slate-200 transition-colors duration-200 magnetic-icon"
+                    className="ml-auto -mt-1 shrink-0 p-2 rounded-lg text-slate-500 hover:text-sky-700 hover:bg-slate-200 transition-colors duration-200 magnetic-icon"
                     onPointerMove={trackPointer}
                     onPointerLeave={releasePointer}
                   >
@@ -427,7 +427,7 @@ export default function Contact() {
                       onBlur={handleBlur}
                       required
                       maxLength={CONTACT_LIMITS.name}
-                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-cyan-600 focus:border-cyan-600 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.name ? 'border-red-500' : 'border-slate-300'}`}
+                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-sky-700 focus:border-sky-700 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.name ? 'border-red-500' : 'border-slate-300'}`}
                       placeholder="John Doe"
                       aria-invalid={!!fieldErrors.name}
                       aria-describedby={fieldErrors.name ? 'name-error' : undefined}
@@ -448,7 +448,7 @@ export default function Contact() {
                       onBlur={handleBlur}
                       required
                       maxLength={CONTACT_LIMITS.email}
-                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-cyan-600 focus:border-cyan-600 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.email ? 'border-red-500' : 'border-slate-300'}`}
+                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-sky-700 focus:border-sky-700 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.email ? 'border-red-500' : 'border-slate-300'}`}
                       placeholder="john@example.com"
                       aria-invalid={!!fieldErrors.email}
                       aria-describedby={fieldErrors.email ? 'email-error' : undefined}
@@ -469,7 +469,7 @@ export default function Contact() {
                       onBlur={handleBlur}
                       required
                       maxLength={CONTACT_LIMITS.subject}
-                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-cyan-600 focus:border-cyan-600 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.subject ? 'border-red-500' : 'border-slate-300'}`}
+                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-sky-700 focus:border-sky-700 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.subject ? 'border-red-500' : 'border-slate-300'}`}
                       placeholder="Project Inquiry"
                       aria-invalid={!!fieldErrors.subject}
                       aria-describedby={fieldErrors.subject ? 'subject-error' : undefined}
@@ -490,7 +490,7 @@ export default function Contact() {
                       required
                       rows="5"
                       maxLength={CONTACT_LIMITS.message}
-                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-cyan-600 focus:border-cyan-600 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.message ? 'border-red-500' : 'border-slate-300'}`}
+                      className={`w-full px-5 py-3 bg-white border rounded-lg focus:ring-sky-700 focus:border-sky-700 text-slate-900 placeholder:text-slate-500 transition-colors duration-200 ${fieldErrors.message ? 'border-red-500' : 'border-slate-300'}`}
                       placeholder="Hello, I'd like to discuss a project..."
                       aria-invalid={!!fieldErrors.message}
                       aria-describedby={fieldErrors.message ? 'message-error' : undefined}
@@ -527,14 +527,14 @@ export default function Contact() {
                         aria-required="true"
                         aria-invalid={!!fieldErrors.consent}
                         aria-describedby={fieldErrors.consent ? 'consent-error' : undefined}
-                        className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded border-gray-300 text-sky-700 focus:ring-sky-700"
                       />
                       <span className="text-sm leading-relaxed text-slate-700">
                         I agree that Amirhadi may store this message and my contact details in order
                         to reply. Nothing is kept on the site itself. It arrives as an email.{' '}
                         <Link
                           href="/privacy"
-                          className="underline decoration-slate-400 underline-offset-2 hover:text-cyan-700 transition-colors"
+                          className="underline decoration-slate-400 underline-offset-2 hover:text-sky-700 transition-colors"
                         >
                           Privacy notice
                         </Link>
@@ -577,7 +577,7 @@ export default function Contact() {
                             <span>send --message</span>
                           </div>
                           <div className="mt-1 text-emerald-800 pl-5">
-                            Message delivered to Amirhadi. He will get back to you soon.
+                            Message delivered. I will get back to you as soon as I can.
                           </div>
                         </div>
                       </motion.div>

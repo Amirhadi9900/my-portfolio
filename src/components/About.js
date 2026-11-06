@@ -24,7 +24,7 @@ export default function About() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+          <h2 className="section-title text-3xl sm:text-5xl md:text-6xl mb-6">
             About Me
           </h2>
           <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed subtitle-blink">
@@ -45,7 +45,7 @@ export default function About() {
                 {/* Front — Photo */}
                 <button
                   type="button"
-                  className="flip-card-face flip-card-front backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.15)] cursor-pointer"
+                  className="flip-card-face backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.15)] cursor-pointer"
                   onClick={() => setIsFlipped(true)}
                   aria-label="Show about information"
                   aria-hidden={isFlipped}
@@ -74,9 +74,9 @@ export default function About() {
                 {/* Back — Info */}
                 <div className="flip-card-face flip-card-back flex flex-col min-h-0 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,112,184,0.2)] text-left" aria-hidden={!isFlipped} inert={!isFlipped}>
                   <div className="absolute inset-0 bg-slate-200 pointer-events-none" />
-                  <div className="absolute -top-16 -right-16 w-40 h-40 bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-20 -left-16 w-44 h-44 bg-purple-400/20 rounded-full blur-3xl pointer-events-none" />
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/70 to-transparent pointer-events-none" />
+                  <div className="absolute -top-16 -right-16 w-40 h-40 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute -bottom-20 -left-16 w-44 h-44 bg-sky-400/20 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-700/70 to-transparent pointer-events-none" />
 
                   <div className="relative z-10 shrink-0 flex items-center gap-2 w-full px-4 sm:px-5 py-3 border-b border-slate-300 bg-slate-500/10">
                     <span className="font-mono text-[11px] text-cyan-800 truncate min-w-0">~/about/developer.md</span>
@@ -128,7 +128,7 @@ export default function About() {
                 transition={{ delay: 0.8, duration: 0.5 }}  
               >
                 <svg
-                  className="w-16 h-20 sm:w-20 sm:h-24 text-blue-500 mb-0.5 mr-4 sm:mr-8"
+                  className="w-16 h-20 sm:w-20 sm:h-24 text-sky-600 mb-0.5 mr-4 sm:mr-8"
                   viewBox="0 0 60 72"
                   fill="none"
                   aria-hidden="true"
@@ -142,7 +142,7 @@ export default function About() {
                   />
                   <path d="M30 14 L24 22 M30 14 L36 22" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" />
                 </svg>
-                <span className="font-heading text-4xl sm:text-5xl font-bold text-blue-600 rotate-[-6deg] leading-none">
+                <span className="font-heading text-4xl sm:text-5xl font-bold text-sky-600 rotate-[-6deg] leading-none">
                   Flip me!
                 </span>
               </motion.div>

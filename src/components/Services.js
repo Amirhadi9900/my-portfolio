@@ -39,14 +39,14 @@ const SERVICES = [
         'REST · GraphQL · OAuth2',
       ],
       closing:
-        'This site is the working example: the form is validated and verified on the server, and the only third-party code it loads is the CAPTCHA and a page-visit counter.',
+        'This site is the working example: the form is validated and verified on the server, and the only third-party code it loads is the CAPTCHA and two Vercel measurements, a page-visit counter and load timings.',
     },
     commitments: [
       'You see the plan before the work starts, so what you pay for is what you asked for.',
       'Source and infrastructure are yours at handover, with no lock-in to me.',
       'If a project is not something I can do well, I say so instead of taking it on.',
     ],
-    cta: 'Discuss A Build',
+    cta: 'Discuss a Build',
   },
   {
     id: 'ethical-pentesting',
@@ -79,10 +79,10 @@ const SERVICES = [
     commitments: [
       'Scope is a boundary, not a suggestion: I test only what the ROE authorises.',
       'Stop means stop. The engagement halts the moment you ask.',
-      'If a step looks unethical or unlawful I stop, tell you, and will not carry it out even if asked.',
+      'If a step looks unethical or unlawful, I stop, tell you, and do not carry it out, even if asked.',
       'Findings are reported to you in writing, and nothing is published without your consent.',
     ],
-    cta: 'Scope A Test',
+    cta: 'Scope a Test',
   },
 ];
 
@@ -104,12 +104,12 @@ function ServiceCard({ service }) {
     >
       <div className="relative z-10 flex items-start gap-4 p-6 sm:p-8 md:p-10">
         <span
-          className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 shadow-lg transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] magnetic-icon"
+          className="icon-tile magnetic-icon transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(3,105,161,0.45)]"
           onPointerMove={trackPointer}
           onPointerLeave={releasePointer}
         >
           <svg
-            className="h-7 w-7 text-white"
+            className="h-7 w-7"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -137,7 +137,7 @@ function ServiceCard({ service }) {
           {service.deliverables.map((item) => (
             <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-slate-700">
               <span
-                className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-400"
+                className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-700"
                 aria-hidden="true"
               />
               <span>{item}</span>
@@ -159,7 +159,7 @@ function ServiceCard({ service }) {
                 className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-700"
               >
                 <span
-                  className="mt-2 h-1 w-1 shrink-0 rounded-full bg-cyan-400"
+                  className="mt-2 h-1 w-1 shrink-0 rounded-full bg-sky-700"
                   aria-hidden="true"
                 />
                 <span>{point}</span>
@@ -193,7 +193,7 @@ function ServiceCard({ service }) {
           {service.commitments.map((commitment) => (
             <li key={commitment} className="flex items-start gap-3 text-sm leading-relaxed text-slate-700">
               <svg
-                className="mt-1 h-3.5 w-3.5 shrink-0 text-cyan-700"
+                className="mt-1 h-3.5 w-3.5 shrink-0 text-sky-700"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -241,7 +241,7 @@ export default function Services() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <h2 className="font-subheading text-3xl font-semibold tracking-tight sm:text-5xl md:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+          <h2 className="section-title text-3xl sm:text-5xl md:text-6xl mb-6">
             Services
           </h2>
           <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed subtitle-blink">

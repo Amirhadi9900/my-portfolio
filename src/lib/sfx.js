@@ -1,7 +1,12 @@
 const MUTE_KEY = 'portfolio:contact-sfx-muted';
-// 0.65 leaves the loudest overlapping moment of the success cue at roughly a third of
-// full scale, so there is still headroom before the destination clips.
-const MASTER_GAIN = 0.65;
+// One knob for both cues, and it has to stay that way: the success and failure sounds are
+// balanced against each other by their per-voice peaks (see bubbleDeflate), so raising one
+// cue's raw numbers would undo that. Scaling the master moves both by exactly the same
+// factor - rendered offline, 0.65 to 0.78 is 1.200x on peak and 1.200x on RMS, +1.58 dB.
+// The loudest sample of the success cue lands at 0.215 of full scale, so the destination is
+// nowhere near clipping. Summing the voice gains would have suggested 0.33; the tone and the
+// bandpassed breath noise do not reach their maxima on the same sample.
+const MASTER_GAIN = 0.78;
 
 let audioCtx = null;
 let masterGain = null;

@@ -21,11 +21,15 @@ const sourceSans3 = Source_Sans_3({
 const firaSans = Fira_Sans({
   subsets: ['latin'],
   variable: '--font-sans',
-  // 300 is not optional: nine call sites ask for `font-light` (every section
-  // subtitle, the hero paragraph, both logo wordmarks, the privacy lede). With
-  // only 400/500 loaded the browser resolved 300 to the 400 face — measured
-  // identical rendered width — so the weight was silently doing nothing.
-  weight: ['300', '400', '500'],
+  // 300 is not optional: five call sites ask for `font-light` - the three logo wordmarks
+  // (Header desktop, Header mobile takeover, privacy page), the privacy lede, and the hero's
+  // role line. With only 400/500 loaded the browser resolved 300 to the 400 face - measured
+  // identical rendered width - so the weight was silently doing nothing.
+  // 700 is the same trap from the other side. --font-sans is the body font, so the
+  // hero description asks for a bold that did not exist here, and Chrome answered by
+  // synthesizing one: it slants and thickens the 500 face instead of using real
+  // letterforms, which looks smeared at the sizes this paragraph runs at.
+  weight: ['300', '400', '500', '700'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -36,8 +40,9 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '600'],
 });
 
-// A display token rather than replacing --font-heading, which eleven call sites use
-// including every button. The hero gets its own voice without restyling the UI.
+// A display token rather than replacing --font-heading, which thirteen call sites use
+// (nine in markup, four through `@apply font-heading` on the h1 rule and the three button
+// classes). The hero gets its own voice without restyling the UI.
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-display',

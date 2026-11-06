@@ -40,6 +40,12 @@ const nextConfig = {
         // is deliberately NOT disallowed in robots.txt: a blocked URL is never fetched, so
         // the crawler would never see this header, and Google cannot honour noindex on a
         // file it has not read.
+        // Worth recording what this header does NOT cover. next/image rewrites the srcSet to
+        // /_next/image?url=%2Fimage%2Fborjian-portrait.jpg, and that URL carries no
+        // X-Robots-Tag and sits under a Disallowed path. What protects the photo as embedded
+        // is the page-level noimageindex in layout.js, which applies to every image the page
+        // references. This header is the second line, for the direct URL being reached on its
+        // own.
         source: '/image/borjian-portrait.jpg',
         headers: [
           { key: 'X-Robots-Tag', value: 'noindex, noimageindex' },

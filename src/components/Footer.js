@@ -23,8 +23,8 @@ export default function Footer({ home = true }) {
     <footer className="relative bg-gray-900 text-white overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent transform-gpu"></div>
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent transform-gpu"></div>
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent transform-gpu"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent transform-gpu"></div>
         <div className="grid grid-cols-12 h-full w-full">
           {[...Array(12)].map((_, i) => (
             <div key={i} className="border-r border-cyan-800/10"></div>
@@ -42,7 +42,7 @@ export default function Footer({ home = true }) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="font-heading text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 inline-block">
+          <h2 className="font-heading text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-300 inline-block">
             Amirhadi Borjian
           </h2>
           <p className="text-gray-400 mt-2">
@@ -62,39 +62,39 @@ export default function Footer({ home = true }) {
           <div className="transform-gpu hover:-translate-y-0.5 transition-all duration-300">
             <h3 className="font-subheading text-lg font-semibold mb-5 relative inline-block">
               <span className="relative z-10">Navigation</span>
-              <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
+              <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-300 to-blue-300"></span>
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link {...sectionLink('about')} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>About
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-300 mr-0 group-hover:mr-2 transition-all duration-300"></span>About
                 </Link>
               </li>
               <li>
                 <Link {...sectionLink('projects')} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Projects
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-300 mr-0 group-hover:mr-2 transition-all duration-300"></span>Projects
                 </Link>
               </li>
               <li>
                 <Link {...sectionLink('skills')} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Skills
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-300 mr-0 group-hover:mr-2 transition-all duration-300"></span>Skills
                 </Link>
               </li>
               <li>
                 <Link {...sectionLink('services')} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Services
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-300 mr-0 group-hover:mr-2 transition-all duration-300"></span>Services
                 </Link>
               </li>
               <li>
                 <Link {...sectionLink('contact')} className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Contact
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-300 mr-0 group-hover:mr-2 transition-all duration-300"></span>Contact
                 </Link>
               </li>
               {/* The only entry here that is a route rather than a section, so it
                   takes a plain href instead of the sectionLink helper. */}
               <li>
                 <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors hover:pl-2 duration-300 group flex items-center no-underline">
-                  <span className="w-0 group-hover:w-2 h-px bg-cyan-400 mr-0 group-hover:mr-2 transition-all duration-300"></span>Privacy &amp; Cookies
+                  <span className="w-0 group-hover:w-2 h-px bg-cyan-300 mr-0 group-hover:mr-2 transition-all duration-300"></span>Privacy &amp; Cookies
                 </Link>
               </li>
             </ul>
@@ -104,12 +104,12 @@ export default function Footer({ home = true }) {
           <div className="transform-gpu hover:-translate-y-0.5 transition-all duration-300">
             <h3 className="font-subheading text-lg font-semibold mb-5 relative inline-block">
               <span className="relative z-10">Contact</span>
-              <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
+              <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-300 to-blue-300"></span>
             </h3>
             <ul className="space-y-4 text-gray-400">
               <li className="flex items-start group">
                 <div className="mr-3 p-1.5 rounded-full bg-gray-800/50 group-hover:bg-cyan-900/30 transition-colors duration-300">
-                  <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -119,7 +119,7 @@ export default function Footer({ home = true }) {
               </li>
               <li className="flex items-start group">
                 <div className="mr-3 p-1.5 rounded-full bg-gray-800/50 group-hover:bg-cyan-900/30 transition-colors duration-300">
-                  <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
@@ -133,7 +133,7 @@ export default function Footer({ home = true }) {
           <div className="transform-gpu hover:-translate-y-0.5 transition-all duration-300">
             <h3 className="font-subheading text-lg font-semibold mb-5 relative inline-block">
               <span className="relative z-10">Connect</span>
-              <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-500 to-purple-500"></span>
+              <span className="absolute -bottom-1 left-0 w-full h-px bg-gradient-to-r from-cyan-300 to-blue-300"></span>
             </h3>
             <p className="text-gray-400 mb-4">
               Follow me on social media for updates and more content.

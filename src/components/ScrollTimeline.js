@@ -41,12 +41,16 @@ export default function ScrollTimeline() {
       className="scroll-rail fixed top-1/2 -translate-y-1/2 z-40 hidden min-[1500px]:flex flex-col items-center"
       aria-label="Page sections"
     >
-      <div className="relative bg-white/70 backdrop-blur-xl rounded-2xl border border-gray-200/80 shadow-[0_8px_40px_rgba(0,0,0,0.12)] p-2.5">
+      {/* The rail is navigation, so it is now built from the same objects as the navbar:
+          `.nav-island` for the container, and the dark heading sweep for anything lit. It
+          used to be a white 70% card with a blue-indigo-purple progress line and blue active
+          tiles, which is the palette the rest of the site has left. */}
+      <div className="nav-island relative p-2.5">
         {/* Progress track behind buttons. The fill is nested so its percentage
             resolves against the track rather than the whole card. */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-5 bottom-14 w-[2px] rounded-full bg-gray-200">
+        <div className="absolute left-1/2 -translate-x-1/2 top-5 bottom-14 w-[2px] rounded-full bg-white/10">
           <div
-            className="absolute left-0 top-0 w-full rounded-full bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500 transition-all duration-500 ease-out"
+            className="absolute left-0 top-0 w-full rounded-full bg-gradient-to-b from-cyan-500 via-sky-500 to-blue-500 transition-all duration-500 ease-out"
             style={{ height: `${Math.round(scrollProgress * 100)}%` }}
           />
         </div>
@@ -62,12 +66,17 @@ export default function ScrollTimeline() {
                 onClick={() => scrollToId(section.id)}
                 aria-label={`Go to ${section.label}`}
                 aria-current={isActive ? 'true' : undefined}
-                className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                // Every state is opaque deliberately. The tiles used to be bg-white/5 and
+                // bg-white/10 over the glass card, which let the 2px progress line show
+                // straight through each icon - same cyan as the glyphs, so it read as a wire
+                // threaded through the buttons rather than a connector between them. Only the
+                // active tile hid it, because that one already had a solid gradient.
+                className={`relative w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 ${
                   isActive
-                    ? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-[0_4px_15px_rgba(59,130,246,0.4)]'
+                    ? 'border-transparent bg-gradient-to-br from-cyan-300 via-sky-300 to-blue-300 text-slate-950 shadow-[0_4px_15px_rgba(103,232,249,0.35)]'
                     : isPast
-                      ? 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700'
+                      ? 'border-white/10 bg-[#16263f] text-cyan-300 hover:bg-[#1d3053]'
+                      : 'border-white/10 bg-[#0e1a2e] text-slate-200/60 hover:bg-[#16263f] hover:text-white'
                 }`}
               >
                 <svg
@@ -84,7 +93,7 @@ export default function ScrollTimeline() {
 
                 {isActive && !reduceMotion && (
                   <motion.span
-                    className="absolute inset-0 rounded-xl border-2 border-blue-400/50"
+                    className="absolute inset-0 rounded-xl border-2 border-cyan-300/50"
                     initial={{ scale: 1, opacity: 0.6 }}
                     animate={{ scale: 1.25, opacity: 0 }}
                     transition={{ duration: 1.5, repeat: Infinity }}
@@ -96,8 +105,8 @@ export default function ScrollTimeline() {
         </div>
 
         {/* Scroll percentage at bottom */}
-        <div className="mt-4 pt-2 border-t border-gray-200/60 text-center">
-          <span className="text-[10px] font-mono font-semibold text-gray-500 tabular-nums">
+        <div className="mt-4 pt-2 border-t border-white/10 text-center">
+          <span className="text-[10px] font-mono font-semibold text-slate-200/70 tabular-nums">
             {Math.round(scrollProgress * 100)}%
           </span>
         </div>

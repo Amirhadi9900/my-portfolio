@@ -73,11 +73,16 @@ const SKILL_ICONS = {
   'Bash Scripting': siGnubash,
 };
 
-// No fixed icon tile can hold all 35 marks: nine brand colours fail 3:1 on white
-// (JavaScript, Vault, React Native...) and six fail on the CRT green (OWASP, Next.js,
-// Vercel, GitHub, Hashcat, Gradle). Choosing the tile from each mark's own luminance
-// clears 3:1 everywhere without altering a single brand colour.
-const LIGHT_TILE_BELOW = 0.35;
+// No fixed icon tile can hold all 38 marks (35 in the map, plus VS Code, AWS and Nikto):
+// ten brand colours fail 3:1 on white (JavaScript, Cloudflare, REST APIs, Bash Scripting,
+// Postman, Burp Suite, AWS...) and seven fail on the dark tile (OWASP Top 10, Next.js,
+// Vercel, Git & GitHub, Gradle, Hashcat, Nikto). Choosing the tile from each mark's own
+// luminance clears 3:1 everywhere without altering a single brand colour - but the
+// threshold has to be derived, not guessed. A mark on white passes 3:1 only while its
+// luminance is at or under 1.05/3 - 0.05 = 0.30. The previous 0.35 let five marks land on
+// the white tile between 2.65 and 2.97, and on the dark tile every mark is comfortable
+// above that, so 0.30 is the value that satisfies both sides.
+const LIGHT_TILE_BELOW = 0.30;
 const CUSTOM_HEX = { 'VS Code': '007ACC', 'AWS': 'FF9900', 'Nikto': '000000' };
 
 function relativeLuminance(hex) {

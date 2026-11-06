@@ -8,7 +8,7 @@ const PROJECTS = [
   {
     id: 1,
     title: 'FinLern Web App',
-    description: 'Professional educational and communication website with server-side rendering and SEO optimization.',
+    description: 'Professional educational and communication website with server-side rendering and SEO optimisation.',
     image: '/image/finlern.jpg',
     link: 'https://finlern.vercel.app/'
   }
@@ -32,7 +32,7 @@ export default function Projects() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+          <h2 className="section-title text-3xl sm:text-5xl md:text-6xl mb-6">
             Projects
           </h2>
           <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed subtitle-blink">Check out my recent project</p>
@@ -92,11 +92,11 @@ export default function Projects() {
                   <div>
                     <div className="mb-4 flex items-start gap-4">
                       <span
-                        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 shadow-lg transition-all duration-300 group-hover/card:shadow-[0_0_20px_rgba(34,211,238,0.5)] magnetic-icon"
+                        className="icon-tile magnetic-icon transition-all duration-300 group-hover/card:shadow-[0_0_20px_rgba(3,105,161,0.45)]"
                         onPointerMove={trackPointer}
                         onPointerLeave={releasePointer}
                       >
-                        <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <path d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
                         </svg>
                       </span>

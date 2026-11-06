@@ -76,7 +76,7 @@ export default function HeroName() {
         elapsed - lineIndex * WORD_STAGGER_MS >= (word.length ? DECODE_MS : 0));
 
       if (done) {
-        words.forEach(({ word, letters }, lineIndex) => {
+        words.forEach(({ word, letters }) => {
           [...word].forEach((char, i) => {
             if (letters[i]) letters[i].textContent = char;
           });
@@ -177,7 +177,12 @@ export default function HeroName() {
     <span ref={rootRef} data-cursor-hover>
       {DEFAULT_LINES.map((word, lineIndex) => (
         <span key={word}>
-          {lineIndex > 0 && <br />}
+          {/* The space goes before the break, not after it. A <br> contributes nothing to
+              an accessible name, so without it the h1 computes as "AmirhadiBorjian" and the
+              name is announced as one word. Placed here the space falls at the end of the
+              first line, where it collapses and changes nothing visually; after the break it
+              would indent the second line. */}
+          {lineIndex > 0 && (<>{' '}<br /></>)}
           <span data-name-line={lineIndex}>
             {[...word].map((char, i) => (
               <span key={i} className="inline-block">{char}</span>

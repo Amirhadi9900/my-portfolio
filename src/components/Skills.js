@@ -108,7 +108,7 @@ function CategoryCard({ category, variants }) {
   return (
     <motion.div className="skill-category-card panel-3d" variants={variants}>
       <div className="relative mb-6">
-        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-full" />
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-1 rounded-full bg-gradient-to-r from-cyan-800 via-sky-700 to-blue-700" />
         <h3 className="font-subheading text-2xl font-semibold text-center text-slate-900 tracking-tight pt-2">
           {category.name}
         </h3>
@@ -148,7 +148,7 @@ export default function Skills() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
         >
-          <h2 className="font-subheading text-3xl sm:text-5xl md:text-6xl font-semibold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+          <h2 className="section-title text-3xl sm:text-5xl md:text-6xl mb-6">
             My Skills
           </h2>
           <p className="text-xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed subtitle-blink">

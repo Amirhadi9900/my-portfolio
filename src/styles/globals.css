@@ -59,8 +59,45 @@ a {
     @apply relative;
   }
 
+  /* Gradient-clipped titles. Two classes rather than one, and the reason is the background,
+     not the element: the five section headings sit on the light panel-3d sections, where the
+     composite behind the text measures about 0.585 relative luminance at its darkest, so any
+     bright cyan falls under the 3:1 large-text floor. The page title sits on the dark body,
+     where the same bright cyan reaches 12:1.
+     Both are one definition on purpose. The five section headings were byte-duplicated in
+     five files, and Services.js had already drifted into a different declaration order -
+     exactly how the navbar's material ended up copied stale into the privacy page.
+     Stops chosen against the measured background, not by eye: cyan-800 4.39:1, sky-700
+     3.59:1, blue-700 4.05:1, which beats the 3.13 / 3.80 / 3.26 it replaces at every point
+     along the sweep. */
+  .section-title {
+    @apply font-subheading font-semibold tracking-tight bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, #155e75, #0369a1, #1d4ed8);
+  }
+
+  .page-title {
+    @apply font-subheading font-semibold tracking-tight bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, #67e8f9, #7dd3fc, #93c5fd);
+  }
+
+  /* The icon tile that sits before a card's title: the cube on the project card, the two
+     service cards, and both contact cards. It was written out four times, across three files, with
+     the same `from-cyan-500 to-teal-600` - and that pair is why the white glyph inside it
+     measured 2.4:1, since cyan-500 is nearly as bright as the text sitting on it. The sweep
+     below is the same one `.section-title` uses, so the tile and the heading beside it are one
+     colour decision, and the white glyph now measures 6.7:1 at its weakest stop.
+     The hover glow stays at the call site because it is scoped to a different group name in
+     Projects than in the other three. */
+  .icon-tile {
+    @apply flex shrink-0 items-center justify-center rounded-xl text-white;
+    width: 3.5rem;
+    height: 3.5rem;
+    background-image: linear-gradient(to bottom right, #155e75, #0369a1, #1d4ed8);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 text-white font-heading font-semibold tracking-wide transition-all duration-300 hover:scale-105 no-underline disabled:hover:scale-100 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 text-white font-heading font-semibold tracking-wide transition-all duration-300 no-underline disabled:cursor-not-allowed;
   }
 
   .btn-primary-sm {
@@ -68,21 +105,33 @@ a {
   }
 
   .btn-primary-block {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 w-full text-white font-heading font-semibold tracking-wide transition-all duration-300 hover:scale-105 no-underline disabled:hover:scale-100 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 w-full text-white font-heading font-semibold tracking-wide transition-all duration-300 no-underline disabled:cursor-not-allowed;
   }
 
-  /* CTA shape. The colour, radius and shadow live on a layer behind the label
-     rather than on the button itself, so the shape can shear into a
-     parallelogram on hover while the text stays upright and unmoved.
-     `isolation` keeps that -1 layer inside the button instead of letting it
-     fall behind the section. All eight CTAs inherit this from the three
-     classes above; nothing at the call sites changed. */
+  /* CTA glass. Two layers, and the split is the whole design:
+     - the button itself carries backdrop-filter, so the page behind it is blurred and
+       saturated exactly where the button sits. That has to be the button, not the layer
+       below: inside an isolated stacking context a child's backdrop is only what that
+       context has painted, and the layer is the first thing in it, so a backdrop-filter on
+       the layer would have nothing real to blur.
+     - ::before carries the tint, the rim and all five shadows, and sits at z-index -1
+       behind the label. Keeping the depth off the button is not decoration for its own
+       sake: any call-site utility that writes box-shadow, which is what Tailwind's
+       `ring-*` and `shadow-*` do, would replace the whole stack and erase the glass.
+       The header CTA did exactly that until the ring came out; on the layer, no
+       call site can reach it.
+     The old shape sheared into a parallelogram on hover. A slab of glass that tilts while
+     its rim stays put reads as a rendering glitch, so the shear is gone and the button
+     lifts instead. */
   .btn-primary,
   .btn-primary-sm,
   .btn-primary-block {
     position: relative;
     isolation: isolate;
-    border-radius: 0;
+    border-radius: 0.75rem;
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    backdrop-filter: blur(10px) saturate(160%);
+    transform: translateY(0);
   }
 
   .btn-primary::before,
@@ -92,34 +141,86 @@ a {
     position: absolute;
     inset: 0;
     z-index: -1;
-    background-image: linear-gradient(to right, #2563eb, #4f46e5);
-    box-shadow: 0 7px 25px rgba(59, 130, 246, 0.35);
-    transition: transform 300ms ease, box-shadow 300ms ease, background-image 300ms ease;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    /* The density is not a taste call. Four of the ten CTAs sit on light cards (the About
+       flip face, the project card, the service cards and the contact form), and a
+       translucent blue over #e2e8f0 lifts the label's background to a
+       luminance that leaves white text at 1.82:1 (0.55 alpha), 2.96:1 (a darker tint at
+       0.62) or 3.15:1 (0.86). This stack measures 5.2:1 on that same card and 12:1 on the
+       dark sections, because the bottom layer is dark and stays dark whatever is behind. */
+    background-color: rgba(6, 12, 28, 0.62);
+    background-image:
+      linear-gradient(150deg, rgba(37, 99, 235, 0.50), rgba(30, 58, 138, 0.36)),
+      linear-gradient(to bottom, rgba(148, 233, 255, 0.14), rgba(2, 6, 23, 0.30));
+    /* Five shadows, four jobs: a lit top edge, a shaded underside inside the slab, the
+       visible thickness of the glass, and a two-part cast shadow that sits it on the page. */
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.42),
+      inset 0 -10px 18px -12px rgba(2, 6, 23, 0.55),
+      0 3px 0 0 rgba(2, 6, 23, 0.72),
+      0 10px 22px -8px rgba(2, 6, 23, 0.65),
+      0 22px 40px -18px rgba(2, 6, 23, 0.50);
+    transition: box-shadow 300ms ease, border-color 300ms ease, background-color 300ms ease;
   }
 
-  /* Focus gets the same treatment as hover so keyboard users are not left with a
-     plain rectangle, and disabled buttons are excluded so a submit mid-flight
-     does not shear. */
+  /* Hover and keyboard focus get the same state, so tabbing to a CTA shows the same slab
+     of glass as pointing at it. The button rises 2px and the thickness grows to 5px, which
+     is what it looks like when an object with a side is lifted off a table. */
+  .btn-primary:not(:disabled):hover,
+  .btn-primary-sm:not(:disabled):hover,
+  .btn-primary-block:not(:disabled):hover,
+  .btn-primary:focus-visible,
+  .btn-primary-sm:focus-visible,
+  .btn-primary-block:focus-visible {
+    transform: translateY(-2px);
+  }
+
   .btn-primary:not(:disabled):hover::before,
   .btn-primary-sm:not(:disabled):hover::before,
   .btn-primary-block:not(:disabled):hover::before,
   .btn-primary:focus-visible::before,
   .btn-primary-sm:focus-visible::before,
   .btn-primary-block:focus-visible::before {
-    background-image: linear-gradient(to right, #1d4ed8, #4338ca);
-    box-shadow: 0 7px 35px rgba(59, 130, 246, 0.5);
-    transform: skewX(-10deg);
+    border-color: rgba(255, 255, 255, 0.55);
+    background-color: rgba(8, 16, 36, 0.66);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.60),
+      inset 0 -10px 18px -12px rgba(2, 6, 23, 0.55),
+      0 5px 0 0 rgba(2, 6, 23, 0.72),
+      0 16px 30px -8px rgba(2, 6, 23, 0.70),
+      0 30px 52px -20px rgba(2, 6, 23, 0.55);
   }
 
-  /* Disabled used to be `opacity: 0.7`. That was harmless on the black shell and is not on
-     this one: the blue fill blends toward the card and the white label falls to 3.29:1.
-     A deliberately grey fill still reads as inactive, and keeps the label at 10:1. */
+  /* Press: the slab comes back down onto the table and its side shortens to 1px. Without
+     the shrinking thickness a press is only a translation, and nothing about it is 3D. */
+  .btn-primary:not(:disabled):active,
+  .btn-primary-sm:not(:disabled):active,
+  .btn-primary-block:not(:disabled):active {
+    transform: translateY(1px);
+  }
+
+  .btn-primary:not(:disabled):active::before,
+  .btn-primary-sm:not(:disabled):active::before,
+  .btn-primary-block:not(:disabled):active::before {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -6px 14px -10px rgba(2, 6, 23, 0.55),
+      0 1px 0 0 rgba(2, 6, 23, 0.72),
+      0 4px 10px -6px rgba(2, 6, 23, 0.60);
+  }
+
+  /* Disabled stays a grey slab rather than going transparent, for the reason it always
+     did: opacity over the light cards blends toward the card and drops the label under
+     AA. This stack measures 5.2:1 on #e2e8f0 and reads as inactive because the rim and
+     the thickness both go quiet. */
   .btn-primary:disabled::before,
   .btn-primary-sm:disabled::before,
   .btn-primary-block:disabled::before {
-    background-image: linear-gradient(to right, #1e293b, #334155);
-    box-shadow: none;
-    transform: none;
+    border-color: rgba(255, 255, 255, 0.14);
+    background-color: rgba(15, 23, 42, 0.62);
+    background-image: linear-gradient(to bottom, rgba(148, 163, 184, 0.10), rgba(2, 6, 23, 0.20));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
 
   /* Shared 3D shell for every card-like surface on the site: skill categories, the
@@ -171,7 +272,7 @@ a {
   /* Skill chips are raised white tiles. They were dark insets under the black shell, and the
      same fill on a light card composites to a mid grey that swallows the label: 3.13:1
      against slate-900 text. The icon tile is still chosen per mark because no single tile
-     holds all 35 brand colours above the 3:1 a graphic needs - see SkillIcon.usesLightTile.
+     holds all 38 brand colours above the 3:1 a graphic needs - see SkillIcon.usesLightTile.
      No brand colour is altered anywhere. */
   .skill-chip {
     @apply relative flex items-center gap-3 p-3 rounded-xl border;
@@ -219,18 +320,44 @@ a {
   }
 }
 
-/* Hero backgrounds. CSS-declared so they stay behind the overlay without an
-   extra stacking context. The plain url comes first as the fallback: a browser
-   that supports image-set() takes the WebP (a third of the bytes), one that
-   treats the second declaration as invalid keeps the JPEG above it. */
-.hero-bg-mobile {
-  background-image: url('/image/mobile.jpg');
-  background-image: image-set(url('/image/mobile.webp') type('image/webp'));
+/* The hero's hex wave. Each polygon gets its own negative-free delay in Hero.js so the
+   luminance travels diagonally across the lattice. Under prefers-reduced-motion the global
+   duration reset collapses this to a single instant, which parks every cell at its 0%/100%
+   state: the field stays visible at half brightness and stops moving. That is the intended
+   resting state, not a fallback. */
+@keyframes heroHexWave {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  45% {
+    opacity: 1;
+  }
 }
 
-.hero-bg-desktop {
-  background-image: url('/image/desktop.jpg');
-  background-image: image-set(url('/image/desktop.webp') type('image/webp'));
+/* The flash left where the glass breaks. Centred with negative margins rather than a
+   translate because the keyframe below owns transform, and a Tailwind -translate utility
+   on the same element would be overwritten by it. */
+.hero-impact {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  margin: -150px 0 0 -150px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(103, 232, 249, 0.28) 38%, transparent 70%);
+  animation: heroImpact 620ms ease-out forwards;
+}
+
+@keyframes heroImpact {
+  from {
+    opacity: 0.85;
+    transform: scale(0.12);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.4);
+  }
 }
 
 /* Custom scrollbar */
@@ -290,10 +417,14 @@ select:focus-visible {
   transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
+/* Hover accents follow one rule for the whole site: a glyph on a dark surface takes the
+   cyan anchor of the dark heading sweep (#67e8f9), and a glyph on a light surface takes the
+   middle stop of the light sweep (#0369a1). Both are the same decision `.section-title` and
+   `.page-title` already make, so an icon and a heading now agree by construction. */
 .social-button:hover {
-  color: #22d3ee;
+  color: #67e8f9;
   transform: scale(1.1);
-  box-shadow: 0 0 12px rgba(34, 211, 238, 0.25);
+  box-shadow: 0 0 12px rgba(103, 232, 249, 0.25);
 }
 
 /* The footer keeps these on its dark background, where the translucent grey fill and
@@ -305,8 +436,8 @@ select:focus-visible {
 }
 
 .panel-3d .social-button:hover {
-  @apply text-cyan-700 border-cyan-700;
-  box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.14);
+  @apply text-sky-700 border-sky-700;
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.14);
 }
 
 /* Header styles */
@@ -316,10 +447,12 @@ select:focus-visible {
 }
 
 /* The underline used to live here as an ::after that grew on :hover and on
-   .active. It is gone: the active bar is a real element animated by
+   .active. It is gone: the active marker is a real element animated by
    framer-motion (Header.js), so this rule only ever drew a *second* underline
    under the active item, two pixels below the first and in a third gradient.
-   Hover feedback stays with `hover:text-white` on the link itself. */
+   Hover feedback stays with `hover:text-white` on the link itself.
+   The marker is now a cyan hexagon rather than a bar, which also means the active
+   item is no longer distinguished by colour alone. */
 .nav-link.active {
   color: white;
   font-weight: 500;
@@ -347,16 +480,6 @@ select:focus-visible {
   opacity: 1;
 }
 
-@keyframes pulse-border {
-  0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
-}
-
-.pulse-border {
-  animation: pulse-border 2s infinite;
-}
-
 .logo-gradient {
   background: linear-gradient(90deg, #38bdf8, #818cf8);
   -webkit-background-clip: text;
@@ -364,9 +487,64 @@ select:focus-visible {
   color: transparent;
 }
 
-.header-blur {
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+/* The glass, defined once and used twice: the desktop island and the mobile takeover.
+   Listing both selectors in the same rule is the point. Two near-identical declarations
+   drift the first time someone tunes one and forgets the other, and this material has
+   seven properties that have to agree for the two surfaces to read as the same object.
+   The three shadows are the whole form: a lit top edge, the visible 4px thickness of the
+   slab, and one soft cast that sits it on the page. */
+.nav-island,
+.nav-sheet {
+  border-radius: 18px;
+  background-color: rgba(6, 12, 28, 0.62);
+  background-image: linear-gradient(150deg, rgba(37, 99, 235, 0.16), rgba(2, 6, 23, 0.10));
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    0 4px 0 0 rgba(2, 6, 23, 0.55),
+    0 22px 44px -18px rgba(2, 6, 23, 0.95);
+  transition: background-color 300ms ease, box-shadow 300ms ease;
+}
+
+/* Past the first scroll the island densifies and the cast tightens, which is the same
+   signal the old bar gave with a heavier gradient, in one property instead of four. */
+.nav-island.is-scrolled {
+  background-color: rgba(6, 12, 28, 0.78);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 3px 0 0 rgba(2, 6, 23, 0.60),
+    0 14px 30px -14px rgba(2, 6, 23, 0.95);
+}
+
+/* The takeover is the same recipe at 0.94 rather than 0.62, and that difference is not
+   a preference: a modal that covers the page has to occlude it, and a 30px label sitting
+   over a 62%-alpha sheet with the hero's hexes moving behind it is not legible. At 0.94
+   the page still ghosts through as soft colour, which keeps the material honest while
+   leaving the white label at 18:1 and the inactive slate at 8:1. */
+.nav-sheet {
+  border-radius: 0;
+  background-color: rgba(6, 12, 28, 0.94);
+}
+
+/* The round control, shared by the hamburger that opens the takeover and the cross that
+   closes it. They are one control in two states, so they are one rule: same 40px disc,
+   same rim, same fill. The old pair was bg-blue-800/50 against bg-blue-900/60 with a
+   44px close button, which meant the button changed size when you tapped it. */
+.nav-disc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+.nav-disc:hover {
+  background-color: rgba(255, 255, 255, 0.10);
 }
 
 /* Flip card */
@@ -614,21 +792,6 @@ select:focus-visible {
   animation: subtitle-blink 3.6s ease-in-out infinite;
 }
 
-/* Terminal caret: a hard on/off blink, not a soft fade. */
-@keyframes cursor-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-.cursor-blink {
-  animation: cursor-blink 1.1s step-end infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   /* One blanket rule rather than an enumeration. Every lift, flip, zoom and slide on
      this site is either a Tailwind hover utility or a framer-motion value, and a
@@ -648,9 +811,7 @@ select:focus-visible {
     scroll-behavior: auto;
   }
 
-  .subtitle-blink,
-  .cursor-blink,
-  .pulse-border {
+  .subtitle-blink {
     animation: none;
   }
 
@@ -661,8 +822,24 @@ select:focus-visible {
     transition: none;
   }
 
-  /* The shear stays — it is the hover affordance, not decoration — but it snaps
-     into place instead of morphing. */
+  /* The lift and the press are the affordance, so they stay, but the travel is what a
+     reduced-motion visitor asked not to see: pin the slab to the page and let the rim and
+     the shadows do the telling. */
+  .btn-primary,
+  .btn-primary-sm,
+  .btn-primary-block,
+  .btn-primary:hover,
+  .btn-primary-sm:hover,
+  .btn-primary-block:hover,
+  .btn-primary:focus-visible,
+  .btn-primary-sm:focus-visible,
+  .btn-primary-block:focus-visible,
+  .btn-primary:active,
+  .btn-primary-sm:active,
+  .btn-primary-block:active {
+    transform: none;
+  }
+
   .btn-primary::before,
   .btn-primary-sm::before,
   .btn-primary-block::before {

@@ -36,10 +36,13 @@ const CSP_DIRECTIVES = (nonce, isDev) => [
     ...(isDev ? ['https://va.vercel-scripts.com'] : []),
   ].join(' ')}`,
   // Stays 'unsafe-inline': a nonce covers <style> elements and Next's own style
-  // tags, not `style="..."` attributes. Eleven of those are load-bearing — the
-  // honeypot is hidden by one, and the hero's animated layers set custom
-  // properties through another. Noncing style-src would show the honeypot field
-  // and flatten the hero.
+  // tags, not the `style="..."` attribute, and the page renders thirteen of those.
+  // Two are structural - the honeypot is hidden by one and the hero's impact flash
+  // is positioned by another - and the rest are the text-shadow layers that hold the
+  // headline and the description legible over the hex field. Noncing style-src would
+  // show the honeypot field and flatten the hero. (The custom properties that the
+  // magnetic icons and the cursor animate are written imperatively through
+  // element.style.setProperty, so they are not part of this count.)
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' https://flagcdn.com",
   "font-src 'self' data:",
