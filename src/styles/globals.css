@@ -309,6 +309,17 @@ a {
     border: 1px solid #166534;
   }
 
+  /* Language chips carry a two-letter code instead of a brand mark, so the tile is the
+     heading sweep itself (same stops as .icon-tile) with white type - 6.7:1 at the weakest
+     stop - rather than the per-mark light/dark pick. */
+  .skill-chip.is-lang-tile .skill-chip-icon {
+    background-image: linear-gradient(to bottom right, #155e75, #0369a1, #1d4ed8);
+  }
+
+  .lang-badge {
+    @apply relative z-[1] font-heading font-bold text-white text-base tracking-wide;
+  }
+
   .skill-chip-label {
     @apply text-sm sm:text-base font-medium leading-snug;
     /* A flex item defaults to min-width:auto, i.e. it refuses to shrink below its

@@ -44,7 +44,7 @@ const CSP_DIRECTIVES = (nonce, isDev) => [
   // magnetic icons and the cursor animate are written imperatively through
   // element.style.setProperty, so they are not part of this count.)
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' https://flagcdn.com",
+  "img-src 'self'",
   "font-src 'self' data:",
   "connect-src 'self' https://challenges.cloudflare.com",
   "frame-src 'self' https://challenges.cloudflare.com",

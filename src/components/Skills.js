@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import SkillIcon, { usesLightTile } from './SkillIcon';
-import FlagIcon from './FlagIcon';
 import { trackPointer, releasePointer } from '../lib/magnetic-pointer';
 
 const SKILL_CATEGORIES = [
@@ -72,27 +71,30 @@ const SKILL_CATEGORIES = [
   {
     name: 'Languages',
     skills: [
-      { name: 'Persian (Native)', flagSrc: '/flags/iran-lion-sun.svg' },
-      { name: 'English (Fluent)', flagCode: 'gb' },
-      { name: 'Finnish (Intermediate)', flagCode: 'fi' },
+      { name: 'Farsi (Native)', lang: 'Fa' },
+      { name: 'English (Fluent)', lang: 'En' },
+      { name: 'Finnish (Intermediate)', lang: 'Fi' },
     ],
   },
 ];
 
 function SkillChip({ skill }) {
   const isLanguage = typeof skill === 'object';
-  // Flags are artwork drawn for a white field, so they keep the light tile.
-  const lightTile = isLanguage || usesLightTile(skill);
+  const tileClass = isLanguage
+    ? 'is-lang-tile'
+    : usesLightTile(skill)
+      ? 'is-light-tile'
+      : 'is-dark-tile';
 
   return (
     <div
-      className={`skill-chip group ${lightTile ? 'is-light-tile' : 'is-dark-tile'}`}
+      className={`skill-chip group ${tileClass}`}
       onPointerMove={trackPointer}
       onPointerLeave={releasePointer}
     >
       <div className="skill-chip-icon magnetic-icon">
         {isLanguage ? (
-          <FlagIcon code={skill.flagCode} src={skill.flagSrc} />
+          <span className="lang-badge" aria-hidden="true">{skill.lang}</span>
         ) : (
           <span className="relative z-[1] flex items-center justify-center">
             <SkillIcon name={skill} />
